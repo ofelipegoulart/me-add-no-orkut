@@ -1,0 +1,223 @@
+@import "tailwindcss";
+
+/* Legacy Orkut-style top bar (float layout, no flexbox) */
+#header {
+  width: 100%;
+  box-sizing: border-box;
+  background: #3d6cab;
+  background: linear-gradient(to bottom, #5a8fd4 0%, #4a7ebb 45%, #3d6cab 100%);
+  height: 31px;
+  min-height: 31px;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  color: #fff;
+}
+
+#headerin {
+  min-width: 920px;
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+  zoom: 1;
+}
+
+#header .header-nav,
+#header .header-user {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#header .header-nav {
+  float: left;
+}
+
+#header .header-user {
+  float: right;
+}
+
+#header .header-nav > li,
+#header .header-user > li {
+  float: left;
+  height: 31px;
+  line-height: 31px;
+  margin-right: 10px;
+}
+
+#header .header-nav > li:last-child,
+#header .header-user > li:last-child {
+  margin-right: 0;
+}
+
+#header li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+#header li a:hover {
+  text-decoration: underline;
+}
+
+#header .header-nav > li.header-brand {
+  margin-right: 12px;
+}
+
+#header .header-logo-link {
+  display: inline-block;
+  height: 31px;
+  text-decoration: none;
+}
+
+#header .header-logo-link:hover {
+  text-decoration: none;
+}
+
+/* Logo “tab”: subtle white → light gray (classic Orkut header) */
+#header .header-logo-box {
+  display: inline-block;
+  height: 31px;
+  line-height: 31px;
+  padding: 0 10px 0 9px;
+  background: linear-gradient(to bottom, #ffffff 0%, #f7f7f8 38%, #e8e9eb 100%);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #a8bdd8;
+}
+
+#header .header-logo-img {
+  display: inline-block;
+  vertical-align: middle;
+  width: 43px !important;
+  height: 16px !important;
+}
+
+#header .header-search-li {
+  margin-left: 4px;
+  margin-right: 0;
+}
+
+#header .header-search-input {
+  box-sizing: border-box;
+  vertical-align: middle;
+  width: 168px;
+  height: 20px;
+  margin-top: 5px;
+  padding: 2px 6px;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 1.2;
+  color: #222;
+  background: #f5f8fc;
+  border: 1px solid #1e3f66;
+  border-top-color: #0f2844;
+  border-left-color: #0f2844;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+#header .header-search-input::placeholder {
+  color: #6b7280;
+}
+
+#header .header-search-input:focus {
+  outline: 1px dotted #fff;
+  outline-offset: 1px;
+}
+
+/* Profile page: centered shell aligned with #headerin, float columns with gutters */
+.orkut-shell {
+  box-sizing: border-box;
+  min-width: 920px;
+  max-width: 1000px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 18px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 20px;
+}
+
+/* Classic Orkut: células compactas (evita linhas “altas” demais) */
+.orkut-shell td {
+  padding: 2px 5px;
+  vertical-align: top;
+}
+
+/*
+ * Grade “social / sobre mim”: coluna 1 alinhada à direita, coluna 2 à esquerda;
+ * altura mínima (padding e line-height enxutos, como no Orkut clássico).
+ */
+.orkut-shell table.orkut-social-fields {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.orkut-shell table.orkut-social-fields col.orkut-social-col-label {
+  width: 140px;
+}
+
+.orkut-shell table.orkut-social-fields td {
+  margin: 0;
+  padding: 0 4px;
+  line-height: 1.05;
+  vertical-align: top;
+}
+
+.orkut-shell table.orkut-social-fields td.orkut-social-label {
+  box-sizing: border-box;
+  font-weight: normal;
+  color: #5a6d82;
+  text-align: right !important;
+  padding: 0 8px 0 4px;
+}
+
+.orkut-shell table.orkut-social-fields td.orkut-social-value {
+  font-weight: normal;
+  color: #000;
+  text-align: left !important;
+  padding: 0 6px 0 2px;
+}
+
+.orkut-shell table.orkut-social-fields td.orkut-social-value a {
+  font-weight: normal;
+  color: #003399;
+}
+
+/* envolve só a tabela social: sem padding extra do td pai */
+.orkut-shell td.orkut-social-table-wrap {
+  padding: 0 !important;
+  vertical-align: top;
+}
+
+.orkut-three-col {
+  zoom: 1;
+}
+
+.orkut-three-col::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.orkut-col-left {
+  float: left;
+  width: 200px;
+  margin-right: 10px;
+}
+
+.orkut-col-main {
+  float: left;
+  width: calc(100% - 460px);
+  margin-right: 10px;
+}
+
+.orkut-col-right {
+  float: left;
+  width: 240px;
+}
+
+/* 200 + 10 + 10 + 240 = 460px fixed + gutters between three columns */
