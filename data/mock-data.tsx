@@ -48,3 +48,41 @@ export const ORKUT_MENU_ICONS = {
   depoimentos: "/icons/p_pen.png",
   fans: "/icons/p_fan.png",
 } as const;
+
+export const MOCK_RECADOS: { id: string; author: string; authorSeed: string; content: string; timestamp: string }[] = [
+  {
+    id: "1",
+    author: "Miles Alexander",
+    authorSeed: "miles",
+    content: "Yo, let's grab dinner later tonight at the pizza place near my house. Sound good?",
+    timestamp: "11:43 am (2½ hours ago)",
+  },
+  {
+    id: "2",
+    author: "Sofia Santos",
+    authorSeed: "sofia",
+    content: "Adorei aquele vídeo que você mandou! Hilário demais 😂",
+    timestamp: "3:20 pm (hoje)",
+  },
+  {
+    id: "3",
+    author: "Priscila Silva",
+    authorSeed: "priscila",
+    content: "Vamos de cinema no fim de semana? Tem um filme novo legal saindo!",
+    timestamp: "5:45 pm (ontem)",
+  },
+  {
+    id: "4",
+    author: "Lucas Oliveira",
+    authorSeed: "lucas",
+    content: "Que roupa legal! Aonde você arrumou?",
+    timestamp: "8:15 am (ontem)",
+  },
+  {
+    id: "5",
+    author: "Marina Costa",
+    authorSeed: "marina",
+    content: "Encontrei essas fotos nossas de quando fomos na praia. Quer que eu mande?",
+    timestamp: "2:30 pm (2 dias atrás)",
+  },
+];

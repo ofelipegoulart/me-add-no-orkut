@@ -1,7 +1,7 @@
-import { ProfileContent } from "@/components/profile-content";
+import ProfilePage from "./profile/[username]/page";
 
 const DEFAULT_USERNAME = "felipe";
 
 export default function Home() {
-  return <ProfileContent username={DEFAULT_USERNAME} />;
+  return <ProfilePage params={{ username: DEFAULT_USERNAME }} />;
 }

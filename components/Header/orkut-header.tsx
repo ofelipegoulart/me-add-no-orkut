@@ -40,11 +40,11 @@ export function OrkutHeader({ email }: OrkutHeaderProps) {
           </li>
         </ul>
         <ul className="header-user">
-          <li>{email}</li>
+          <li><span className="text-white font-bold">{email}</span></li>
           <li>
             <a href="#">Sair</a>
           </li>
-          <li className="header-search-li">
+          <li className="header-search-li flex align-middle">
             <label htmlFor="orkut-header-search" className="sr-only">
               Pesquisa do orkut
             </label>
