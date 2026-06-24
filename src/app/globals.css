@@ -8,6 +8,8 @@
   --orkut-tab-inactive: #e8eefa;
   --orkut-link-dark: #4b66a1;
   --orkut-accent-pink: #ff0084;
+  --orkut-link: #02679c;
+  --orkut-link-blue: #0099FF;
 }
 
 @theme {
@@ -18,54 +20,97 @@
   --color-orkut-tab-inactive: var(--orkut-tab-inactive);
   --color-orkut-link-dark: var(--orkut-link-dark);
   --color-orkut-accent-pink: var(--orkut-accent-pink);
+  --color-orkut-link: var(--orkut-link);
+  --color-orkut-link-blue: var(--orkut-link-blue);
 }
 
-body,
-div,
-ul,
-li,
-input,
-select,
-textarea,
-p,
-td,
-h1,
-h2,
-h3 {
-  color: #000;
-  font-family: Verdana, Arial, sans-serif;
-  font-size: 12px;
+@theme {
+  /* Substitui a fonte 'sans' padrão do Tailwind pela do Orkut */
+  --font-sans: "W95FA", "Tahoma", "Arial", sans-serif;
 }
 
-body {
-  overflow-y: scroll;
-  overflow-x: auto;
+@font-face {
+  font-family: 'W95FA';
+  src: url('/fonts/w95fa.woff2') format('woff2'),
+       url('/fonts/w95fa.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
-img {
-  border: 0;
+@font-face {
+  font-family: 'FSTahoma8px';
+  src: url('/fonts/fs-tahoma-8px.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+
+/* Utilitário para forçar os pixels */
+@utility font-pixelated {
+  /* 1. Força os pixels crus (pixel art rendering) */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges; /* Alternativa para outros navegadores */
+  
+  /* 2. Diz ao navegador para priorizar a geometria exata sobre a suavização */
+  text-rendering: geometricPrecision;
+  
+  /* 3. A cereja do bolo: remove o desfoque de subpixel, forçando blocos de cor */
+  -webkit-font-smoothing: none;
 }
 
-/* Links — original orkut values */
-a {
-  color: var(--orkut-link-dark);
-  text-decoration: none;
-}
+@layer base {
+  body,
+  div,
+  ul,
+  li,
+  input,
+  select,
+  textarea,
+  p,
+  td,
+  h1,
+  h2,
+  h3 {
+    color: #000;
+    @apply font-pixelated;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+    font-family: W95FA, Tahoma, Arial, sans-serif;
+    font-size: 12px;
+  }
 
-a:hover {
-  color: #00344f;
-  text-decoration: underline;
-}
+  body {
+    overflow-y: scroll;
+    overflow-x: auto;
+  }
 
-a img,
-img a {
-  border: 0;
+  img {
+    border: 0;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Links — original orkut values */
+  a {
+    color: var(--orkut-link);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #00344f;
+    text-decoration: underline;
+  }
+
+  a img,
+  img a {
+    border: 0;
+  }
 }
 
 /* =====================================================
@@ -78,7 +123,6 @@ img a {
   background: linear-gradient(to bottom, #5a8fd4 0%, #4a7ebb 45%, #3d6cab 100%);
   height: 31px;
   min-height: 31px;
-  font-family: Tahoma, Arial, sans-serif;
   font-size: 11px;
   font-weight: normal;
   line-height: 1;
@@ -99,18 +143,6 @@ img a {
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: Tahoma, Arial, sans-serif;
-  font-size: 11px;
-}
-
-/* Força Tahoma em todos os descendentes do header,
-   sobrescrevendo o reset global que aplica Verdana em li, a, input */
-#header,
-#header li,
-#header a,
-#header span,
-#header div {
-  font-family: Tahoma, Arial, sans-serif;
   font-size: 11px;
 }
 
@@ -187,7 +219,6 @@ img a {
   height: 20px;
   margin-top: 5px;
   padding: 2px 6px;
-  font-family: Verdana, Arial, sans-serif;
   font-size: 11px;
   line-height: 1.2;
   color: #222;
@@ -213,8 +244,7 @@ img a {
    original: #lbox width 143px, #rbox width 284px
    ===================================================== */
 .orkut-shell {
-  @apply box-border w-full max-w-[1003px] mx-auto mt-4 px-2 pb-5;
-  font-family: Verdana, Arial, sans-serif;
+  @apply box-border w-full max-w-250.75 mx-auto mt-4 px-2 pb-5;
   font-size: 13px;
 }
 
@@ -223,7 +253,6 @@ img a {
 .orkut-shell td {
   padding: 2px 5px;
   vertical-align: top;
-  font-family: Verdana, Arial, sans-serif;
   font-size: 12px;
 }
 
@@ -242,10 +271,12 @@ img a {
 }
 
 .orkut-col-main {
-  border-radius: 4px 48px 4px 4px !important;
-  /* original .module .boxmidlrg: padding:4px 2px 2px 7px */
-  padding: 4px 2px 2px 7px;
   margin-bottom: 8px;
+}
+
+.orkut-col-main-inner {
+  border-radius: 4px 48px 4px 4px !important;
+  padding: 4px 2px 2px 7px;
 }
 
 .orkut-col-right > div {
@@ -260,7 +291,6 @@ img a {
    original .listp:  font-size:12px, line-height:17px
    ===================================================== */
 .orkut-shell table.orkut-social-fields {
-  font-family: Verdana, Arial, sans-serif;
   font-size: 12px;
   line-height: 17px;
   border-collapse: collapse;
@@ -287,7 +317,6 @@ img a {
   padding: 2px 4px;
   line-height: 17px;
   vertical-align: top;
-  font-family: Verdana, Arial, sans-serif;
   font-size: 12px;
 }
 
@@ -311,7 +340,7 @@ img a {
 
 .orkut-shell table.orkut-social-fields td.orkut-social-value a {
   font-weight: normal;
-  color: var(--orkut-link-dark);
+  color: var(--orkut-link);
 }
 
 /* Wrapper td for the social table — no extra padding */
@@ -348,9 +377,24 @@ img a {
   margin-right: 10px;
 }
 
+.orkut-col-section {
+  width: 100%;
+  border-radius: 8px!important;
+}
+
 .orkut-col-right {
   float: left;
   width: 240px;
+}
+
+.orkut-col-full {
+  box-sizing: border-box;
+  float: left;
+  width: calc(100% - 153px);
+  border-radius: 3px;
+  padding: 4px 2px 2px 7px;
+  margin-bottom: 8px;
+  overflow: hidden;
 }
 
 /* =====================================================
@@ -358,7 +402,7 @@ img a {
    Sobrescreve o reset global que força font-size:12px em h1
    ===================================================== */
 .orkut-col-main h1 {
-  font-family: Arial, Helvetica, sans-serif;
+
   font-size: 22px;
   line-height: 28px;
   font-weight: normal;
@@ -379,72 +423,113 @@ img a {
 }
 
 /* =====================================================
-   Edit Profile — recriação fiel do formulário Orkut 2006
+   Edit Profile — recriação fiel do formulário Orkut 2007-2009
    ===================================================== */
 
 .orkut-edit-page {
-  padding: 4px 7px 8px;
+  padding: 6px 8px 10px;
+}
+
+/* ── Breadcrumbs ── */
+.orkut-edit-breadcrumb {
+
+  font-size: 11px;
+  color: #7b8ca5;
+  margin: 0;
+  padding: 0 0 6px;
+}
+
+.orkut-edit-breadcrumb a {
+  color: #7b8ca5;
+  text-decoration: none;
+}
+
+.orkut-edit-breadcrumb a:hover {
+  text-decoration: underline;
+  color: #4b66a1;
+}
+
+.orkut-edit-breadcrumb .orkut-breadcrumb-sep {
+  margin: 0 3px;
+  color: #99a8bf;
+}
+
+.orkut-tahoma,
+button {
+  font-family: FSTahoma8px, Tahoma, Verdana, Arial, sans-serif !important;
+  letter-spacing: 1.25px;
+}
+
+button {
+  font-size: 16px;
+  color: var(--orkut-link-dark);
 }
 
 .orkut-edit-title {
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: 18px !important;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
+  line-height: 28px;
   font-weight: normal;
-  color: #000;
+  color: #333;
   margin: 0;
-  padding: 4px 0 6px;
 }
 
 /* ── Tab bar ── */
 .orkut-edit-tabs {
   margin-bottom: 0;
   padding: 0;
-  border-bottom: 1px solid var(--orkut-border);
+  border-bottom: 1px solid #ccc;
 }
 
 .orkut-edit-tab {
   display: inline-block;
-  padding: 3px 10px;
-  margin: 0 1px -1px 0;
-  border: 1px solid var(--orkut-border);
+  padding: 2px 5px 2px;
+  margin: 0 2px -1px 0;
+  border: 1px solid #9eb6d8;
   border-bottom: none;
-  background: var(--orkut-tab-inactive);
-  color: #333;
-  font-family: Verdana, Arial, sans-serif;
-  font-size: 11px;
-  font-weight: normal;
+  background: #fff;
+  color: var(--orkut-link-dark);
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1.25px;
   cursor: pointer;
   text-decoration: none;
   outline: none;
-  border-radius: 3px 3px 0 0;
+  border-radius: 5px 5px 0 0;
+  position: relative;
 }
 
 .orkut-edit-tab:hover {
-  background: #d4dce5;
+  background: #f0f4fa;
 }
 
 .orkut-edit-tab-active,
 .orkut-edit-tab-active:hover {
-  background: var(--orkut-header-blue);
-  color: var(--orkut-link-dark);
+  background: #627AAD;
+  color: #fff;
   font-weight: bold;
-  border-color: var(--orkut-border);
+  border-color: #627AAD;
+  border-bottom: 1px solid #627AAD;
+  z-index: 1;
 }
 
 /* ── Form body ── */
 .orkut-edit-body {
-  border: 1px solid var(--orkut-border);
-  border-top: none;
-  padding: 0 0 8px;
+  border: none;
+  background: #fff;
+  padding: 8px 0;
 }
+
 
 /* ── Form table ── */
 .orkut-edit-table {
-  width: 100%;
+  width: calc(100% - 8px);
+  margin: 0 4px;
   border-collapse: collapse;
   table-layout: fixed;
-  font-family: Verdana, Arial, sans-serif;
-  font-size: 11px;
+
+  font-size: 12px;
+  line-height: 17px;
 }
 
 .orkut-edit-table col.orkut-edit-col-label {
@@ -452,64 +537,82 @@ img a {
 }
 
 .orkut-edit-table tr:nth-child(odd) {
-  background: #e6f0fa;
+  background: #eef5fd;
 }
 
 .orkut-edit-table tr:nth-child(even) {
-  background: #f5f9ff;
+  background: #fff;
 }
 
 .orkut-edit-table tr {
-  border-bottom: 1px solid var(--orkut-border);
+  border-bottom: 1px solid #dde5ef;
 }
 
 .orkut-edit-table tr:last-child {
   border-bottom: none;
 }
 
-/* label cell — right-aligned, gray */
+/* label cell — original .listfl: color:#676767, font-size:12px, line-height:17px, text-align:right */
 .orkut-edit-label {
   box-sizing: border-box;
   text-align: right !important;
   vertical-align: top;
   padding: 4px 8px 4px 6px !important;
   color: #676767;
-  font-family: Verdana, Arial, sans-serif;
-  font-size: 11px;
-  white-space: nowrap;
-  line-height: 20px;
+
+  font-size: 12px;
+  line-height: 17px;
 }
 
-/* field cell */
+/* field cell — original .listp: font-size:12px, line-height:17px */
 .orkut-edit-field {
   text-align: left !important;
   vertical-align: top;
   padding: 3px 6px !important;
-  font-family: Verdana, Arial, sans-serif;
-  font-size: 11px;
-  line-height: 20px;
+  position: relative;
+
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.orkut-privacy-wrapper {
+  float: right;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.orkut-privacy-wrapper img {
+  width: 14px;
+  height: 14px;
 }
 
 /* section divider row */
 .orkut-edit-section {
   padding: 6px 6px 3px !important;
-  font-family: Verdana, Arial, sans-serif;
+
   font-size: 11px;
   font-weight: bold;
   color: var(--orkut-link-dark);
-  border-top: 2px solid var(--orkut-border);
+  border-top: 2px solid #b9c9dc;
   text-align: left !important;
 }
 
 /* ── Form controls — era Windows XP / browser-default look ── */
 .orkut-input {
-  font-family: Verdana, Arial, sans-serif;
+
   font-size: 11px;
-  border: 1px solid #7f9db9;
+  border: 1px solid #a0b0c4;
   padding: 1px 3px;
   width: 200px;
   height: 18px;
   background: #fff;
+  outline: none;
+  box-shadow: none;
+}
+
+.orkut-input:focus {
+  border-color: #7f9db9;
 }
 
 .orkut-input-sm {
@@ -517,47 +620,66 @@ img a {
 }
 
 .orkut-select {
-  font-family: Verdana, Arial, sans-serif;
+
   font-size: 11px;
-  border: 1px solid #7f9db9;
+  border: 1px solid #a0b0c4;
   padding: 1px 2px;
   background: #fff;
   height: 20px;
+  box-shadow: none;
 }
 
 .orkut-textarea {
-  font-family: Verdana, Arial, sans-serif;
+
   font-size: 11px;
-  border: 1px solid #7f9db9;
+  border: 1px solid #a0b0c4;
   padding: 2px 3px;
   width: 320px;
   height: 60px;
   background: #fff;
   resize: vertical;
+  box-shadow: none;
+  outline: none;
+}
+
+.orkut-textarea:focus {
+  border-color: #7f9db9;
 }
 
 .orkut-privacy-select {
-  font-family: Verdana, Arial, sans-serif;
-  font-size: 10px;
-  border: 1px solid #7f9db9;
+  font-size: 11px;
+  border: 1px solid #a0b0c4;
   padding: 0 2px;
   background: #f5f9ff;
   height: 18px;
-  margin-left: 4px;
   color: #555;
+  box-shadow: none;
 }
 
 /* ── Radio & checkbox groups ── */
-.orkut-radio-group,
+.orkut-radio-group {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
 .orkut-checkbox-group {
   display: block;
 }
 
-.orkut-radio-label,
+.orkut-radio-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 0;
+  font-size: 11px;
+  color: #000;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 .orkut-checkbox-label {
   display: block;
   padding: 1px 0;
-  font-family: Verdana, Arial, sans-serif;
   font-size: 11px;
   color: #000;
   cursor: pointer;
@@ -577,47 +699,218 @@ img a {
 }
 
 .orkut-btn {
-  font-family: Verdana, Arial, sans-serif;
+
   font-size: 11px;
-  border: 1px solid #7f9db9;
-  background: linear-gradient(to bottom, #f7f8fa 0%, #d8dde4 100%);
-  color: #333;
+  border: 1px solid #a0b0c4;
+  background: #e8eef6;
+  color: var(--orkut-link-dark);
   padding: 2px 12px;
   cursor: pointer;
   height: 22px;
 }
 
 .orkut-btn:hover {
-  background: linear-gradient(to bottom, #ffffff 0%, #cdd3db 100%);
+  background: #dce4ef;
 }
 
 .orkut-btn:active {
-  background: #c8cdd4;
+  background: #cdd5e2;
 }
 
 .orkut-btn-cancel {
-  background: var(--orkut-tab-inactive);
+  background: #f0f2f5;
+  color: var(--orkut-link-dark);
 }
 
 .orkut-btn-link {
-  background: none;
-  border: none;
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid #a0b0c4;
+  border-radius: 5px;
+  background: #fff;
   color: var(--orkut-link-dark);
-  font-family: Verdana, Arial, sans-serif;
-  font-size: 11px;
   cursor: pointer;
-  padding: 0;
-  text-decoration: underline;
+  padding: 1px 6px;
+  height: 20px;
   margin-left: 4px;
+  text-decoration: none;
 }
 
-.orkut-btn-link:hover {
-  color: #00344f;
+.orkut-btn-edit {
+  font-size: 13px;
+  font-weight: 600!important;
+  border: 1px solid #a0b0c4;
+  border-radius: 3px;
+  background: #fff;
+  color: var(--orkut-link-dark);
+  cursor: pointer;
+  padding: 1px 4px;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+.orkut-btn-white {
+  border: 1px solid var(--orkut-border);
+  background: #fff;
+  color: var(--orkut-link-dark);
+  font-weight: 600!important;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1.25;
+}
+
+.orkut-btn-white:hover {
+  background: #f5f8ff;
+}
+
+.orkut-btn-white:active {
+  background: #eef3fc;
 }
 
 .orkut-edit-required-note {
   padding: 4px 10px;
-  font-family: Verdana, Arial, sans-serif;
+
   font-size: 10px;
   color: #999;
+}
+
+/* =====================================================
+   "adicionar foto" — overlays the bottom center of the avatar
+   ===================================================== */
+.avatar-add-photo {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff !important;
+  font-size: 11px;
+  padding: 2px 6px;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.avatar-add-photo:hover {
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff !important;
+  text-decoration: underline;
+}
+
+/* =====================================================
+   Upload de foto — dialog with XP-style buttons
+   ===================================================== */
+.xp-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xp-dialog {
+  width: 420px;
+  background: var(--orkut-box-white);
+  border-radius: 6px;
+  box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.35);
+  padding: 10px 12px 12px;
+  font-family: Tahoma, Arial, sans-serif;
+}
+
+.xp-dialog-title {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  margin: 0 0 6px;
+  padding: 0;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+.xp-dialog-file-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-bottom: 4px;
+  background: #eef5fd;
+  padding: 6px;
+}
+
+.xp-file-path {
+  flex: 1;
+  height: 21px;
+  font-size: 11px;
+  font-family: Tahoma, Arial, sans-serif;
+  border: 1px solid #7f9db9;
+  border-top-color: #515d6b;
+  padding: 1px 4px;
+  background: #fff;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.08);
+  outline: none;
+}
+
+.xp-file-path:focus {
+  border-color: #316ac5;
+}
+
+.xp-btn {
+  height: 23px;
+  min-width: 60px;
+  font-size: 11px !important;
+  font-family: Tahoma, Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  color: #000 !important;
+  padding: 0 8px !important;
+  border: 1px solid #003c74 !important;
+  border-radius: 3px;
+  background: linear-gradient(
+    180deg,
+    #fff 0%,
+    #ecebe5 85%,
+    #d8d0c4 100%
+  ) !important;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 1px 0 rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.xp-btn:hover {
+  border-color: #0055a4 !important;
+  background: linear-gradient(
+    180deg,
+    #fff 0%,
+    #e3dfd5 85%,
+    #ccc3b5 100%
+  ) !important;
+}
+
+.xp-btn:active {
+  background: linear-gradient(
+    180deg,
+    #d8d0c4 0%,
+    #e0dace 85%,
+    #eae6de 100%
+  ) !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  border-color: #003c74 !important;
+}
+
+.xp-btn:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -3px;
+}
+
+.xp-dialog-notice {
+  font-size: 12px;
+  line-height: 15px;
+  color: #000;
+  margin: 0;
+  font-family: W95FA, Tahoma, Arial, sans-serif;
 }
