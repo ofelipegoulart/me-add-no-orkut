@@ -53,7 +53,7 @@ export default function OnboardingPage() {
   const [year, setYear] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [sex, setSex] = useState("");
+  const [gender, setGender] = useState("");
   const [country, setCountry] = useState("Brasil");
   const [accepted, setAccepted] = useState(false);
 
@@ -81,8 +81,8 @@ export default function OnboardingPage() {
       setError("Informe o ano de nascimento.");
       return;
     }
-    if (!sex) {
-      setError("Selecione o sexo.");
+    if (!gender) {
+      setError("Selecione o gênero.");
       return;
     }
     if (!accepted) {
@@ -124,8 +124,7 @@ export default function OnboardingPage() {
 
   return (
     <div
-      className="min-h-screen bg-orkut-bg text-xs text-black"
-      style={{ fontFamily: "Verdana, Arial, sans-serif" }}
+      className="orkut-tahoma min-h-screen bg-orkut-bg text-xs text-black"
     >
       <header id="header">
         <div id="headerin">
@@ -270,20 +269,20 @@ export default function OnboardingPage() {
                   <label className="flex items-center gap-1 text-xs text-[#333] cursor-pointer">
                     <input
                       type="radio"
-                      name="sex"
+                      name="genero"
                       value="feminino"
-                      checked={sex === "feminino"}
-                      onChange={(e) => setSex(e.target.value)}
+                      checked={gender === "feminino"}
+                      onChange={(e) => setGender(e.target.value)}
                     />
                     feminino
                   </label>
                   <label className="flex items-center gap-1 text-xs text-[#333] cursor-pointer">
                     <input
                       type="radio"
-                      name="sex"
+                      name="genero"
                       value="masculino"
-                      checked={sex === "masculino"}
-                      onChange={(e) => setSex(e.target.value)}
+                      checked={gender === "masculino"}
+                      onChange={(e) => setGender(e.target.value)}
                     />
                     masculino
                   </label>
@@ -350,7 +349,7 @@ export default function OnboardingPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-white border border-orkut-border rounded-lg px-3 py-1 text-[11px] font-bold text-[#3d6cab] cursor-pointer hover:bg-[#f5f8ff] disabled:opacity-50"
+                className="orkut-btn-white orkut-tahoma text-[11px] px-3 py-1 disabled:opacity-50"
               >
                 {loading
                   ? "salvando..."

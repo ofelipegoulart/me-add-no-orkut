@@ -4,7 +4,7 @@ import { PRIVACY_OPTIONS } from "@/data/edit-profile/constants";
 import type { PrivacyLevel } from "@/data/edit-profile/types";
 
 type BaseProps = {
-  label: string;
+  label: React.ReactNode;
   name: string;
   required?: boolean;
   privacy?: boolean;
@@ -140,23 +140,26 @@ export function ProfileField(props: ProfileFieldProps) {
   return (
     <tr>
       <td className="orkut-edit-label">
-        {label}{required && " *"}:
+        {required && <span className="font-bold text-orkut-accent-pink">* </span>}{label}:
       </td>
       <td className="orkut-edit-field">
-        {renderField()}
         {privacy && onPrivacyChange && (
-          <select
-            className="orkut-privacy-select"
-            value={privacyValue ?? "todos"}
-            onChange={(e) => onPrivacyChange(e.target.value as PrivacyLevel)}
-          >
-            {PRIVACY_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
+          <span className="orkut-privacy-wrapper">
+            <img src="/icons/i_key.gif" alt="" />
+            <select
+              className="orkut-privacy-select"
+              value={privacyValue ?? "todos"}
+              onChange={(e) => onPrivacyChange(e.target.value as PrivacyLevel)}
+            >
+              {PRIVACY_OPTIONS.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          </span>
         )}
+        {renderField()}
       </td>
     </tr>
   );

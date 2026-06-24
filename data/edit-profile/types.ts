@@ -3,7 +3,7 @@ export type PrivacyLevel = "todos" | "amigos de amigos" | "apenas meus amigos" |
 export type ProfileGeneral = {
   nome: string;
   sobrenome: string;
-  sexo: string;
+  genero: string;
   relacionamento: string;
   nascimentoMes: string;
   nascimentoDia: string;
@@ -31,6 +31,7 @@ export type ProfileSocial = {
   religiao: string;
   visaoPolitica: string;
   orientacaoSexual: string;
+  orientacaoSexualPrivacidade: PrivacyLevel;
   humor: string[];
   estilo: string[];
   fumo: string;

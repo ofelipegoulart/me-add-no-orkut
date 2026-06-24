@@ -1,5 +1,8 @@
 import type { PrivacyLevel } from "./types";
 
+export { PAISES } from "./countries";
+export { IDIOMAS_OPTIONS } from "./languages";
+
 export const PRIVACY_OPTIONS: PrivacyLevel[] = [
   "só eu",
   "apenas meus amigos",
@@ -21,15 +24,6 @@ export const RELACIONAMENTO_OPTIONS = [
   "namorando",
   "casamento aberto",
   "relacionamento aberto",
-];
-
-export const PAISES = [
-  "Brasil",
-  "Portugal",
-  "Estados Unidos",
-  "Argentina",
-  "Japão",
-  "Índia",
 ];
 
 export const INTERESSADO_EM_OPTIONS = [
