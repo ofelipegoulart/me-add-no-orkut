@@ -165,23 +165,23 @@ export default function OnboardingPage() {
         </div>
       </header>
 
-      <div className="min-w-[920px] max-w-[1003px] mx-auto mt-4 px-2">
+      <div className="min-w-230 max-w-250.75 mx-auto mt-4 px-2">
         <div className="bg-white border border-orkut-border rounded-xl overflow-hidden">
           <div className="px-5 pt-4">
-            <h1 className="!text-[30px] font-normal !text-[#333] m-0 !leading-[1.2]">
+            <h1 className="text-[30px]! font-normal text-[#333]! m-0 leading-[1.2]!">
               bem-vindo(a) ao orkut!
             </h1>
           </div>
 
           <form onSubmit={handleSubmit}>
             <div className="px-5 pt-3 pb-4">
-              <p className="!text-[13px] font-bold !text-[#333] m-0">
+              <p className="text-[13px]! font-bold text-[#333]! m-0">
                 Só precisamos confirmar algumas coisas antes de você começar a usar o orkut:
               </p>
             </div>
 
             {error && (
-              <div className="bg-[#fff3f3] border border-red-300 !text-red-700 text-sm px-5 py-2 mx-5 mb-2">
+              <div className="bg-[#fff3f3] border border-red-300 text-red-700! text-sm px-5 py-2 mx-5 mb-2">
                 {error}
               </div>
             )}
@@ -189,8 +189,8 @@ export default function OnboardingPage() {
             {/* Birth date */}
             <div className="bg-[#e8eefa] border-t border-white px-5 py-4 mx-4">
               <div className="flex">
-                <div className="w-[260px] shrink-0 text-right pr-8 pt-0.5">
-                  <span className="text-[#666] text-xs leading-[24px]">
+                <div className="w-65 shrink-0 text-right pr-8 pt-0.5">
+                  <span className="text-[#666] text-xs leading-6">
                     Desculpe se estamos sendo indiscretos, mas quando você nasceu?
                   </span>
                 </div>
@@ -231,8 +231,8 @@ export default function OnboardingPage() {
             {/* Name confirmation */}
             <div className="bg-[#e8eefa] border-t-4 border-white px-5 py-4 mx-4">
               <div className="flex">
-                <div className="w-[260px] shrink-0 text-right pr-8 pt-0.5">
-                  <span className="text-[#666] text-xs leading-[24px]">
+                <div className="w-65 shrink-0 text-right pr-8 pt-0.5">
+                  <span className="text-[#666] text-xs leading-6">
                     Entendemos seu nome direito?
                   </span>
                 </div>
@@ -262,7 +262,7 @@ export default function OnboardingPage() {
             {/* Sex */}
             <div className="bg-[#e8eefa] border-t-4 border-white px-5 py-4 mx-4">
               <div className="flex">
-                <div className="w-[260px] shrink-0 text-right pr-8 pt-0.5">
+                <div className="w-65 shrink-0 text-right pr-8 pt-0.5">
                   <span className="text-xs font-bold text-[#333]">sexo:</span>
                 </div>
                 <div className="flex items-center gap-4">
@@ -286,6 +286,16 @@ export default function OnboardingPage() {
                     />
                     masculino
                   </label>
+                  <label className="flex items-center gap-1 text-xs text-[#333] cursor-pointer">
+                    <input
+                      type="radio"
+                      name="genero"
+                      value="não binário"
+                      checked={gender === "não binário"}
+                      onChange={(e) => setGender(e.target.value)}
+                    />
+                    não binário
+                  </label>
                 </div>
               </div>
             </div>
@@ -293,7 +303,7 @@ export default function OnboardingPage() {
             {/* Country */}
             <div className="bg-[#e8eefa] border-t-4 border-white px-5 py-4 mx-4">
               <div className="flex">
-                <div className="w-[260px] shrink-0 text-right pr-8 pt-0.5">
+                <div className="w-65 shrink-0 text-right pr-8 pt-0.5">
                   <span className="text-xs font-bold text-[#333]">país:</span>
                 </div>
                 <div>
@@ -313,8 +323,8 @@ export default function OnboardingPage() {
             {/* Terms */}
             <div className="bg-[#e8eefa] border-t-4 border-white px-5 py-4 mx-4">
               <div className="flex">
-                <div className="w-[260px] shrink-0 text-right pr-8">
-                  <span className="text-[11px] text-[#666] leading-[16px]">
+                <div className="w-65 shrink-0 text-right pr-8">
+                  <span className="text-[11px] text-[#666] leading-4">
                     Se levante, coloque a mão direita no peito e faça o
                     seguinte juramento marcando a caixa de seleção:
                   </span>
@@ -364,7 +374,7 @@ export default function OnboardingPage() {
           className="mt-3 mb-4 rounded-xl border border-[#bbb] px-4 py-2 flex items-center justify-center gap-2 text-[11px] text-[#666] font-light"
           style={{ background: "linear-gradient(to bottom, #e8e8e8 0%, #d0d0d0 100%)" }}
         >
-          <img src="/logos/orkut_logo.gif" alt="orkut" className="h-[18px]" />
+          <img src="/logos/orkut_logo.gif" alt="orkut" className="h-4.5" />
           <span className="text-[#aaa]">|</span>
           <a href="#" className="text-[#666] hover:underline">Sobre o orkut</a>
           <span className="text-[#aaa]">|</span>

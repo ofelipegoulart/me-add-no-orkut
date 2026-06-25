@@ -62,7 +62,7 @@ export default function Register() {
 
   return (
     <div className="font-[arial,sans-serif] m-0 p-[13px_15px_15px] bg-white text-black">
-      <div className="mb-[9px] -ml-0.5 relative overflow-hidden">
+      <div className="mb-2.25 -ml-0.5 relative overflow-hidden">
         <img
           className="border-0 float-left"
           src="/logos/accounts_logo.gif"
@@ -99,7 +99,7 @@ export default function Register() {
         <br />
 
         {error && (
-          <div className="bg-[#fff3f3] border border-red-300 text-red-700 text-sm px-3 py-2 mb-3 max-w-[700px]">
+          <div className="bg-[#fff3f3] border border-red-300 text-red-700 text-sm px-3 py-2 mb-3 max-w-175">
             {error}
           </div>
         )}
@@ -127,7 +127,7 @@ export default function Register() {
                                     cellSpacing={0}
                                     cellPadding={0}
                                     width="100%"
-                                    className="relative -left-[5px] -top-[7px] [&_td]:py-[7px] [&_td]:px-[5px]"
+                                    className="relative -left-1.25 -top-1.75 [&_td]:py-1.75 [&_td]:px-1.25"
                                   >
                                     <tbody>
                                       <tr>
