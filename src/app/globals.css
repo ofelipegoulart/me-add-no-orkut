@@ -286,70 +286,6 @@
 }
 
 /* =====================================================
-   Social table — "social / sobre mim"
-   original .listfl: color:#676767, font-size:12px, line-height:17px, text-align:right
-   original .listp:  font-size:12px, line-height:17px
-   ===================================================== */
-.orkut-shell table.orkut-social-fields {
-  font-size: 12px;
-  line-height: 17px;
-  border-collapse: collapse;
-  table-layout: fixed;
-  width: 100%;
-}
-
-.orkut-shell table.orkut-social-fields col.orkut-social-col-label {
-  /* original #lbox is 143px; label col slightly narrower */
-  width: 148px;
-}
-
-/* Gray divider between every row */
-.orkut-shell table.orkut-social-fields tr {
-  border-bottom: 1px solid var(--orkut-border);
-}
-
-.orkut-shell table.orkut-social-fields tr:last-child {
-  border-bottom: none;
-}
-
-.orkut-shell table.orkut-social-fields td {
-  margin: 0;
-  padding: 2px 4px;
-  line-height: 17px;
-  vertical-align: top;
-  font-size: 12px;
-}
-
-/* original .listfl: color:#676767, text-align:right */
-.orkut-shell table.orkut-social-fields td.orkut-social-label {
-  box-sizing: border-box;
-  font-weight: normal;
-  color: #676767;
-  text-align: right !important;
-  padding: 2px 8px 2px 4px;
-  white-space: nowrap;
-}
-
-/* original .listp: color inherited (#000), text-align left */
-.orkut-shell table.orkut-social-fields td.orkut-social-value {
-  font-weight: normal;
-  color: #000;
-  text-align: left !important;
-  padding: 2px 6px 2px 2px;
-}
-
-.orkut-shell table.orkut-social-fields td.orkut-social-value a {
-  font-weight: normal;
-  color: var(--orkut-link);
-}
-
-/* Wrapper td for the social table — no extra padding */
-.orkut-shell td.orkut-social-table-wrap {
-  padding: 0 !important;
-  vertical-align: top;
-}
-
-/* =====================================================
    Three-column float layout
    original: #lbox 143px, #rbox 284px
    We keep 200px left / 240px right as design choice,
@@ -456,7 +392,7 @@
 
 .orkut-tahoma,
 button {
-  font-family: FSTahoma8px, Tahoma, Verdana, Arial, sans-serif !important;
+  font-family: Tahoma;
   letter-spacing: 1.25px;
 }
 

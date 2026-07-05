@@ -1,4 +1,4 @@
-import { EditProfilePage } from "@/components/EditProfile/edit-profile-page";
+import { EditProfilePage } from "@/components/pages/EditProfile/edit-profile-page";
 
 export default function EditSummaryRoute() {
   return (

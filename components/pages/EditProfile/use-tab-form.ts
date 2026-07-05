@@ -53,5 +53,11 @@ export function useTabForm<T extends Record<string, unknown>>(initialData: T) {
     setSnapshot(clone(current));
   }
 
-  return { data: current, update, getDirtyPayload, cancel, commit };
+  function reset(newData: T) {
+    const cloned = clone(newData);
+    setSnapshot(cloned);
+    setCurrent(clone(newData));
+  }
+
+  return { data: current, update, getDirtyPayload, cancel, commit, reset };
 }

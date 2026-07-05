@@ -3,9 +3,10 @@ import { LogoutButton } from "./logout-button";
 
 type OrkutHeaderProps = {
   email: string;
+  userId?: string;
 };
 
-export function OrkutHeader({ email }: OrkutHeaderProps) {
+export function OrkutHeader({ email, userId }: OrkutHeaderProps) {
   return (
     <header id="header">
       <div id="headerin">
@@ -28,10 +29,10 @@ export function OrkutHeader({ email }: OrkutHeaderProps) {
             <a href="/">Início</a>
           </li>
           <li>
-            <a href="#">Perfil</a>
+            <a href={userId ? `/profile/${userId}` : "#"}>Perfil</a>
           </li>
           <li>
-            <a href="">Página de recados</a>
+            <a href={`/profile/${userId}/recados`}>Página de recados</a>
           </li>
           <li>
             <a href="#">Amigos</a>

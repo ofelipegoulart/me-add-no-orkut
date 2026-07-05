@@ -1,3 +1,5 @@
+import { OrkutActionButton } from "@/components/buttons/orkut-action-button";
+
 type communities = { name: string; seed: string }[]
 export default function OrkutCommunities({ communities, userId }: { communities: communities; userId: string }) {
   return (
@@ -16,12 +18,9 @@ export default function OrkutCommunities({ communities, userId }: { communities:
             </a>
           </div>
           <div className="pb-2">
-            <button
-              type="button"
-              className="orkut-btn-white orkut-tahoma text-[11px] px-3"
-            >
+            <OrkutActionButton className="orkut-tahoma text-[11px] px-3">
               adicionar comunidades
-            </button>
+            </OrkutActionButton>
           </div>
         </div>
       ) : (

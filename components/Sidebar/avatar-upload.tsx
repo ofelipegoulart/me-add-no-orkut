@@ -2,16 +2,18 @@
 
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useAvatarContext } from "@/components/EditProfile/edit-profile-context";
+import { useAvatarContext } from "@/components/pages/EditProfile/edit-profile-context";
 
 const DEFAULT_AVATAR = "/avatar/default.png";
 
 export default function AvatarUpload({
   avatarUrl,
   showAddPhoto = false,
+  profileHref,
 }: {
   avatarUrl?: string;
   showAddPhoto?: boolean;
+  profileHref?: string;
 }) {
   const ctx = useAvatarContext();
 
@@ -47,13 +49,25 @@ export default function AvatarUpload({
   return (
     <>
       <div className="relative inline-block">
-        <img
-          src={displayAvatar}
-          alt=""
-          width={120}
-          height={120}
-          className="mx-auto block"
-        />
+        {profileHref ? (
+          <a href={profileHref}>
+            <img
+              src={displayAvatar}
+              alt=""
+              width={120}
+              height={120}
+              className="mx-auto block"
+            />
+          </a>
+        ) : (
+          <img
+            src={displayAvatar}
+            alt=""
+            width={120}
+            height={120}
+            className="mx-auto block"
+          />
+        )}
       </div>
 
       {showAddPhoto && (

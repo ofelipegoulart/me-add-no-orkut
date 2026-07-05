@@ -23,13 +23,15 @@ export default function OrkutLeftSidebar({
     [ORKUT_MENU_ICONS.depoimentos, "depoimentos"],
   ];
 
+  const profileHref = userId ? `/profile/${userId}` : "#";
+
   return (
     <div>
       {/* ── Bloco 1: foto + nome + info ── */}
       <div className="pb-2 text-center">
-        <AvatarUpload avatarUrl={avatarUrl} showAddPhoto={showAddPhoto} />
+        <AvatarUpload avatarUrl={avatarUrl} showAddPhoto={showAddPhoto} profileHref={profileHref} />
         <div className="mt-1 font-bold text-orkut-link-blue">
-          <a href="#">{displayName}</a>
+          <a href={profileHref}>{displayName}</a>
         </div>
         <div className="text-[11px] text-left" style={{color: "#5a5a5a"}}>masculino, solteiro(a)</div>
         <div className="text-[11px] text-left" style={{color: "#5a5a5a"}}>tangara da serra, Brasil</div>

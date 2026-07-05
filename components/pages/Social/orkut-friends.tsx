@@ -1,3 +1,5 @@
+import { OrkutActionButton } from "@/components/buttons/orkut-action-button";
+
 type friends = { id: string; name: string; count: number; seed: string }[]
 
 export default function OrkutFriends({ friends, userId }: { friends: friends; userId: string }) {
@@ -24,12 +26,9 @@ export default function OrkutFriends({ friends, userId }: { friends: friends; us
                             </a>
                         </div>
                         <div className="pb-2">
-                            <button
-                                type="button"
-                                className="orkut-btn-white orkut-tahoma text-[14px]"
-                            >
+                            <OrkutActionButton className="orkut-tahoma text-[14px]">
                                 adicionar amigos
-                            </button>
+                            </OrkutActionButton>
                         </div>
                     </div>
                 ) : (

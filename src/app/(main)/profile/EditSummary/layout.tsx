@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import OrkutLeftSidebar from "@/components/LeftSideBar/container-bar";
-import { EditProfileProvider } from "@/components/EditProfile/edit-profile-context";
+import OrkutLeftSidebar from "@/components/Sidebar/container-bar";
+import { EditProfileProvider } from "@/components/pages/EditProfile/edit-profile-context";
 
 export default async function EditSummaryLayout({
   children,

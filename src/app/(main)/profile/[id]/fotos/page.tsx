@@ -1,6 +1,6 @@
 import { FRIENDS, COMMUNITIES } from "@/data/mock-data";
-import OrkutCommunities from "@/components/Social/orkut-communities";
-import OrkutFriends from "@/components/Social/orkut-friends";
+import OrkutCommunities from "@/components/pages/Social/orkut-communities";
+import OrkutFriends from "@/components/pages/Social/orkut-friends";
 
 export default async function FotosPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

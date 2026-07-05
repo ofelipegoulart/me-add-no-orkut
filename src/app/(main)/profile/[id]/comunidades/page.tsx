@@ -1,5 +1,5 @@
 import { FRIENDS, COMMUNITIES } from "@/data/mock-data";
-import OrkutFriends from "@/components/Social/orkut-friends";
+import OrkutFriends from "@/components/pages/Social/orkut-friends";
 
 export default async function ComunidadesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

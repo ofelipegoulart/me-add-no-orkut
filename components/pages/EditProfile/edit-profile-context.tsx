@@ -25,12 +25,26 @@ export function EditProfileProvider({
   const avatarSrc = avatar || DEFAULT_AVATAR;
   const isDefault = !avatar || avatar === DEFAULT_AVATAR;
 
-  function setAvatar(base64: string) {
+  async function setAvatar(base64: string) {
     setAvatarState(base64);
+    try {
+      await fetch("/api/profile/avatar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ avatar: base64 }),
+      });
+    } catch {
+      // keep local state even if upload fails
+    }
   }
 
-  function removeAvatar() {
+  async function removeAvatar() {
     setAvatarState("");
+    try {
+      await fetch("/api/profile/avatar", { method: "DELETE" });
+    } catch {
+      // keep local state even if delete fails
+    }
   }
 
   return (
