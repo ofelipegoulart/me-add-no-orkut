@@ -1,45 +1,81 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { CURRENT_USER, FRIENDS, COMMUNITIES, PROFILE_ROWS } from "@/data/mock-data";
-import OrkutCommunities from "@/components/Social/orkut-communities";
-import OrkutFriends from "@/components/Social/orkut-friends";
-import { OrkutMainColumn } from "@/components/ProfilePage/main-column";
-import { UpdatesSection } from "@/components/ProfilePage/updates-section";
+import { FRIENDS, COMMUNITIES } from "@/data/mock-data";
+import OrkutCommunities from "@/components/pages/Social/orkut-communities";
+import OrkutFriends from "@/components/pages/Social/orkut-friends";
+import MyProfilePage from "@/components/pages/ProfilePage/MyProfilePage";
+import UserProfilePage from "@/components/pages/ProfilePage/UserProfilePage";
+import { loadProfileRows } from "@/lib/profile-data";
+import type { ProfileRowsByTab } from "@/components/pages/ProfilePage/Shared/ProfileInfoTabs";
+import { getProfileOverviewServer } from "@/lib/profile-service-server";
+import type { ProfileOverviewResponse } from "@/lib/profile-types";
+import { transformFriendsForUI, transformCommunitiesForUI } from "@/lib/profile-types";
 
-export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ProfilePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const session = await getServerSession(authOptions);
   const isOwnProfile = session?.user?.userId === id;
   const displayName = session?.user?.name ?? "Usuário";
+  const jwt = session?.user?.jwt;
 
-  const isMockUser = id === CURRENT_USER.id;
-  const friends = isMockUser ? FRIENDS : [];
-  const communities = isMockUser ? COMMUNITIES : [];
-  const profileRows = isMockUser ? PROFILE_ROWS : [];
+  // Fetch profile overview data using server-side function
+  let overview: ProfileOverviewResponse | null = null;
+  if (jwt) {
+    try {
+      overview = await getProfileOverviewServer(jwt, { userId: id });
+    } catch {
+      // Fallback to mock data if API fails
+    }
+  }
 
+  // Transform friends and communities for UI components
+  const friendsForUI = overview
+    ? transformFriendsForUI(overview.friends, overview.counts)
+    : FRIENDS;
+  const communitiesForUI = overview
+    ? transformCommunitiesForUI(overview.communities)
+    : COMMUNITIES;
+
+  // A amizade é bidirecional no backend, então o viewer aparece na lista de
+  // amigos do perfil visitado quando já são amigos.
+  const viewerId = session?.user?.userId;
+  const isFriend = Boolean(
+    viewerId && overview?.friends?.some((friend) => friend.id === viewerId),
+  );
+
+  const profileRowsByTab: ProfileRowsByTab = await loadProfileRows(jwt);
+
+  // Render appropriate profile page based on ownership
   return (
     <div className="min-h-screen w-full bg-orkut-bg">
       <div className="orkut-col-main">
-        <div className="border border-orkut-border bg-white shadow-sm orkut-col-main-inner">
-          <OrkutMainColumn
+        {isOwnProfile ? (
+          <MyProfilePage
             displayName={displayName}
             userId={id}
-            isOwnProfile={isOwnProfile}
-            profileRows={profileRows}
+            profileRowsByTab={profileRowsByTab}
+            overview={overview}
           />
-        </div>
-        {isOwnProfile && (
-          <div className="orkut-col-section mt-1 bg-white border border-orkut-border px-2 py-1">
-            <UpdatesSection />
-          </div>
+        ) : (
+          <UserProfilePage
+            displayName={overview?.user.name || displayName}
+            userId={id}
+            profileRowsByTab={profileRowsByTab}
+            overview={overview}
+            isFriend={isFriend}
+          />
         )}
       </div>
       <div className="orkut-col-right">
         <div className="border border-orkut-border bg-white shadow-sm rounded-lg">
-          <OrkutFriends friends={friends} userId={id} />
+          <OrkutFriends friends={friendsForUI} userId={id} />
         </div>
         <div className="border border-orkut-border bg-white shadow-sm rounded-lg">
-          <OrkutCommunities communities={communities} userId={id} />
+          <OrkutCommunities communities={communitiesForUI} userId={id} />
         </div>
       </div>
     </div>

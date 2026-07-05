@@ -9,7 +9,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
 
   return (
     <>
-      <OrkutHeader email={email} />
+      <OrkutHeader email={email} userId={session?.user?.userId} />
       <div className="min-h-screen w-full bg-orkut-bg">
         <div className="orkut-shell">
           <div className="flow-root">
