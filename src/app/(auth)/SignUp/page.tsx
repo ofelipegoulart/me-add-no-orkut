@@ -1,5 +1,6 @@
 "use client";
 
+import { OrkutActionButton } from "@/components/buttons/orkut-action-button";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -356,15 +357,15 @@ export default function OnboardingPage() {
 
             {/* Submit */}
             <div className="px-5 py-3">
-              <button
+              <OrkutActionButton
                 type="submit"
                 disabled={loading}
-                className="orkut-btn-white orkut-tahoma text-[11px] px-3 py-1 disabled:opacity-50"
+                className="orkut-tahoma text-[11px] px-3 py-1"
               >
                 {loading
                   ? "salvando..."
                   : "tudo certo, pode criar minha conta!"}
-              </button>
+              </OrkutActionButton>
             </div>
           </form>
         </div>

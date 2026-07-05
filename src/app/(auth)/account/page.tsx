@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthSubmitButton } from "@/components/buttons/auth-submit-button";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -15,18 +16,32 @@ export default function LoginPage() {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("Email") as string;
-    const password = formData.get("Passwd") as string;
+    const email = (formData.get("Email") as string | null) ?? "";
+    const password = (formData.get("Passwd") as string | null) ?? "";
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    if (!email.trim() || !password) {
+      setError("O nome de usuário e senha são incorretos.");
+      setLoading(false);
+      return;
+    }
+
+    let result;
+    try {
+      result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: `${window.location.origin}/profile`,
+      });
+    } catch {
+      setError("O nome de usuário e senha são incorretos.");
+      setLoading(false);
+      return;
+    }
 
     setLoading(false);
 
-    if (result?.error) {
+    if (!result || result.error) {
       setError("O nome de usuário e senha são incorretos.");
       return;
     }
@@ -36,9 +51,9 @@ export default function LoginPage() {
 
   return (
     <div
-      className="orkut-tahoma min-h-screen bg-orkut-bg p-[10px] text-xs text-black"
+      className="orkut-tahoma min-h-screen bg-orkut-bg p-2.5 text-xs text-black"
     >
-      <div className="flex gap-[10px] w-full">
+      <div className="flex gap-2.5 w-full">
         {/* Left panel */}
         <div className="bg-white flex-1 flex flex-col items-center justify-center h-80">
           <div className="text-center">
@@ -49,7 +64,7 @@ export default function LoginPage() {
               className="border-0 mx-auto"
             />
           </div>
-          <div className="px-5 py-[10px] leading-[1.5em] text-xs text-center">
+          <div className="px-5 py-2.5 leading-[1.5em] text-xs text-center">
             <b className="text-orkut-accent-pink">Conecte-se</b> com amigos e familiares
             usandoo recados e mensagens instantâneas <br />
             <b className="text-orkut-accent-pink">Conheça</b> novas pessoas através de
@@ -60,7 +75,7 @@ export default function LoginPage() {
         </div>
 
         {/* Right panel */}
-        <div className="bg-white p-[3px] w-[264px] flex flex-col">
+        <div className="bg-white p-0.75 w-66 flex flex-col">
           <div id="gaia_loginbox" className="flex-1 bg-orkut-tab-inactive text-center px-6">
             <form
               id="gaia_loginform"
@@ -103,6 +118,12 @@ export default function LoginPage() {
                   id="Passwd"
                   size={15}
                   className={`font-sans text-xs border px-0.5 py-px ${error ? "border-red-500" : "border-[#767676]"}`}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      e.currentTarget.form?.requestSubmit();
+                    }
+                  }}
                   style={{ backgroundColor: "white" }}
                 />
 
@@ -132,7 +153,7 @@ export default function LoginPage() {
                     Salvar as minhas informações neste computador
                   </label>
                   <br />
-                  <span className="text-[#667788] mt-[3px] text-[10px] text-left">
+                  <span className="text-[#667788] mt-0.75 text-[10px] text-left">
                     Não use em computadores públicos. [
                     <a
                       className="text-[#0047BE] underline hover:text-[#C40098]"
@@ -146,18 +167,18 @@ export default function LoginPage() {
 
                 <div></div>
                 <div className="text-left">
-                  <input
-                    type="submit"
-                    className="font-sans text-xs cursor-pointer border border-[#767676] bg-[#ECECEC] px-1.5 py-px disabled:opacity-50"
+                  <AuthSubmitButton
+                    as="input"
                     name="login"
                     value={loading ? "Entrando..." : "Login"}
                     disabled={loading}
+                    id="submitbutton"
                   />
                 </div>
 
                 <div
                   id="ga-fprow"
-                  className="col-span-2 h-[33px] font-sans text-[70%] text-center flex items-end justify-center pb-1"
+                  className="col-span-2 h-8.25 font-sans text-[70%] text-center flex items-end justify-center pb-1"
                 >
                   <a
                     className="text-[#0047BE] underline hover:text-[#C40098]"
@@ -170,9 +191,9 @@ export default function LoginPage() {
             </form>
           </div>
 
-          <div className="h-[7px] bg-orkut-bg my-[3px] -mx-[3px]"></div>
+          <div className="h-1.75 bg-orkut-bg my-0.75 -mx-0.75"></div>
 
-          <div className="text-xs bg-orkut-tab-inactive py-2 px-[3px] text-center leading-[1.7em]">
+          <div className="text-xs bg-orkut-tab-inactive py-2 px-0.75 text-center leading-[1.7em]">
             Ainda não é membro?
             <br />
             <a
@@ -185,7 +206,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <div className="bg-orkut-border mt-[10px] text-xs p-[5px] text-center">
+      <div className="bg-orkut-border mt-2.5 text-xs p-1.25 text-center">
         &copy;2009{" "}Google{" "}-{" "}
         <a
           className="text-[#0047BE] hover:text-[#C40098]"

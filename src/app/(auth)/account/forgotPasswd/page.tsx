@@ -94,6 +94,12 @@ export default function ForgotPasswdPage() {
                 <input
                   type="submit"
                   value="Enviar"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      e.currentTarget.form?.requestSubmit();
+                    }
+                  }}
                   style={{
                     border: "1px solid #999",
                     borderTopColor: "#555",

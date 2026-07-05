@@ -32,7 +32,8 @@ export const authOptions: NextAuthOptions = {
           });
           if (profileRes.ok) {
             const profile = await profileRes.json();
-            onboarded = !!profile.birthDate;
+            // User is onboarded only if birthDate is a valid, non-empty string
+            onboarded = !!(profile.birthDate && profile.birthDate.trim());
           }
         } catch {
           // If profile check fails, treat as not onboarded
