@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Orkut Clone",
+  title: "Me Add no Orkut",
   description: "A recreation of the classic Orkut social network",
 };
 

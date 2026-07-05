@@ -1,4 +1,4 @@
-# Orkut Clone
+# Me Add no Orkut
 
 Uma recriação fiel do Orkut, a rede social que marcou a internet brasileira. Este é o **frontend** do projeto, construído com Next.js 16 e React 19, replicando a interface clássica com fontes pixeladas, layout de 3 colunas e a paleta azul icônica.
 
@@ -66,8 +66,8 @@ A API roda em `http://localhost:8080`. A documentação Swagger fica disponível
 ### 2. Frontend (este repositório)
 
 ```bash
-git clone https://github.com/ofelipegoulart/orkut-clone.git
-cd orkut-clone
+git clone https://github.com/ofelipegoulart/me-add-no-orkut.git
+cd me-add-no-orkut
 npm install
 ```
 
