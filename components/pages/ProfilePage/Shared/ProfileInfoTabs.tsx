@@ -31,7 +31,7 @@ function getTabClassName(isActive: boolean) {
   const baseClassName = [
     "relative mb-[-1px] mr-0.5 inline-block cursor-pointer rounded-t-[5px]",
     "border border-[#9eb6d8] border-b-0 px-[5px] py-0.5",
-    "text-[16px] font-bold tracking-[1.25px] no-underline outline-none",
+    "text-[14px] font-bold tracking-tight no-underline outline-none",
   ].join(" ");
 
   if (isActive) {

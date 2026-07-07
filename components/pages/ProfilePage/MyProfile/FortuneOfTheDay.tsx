@@ -13,7 +13,7 @@ export function FortuneOfTheDay() {
   const fortune = getFortuneOfTheDay();
 
   return (
-    <div className="py-1 font-[Tahoma] text-[16px] font-bold tracking-[1.25px] text-[#333]">
+    <div className="py-1 font-[Tahoma] text-[14px] font-bold text-[#333]">
       Sorte do dia: <span className="font-normal">{fortune}</span>
     </div>
   );

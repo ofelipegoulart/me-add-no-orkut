@@ -4,7 +4,6 @@ export function ProfileRowsSection({ profileRowsByTab }: { profileRowsByTab: Pro
   return (
     <tr>
       <td className="pb-2">
-        <div className="border-t border-orkut-border"></div>
         <ProfileInfoTabs rowsByTab={profileRowsByTab} />
       </td>
     </tr>

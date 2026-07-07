@@ -4,7 +4,7 @@ type communities = { name: string; seed: string }[]
 export default function OrkutCommunities({ communities, userId }: { communities: communities; userId: string }) {
   return (
     <div>
-      <div className="orkut-tahoma text-lg leading-5.25 mt-1.25 mb-1.5 font-bold">
+      <div className="orkut-tahoma text-sm leading-5.25 mt-1.25 mb-1.5 font-bold">
         <span className="text-black">minhas comunidades </span>
         <a href={`/profile/${userId}/comunidades`} className="text-orkut-link-blue font-bold">({communities.length})</a>
       </div>

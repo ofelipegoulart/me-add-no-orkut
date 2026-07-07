@@ -6,7 +6,7 @@ export default function OrkutFriends({ friends, userId }: { friends: friends; us
     return (
         <div>
             <div>
-                <div className="orkut-tahoma text-lg leading-5.25 mt-1.25 mb-1.5 font-bold">
+                <div className="orkut-tahoma text-sm leading-5.25 mt-1.25 mb-1.5 font-bold">
                     <span className="text-black">meus amigos </span>
                     <a href={`/profile/${userId}/amigos`} className="text-orkut-link-blue font-bold">({friends.length})</a>
                 </div>
