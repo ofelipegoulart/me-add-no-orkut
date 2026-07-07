@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { LogoutButton } from "./logout-button";
+import { UniversalSearch } from "@/components/Search/UniversalSearch";
 
 type OrkutHeaderProps = {
   email: string;
@@ -42,22 +43,12 @@ export function OrkutHeader({ email, userId }: OrkutHeaderProps) {
           </li>
         </ul>
         <ul className="header-user">
-          <li><span className="orkut-tahoma text-[16px] text-white font-bold">{email}</span></li>
+          <li><span className="orkut-tahoma tracking-wide text-[12px] text-white font-bold">{email}</span></li>
           <li>
             <LogoutButton />
           </li>
           <li className="header-search-li flex align-middle">
-            <label htmlFor="orkut-header-search" className="sr-only">
-              Pesquisa do orkut
-            </label>
-            <input
-              id="orkut-header-search"
-              type="text"
-              name="q"
-              placeholder="pesquisa do orkut"
-              className="header-search-input"
-              autoComplete="off"
-            />
+            <UniversalSearch variant="header" />
           </li>
         </ul>
       </div>
