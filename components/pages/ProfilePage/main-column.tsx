@@ -9,7 +9,6 @@ type OrkutMainColumnProps = {
   isOwnProfile: boolean;
   profileRowsByTab: ProfileRowsByTab;
   overview: ProfileOverviewResponse | null;
-  isFriend?: boolean;
 };
 
 export function OrkutMainColumn({
@@ -18,7 +17,6 @@ export function OrkutMainColumn({
   isOwnProfile,
   profileRowsByTab,
   overview,
-  isFriend = false,
 }: OrkutMainColumnProps) {
   if (isOwnProfile) {
     return (
@@ -37,7 +35,6 @@ export function OrkutMainColumn({
       userId={userId}
       profileRowsByTab={profileRowsByTab}
       overview={overview}
-      isFriend={isFriend}
     />
   );
 }

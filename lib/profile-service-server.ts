@@ -8,6 +8,7 @@ import { authOptions } from "./auth";
 import type {
   ProfileOverviewParams,
   ProfileOverviewResponse,
+  FriendRequestListResponse,
 } from "./profile-types";
 
 const API_BASE_URL = process.env.API_URL || "";
@@ -39,6 +40,58 @@ export async function getProfileOverviewServer(
 
   if (!response.ok) {
     throw new Error(`Failed to fetch profile overview: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+/**
+ * Pedidos de amizade recebidos (pendentes) do usuário autenticado.
+ */
+export async function getReceivedFriendRequestsServer(
+  jwt: string,
+): Promise<FriendRequestListResponse> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/profile/friends/requests`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      cache: "no-store",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch received friend requests: ${response.status}`,
+    );
+  }
+
+  return response.json();
+}
+
+/**
+ * Pedidos de amizade enviados pelo usuário autenticado.
+ */
+export async function getSentFriendRequestsServer(
+  jwt: string,
+): Promise<FriendRequestListResponse> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/profile/friends/requests/sent`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      cache: "no-store",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch sent friend requests: ${response.status}`);
   }
 
   return response.json();

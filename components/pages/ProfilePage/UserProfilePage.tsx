@@ -8,13 +8,11 @@ export default function UserProfilePage({
   userId,
   profileRowsByTab,
   overview,
-  isFriend,
 }: {
   displayName: string;
   userId: string;
   profileRowsByTab: ProfileRowsByTab;
   overview: ProfileOverviewResponse | null;
-  isFriend: boolean;
 }) {
   return (
     <>
@@ -25,7 +23,6 @@ export default function UserProfilePage({
           isOwnProfile={false}
           profileRowsByTab={profileRowsByTab}
           overview={overview}
-          isFriend={isFriend}
         />
       </div>
       <TestimonialsSection userId={userId} canWrite={true} />

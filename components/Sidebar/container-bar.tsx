@@ -45,7 +45,7 @@ export default function OrkutLeftSidebar({
         <>
           <div className="py-1 pl-1.5">
             <div>
-              <a href="#" className="inline-flex items-center gap-1 text-orkut-link-blue text-[12px]">
+              <a href={userId ? `/profile/${userId}/FriendAdd` : "#"} className="inline-flex items-center gap-1 text-orkut-link-blue text-[12px]">
                 <OrkutMenuIcon src={ORKUT_MENU_ICONS.perfil} />
                 + amigo
               </a>

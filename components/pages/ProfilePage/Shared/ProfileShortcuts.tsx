@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 
 import OrkutMenuIcon from "@/components/Sidebar/menu-icon";
@@ -8,6 +9,8 @@ type ProfileShortcutsProps = {
   userId: string;
   isMyProfile: boolean;
   overview: ProfileOverviewResponse | null;
+  /** Conteúdo exibido ao lado de "fãs" (ex.: avaliações confiável/legal/sexy). */
+  ratings?: ReactNode;
 };
 
 type ShortcutItem = {
@@ -48,7 +51,7 @@ function ShortcutCell({ href, label, icon, count }: { href: string; label: strin
   );
 }
 
-export function ProfileShortcuts({ userId, isMyProfile, overview }: ProfileShortcutsProps) {
+export function ProfileShortcuts({ userId, isMyProfile, overview, ratings }: ProfileShortcutsProps) {
   // Use counts from overview API or fallback to defaults
   const counts = overview?.counts
     ? {
@@ -77,6 +80,7 @@ export function ProfileShortcuts({ userId, isMyProfile, overview }: ProfileShort
                   count={counts[shortcut.key as keyof typeof counts]}
                 />
               ))}
+              {ratings && <td className="pl-3 align-top">{ratings}</td>}
             </tr>
           </tbody>
         </table>

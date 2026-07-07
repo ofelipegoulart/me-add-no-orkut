@@ -16,6 +16,10 @@ import type {
   GetSentTestimonialsParams,
   GetReceivedTestimonialsParams,
   TestimonialListResponse,
+  FriendRequest,
+  FriendRequestListResponse,
+  AcceptFriendRequestParams,
+  DeleteFriendRequestParams,
 } from "./profile-types";
 
 // As chamadas do cliente vão para as rotas /api/... do próprio Next (padrão proxy),
@@ -54,7 +58,11 @@ export async function getProfileOverview(
   return response.json();
 }
 
-export async function addFriend(params: AddFriendParams): Promise<void> {
+// Envia um pedido de amizade (backend responde 201 com o FriendRequestDTO).
+// Mantém o nome `addFriend` por compatibilidade com o restante do código.
+export async function addFriend(
+  params: AddFriendParams,
+): Promise<FriendRequest> {
   const { friendUserId } = params;
   const response = await apiFetch(
     `/api/profile/friends/${friendUserId}`,
@@ -63,8 +71,65 @@ export async function addFriend(params: AddFriendParams): Promise<void> {
     },
   );
 
+  if (!response.ok) {
+    throw new Error(`Failed to send friend request: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function getReceivedFriendRequests(): Promise<FriendRequestListResponse> {
+  const response = await apiFetch(`/api/profile/friends/requests`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch received friend requests: ${response.status}`,
+    );
+  }
+
+  return response.json();
+}
+
+export async function getSentFriendRequests(): Promise<FriendRequestListResponse> {
+  const response = await apiFetch(`/api/profile/friends/requests/sent`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch sent friend requests: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function acceptFriendRequest(
+  params: AcceptFriendRequestParams,
+): Promise<void> {
+  const { requestId } = params;
+  const response = await apiFetch(
+    `/api/profile/friends/requests/${requestId}/accept`,
+    { method: "POST" },
+  );
+
   if (!response.ok && response.status !== 204) {
-    throw new Error(`Failed to add friend: ${response.status}`);
+    throw new Error(`Failed to accept friend request: ${response.status}`);
+  }
+}
+
+// Recusa (destinatário) ou cancela (remetente) um pedido — mesmo endpoint.
+export async function deleteFriendRequest(
+  params: DeleteFriendRequestParams,
+): Promise<void> {
+  const { requestId } = params;
+  const response = await apiFetch(
+    `/api/profile/friends/requests/${requestId}`,
+    { method: "DELETE" },
+  );
+
+  if (!response.ok && response.status !== 204) {
+    throw new Error(`Failed to delete friend request: ${response.status}`);
   }
 }
 
@@ -141,6 +206,21 @@ export async function rateProfile(
   if (!response.ok && response.status !== 204) {
     throw new Error(`Failed to rate profile: ${response.status}`);
   }
+}
+
+export async function getAverageRatings(
+  targetUserId: string,
+): Promise<import("./profile-types").RatingsAverage> {
+  const response = await apiFetch(
+    `/api/profile/ratings/${targetUserId}/average`,
+    { method: "GET" },
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch average ratings: ${response.status}`);
+  }
+
+  return response.json();
 }
 
 export async function sendTestimonial(
@@ -225,12 +305,17 @@ export const profileService = {
 
   addFriend,
   removeFriend,
+  getReceivedFriendRequests,
+  getSentFriendRequests,
+  acceptFriendRequest,
+  deleteFriendRequest,
 
   createCommunity,
   joinCommunity,
   leaveCommunity,
 
   rateProfile,
+  getAverageRatings,
 
   sendTestimonial,
   respondToTestimonial,

@@ -1,47 +1,94 @@
 "use client";
 
-import { useState } from "react";
-import { rateProfile } from "@/lib/profile-service";
-import { CoolIndicator } from "@/utils/cool-indicator";
-import { SexyIndicator } from "@/utils/sexy-indicator";
-import { TrustableIndicator } from "@/utils/trustable-indicator";
+import { useEffect, useState } from "react";
+import { rateProfile, getAverageRatings } from "@/lib/profile-service";
+import type { RatingsAverage } from "@/lib/profile-types";
+import { IconRating, type IconSet } from "./IconRating";
 
 type ProfileRatingsProps = {
   targetUserId: string;
-  initialRatings?: {
-    trust?: number;
-    cool?: number;
-    cute?: number;
-  };
 };
 
-type RatingKey = "trust" | "cool" | "cute";
+type CategoryKey = "trustworthy" | "legal" | "sexy";
 
-export function ProfileRatings({ targetUserId, initialRatings }: ProfileRatingsProps) {
-  const [ratings, setRatings] = useState({
-    trust: initialRatings?.trust || 0,
-    cool: initialRatings?.cool || 0,
-    cute: initialRatings?.cute || 0,
-  });
+type Category = {
+  key: CategoryKey;
+  label: string;
+  icons: IconSet;
+  avgField: keyof RatingsAverage;
+};
+
+// Ordem clássica do Orkut: confiável, legal, sexy.
+const CATEGORIES: Category[] = [
+  {
+    key: "trustworthy",
+    label: "confiável",
+    avgField: "trustworthyPercentage",
+    icons: {
+      on: "/icons/icn_trusty_on.png",
+      half: "/icons/icn_trusty_half.png",
+      off: "/icons/icn_trusty_off.png",
+    },
+  },
+  {
+    key: "legal",
+    label: "legal",
+    avgField: "legalPercentage",
+    icons: {
+      on: "/icons/icn_cool_on.png",
+      half: "/icons/icn_cool_half.png",
+      off: "/icons/icn_cool_off.png",
+    },
+  },
+  {
+    key: "sexy",
+    label: "sexy",
+    avgField: "sexyPercentage",
+    icons: {
+      on: "/icons/icn_cute_on.png",
+      half: "/icons/icn_cute_half.png",
+      off: "/icons/icn_cute_off.png",
+    },
+  },
+];
+
+const EMPTY_AVERAGES: RatingsAverage = {
+  legalPercentage: 0,
+  trustworthyPercentage: 0,
+  sexyPercentage: 0,
+};
+
+export function ProfileRatings({ targetUserId }: ProfileRatingsProps) {
+  const [averages, setAverages] = useState<RatingsAverage | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
 
-  const handleRating = (ratingKey: RatingKey, value: number) => {
-    setRatings((prev) => ({ ...prev, [ratingKey]: value }));
-    setSubmitted(false);
-  };
+  useEffect(() => {
+    let active = true;
+    getAverageRatings(targetUserId)
+      .then((data) => {
+        if (active) setAverages(data);
+      })
+      .catch(() => {
+        if (active) setAverages(EMPTY_AVERAGES);
+      });
+    return () => {
+      active = false;
+    };
+  }, [targetUserId]);
 
-  const handleSubmit = async () => {
+  const handleRate = async (category: Category, step: number) => {
     setIsSubmitting(true);
     setError(null);
+    // Feedback otimista: reflete o voto na hora; depois recarrega a média real.
+    setAverages((prev) =>
+      prev ? { ...prev, [category.avgField]: step / 6 } : prev,
+    );
 
     try {
-      await rateProfile(
-        { targetUserId },
-        { trust: ratings.trust, cool: ratings.cool, cute: ratings.cute }
-      );
-      setSubmitted(true);
+      await rateProfile({ targetUserId }, { [category.key]: step });
+      const fresh = await getAverageRatings(targetUserId);
+      setAverages(fresh);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro ao avaliar perfil");
     } finally {
@@ -49,123 +96,23 @@ export function ProfileRatings({ targetUserId, initialRatings }: ProfileRatingsP
     }
   };
 
-  const total = ratings.trust + ratings.cool + ratings.cute;
-  const maxTotal = 30; // 10 * 3
-  const average = total / 3;
+  const displayed = averages ?? EMPTY_AVERAGES;
 
   return (
-    <tr>
-      <td className="pb-2">
-        <div className="border-t border-orkut-border"></div>
-        <table cellPadding={0} cellSpacing={0} className="border-collapse">
-          <tbody>
-            <tr className="align-top">
-              {/* Trust Rating */}
-              <td className="pr-3 align-top">
-                <div className="text-[11px] leading-3.5 text-[#5a5a5a]">confiável</div>
-                <div className="leading-4">
-                  {submitted ? (
-                    <TrustableIndicator trustablePercentage={ratings.trust / 10} />
-                  ) : (
-                    <RatingButtons
-                      value={ratings.trust}
-                      onChange={(v) => handleRating("trust", v)}
-                    />
-                  )}
-                </div>
-              </td>
-
-              {/* Cool Rating */}
-              <td className="pr-3 align-top">
-                <div className="text-[11px] leading-3.5 text-[#5a5a5a]">legal</div>
-                <div className="leading-4">
-                  {submitted ? (
-                    <CoolIndicator coolPercentage={ratings.cool / 10} />
-                  ) : (
-                    <RatingButtons
-                      value={ratings.cool}
-                      onChange={(v) => handleRating("cool", v)}
-                    />
-                  )}
-                </div>
-              </td>
-
-              {/* Cute Rating */}
-              <td className="align-top">
-                <div className="text-[11px] leading-3.5 text-[#5a5a5a]">sexy</div>
-                <div className="leading-4">
-                  {submitted ? (
-                    <SexyIndicator sexyPercentage={ratings.cute / 10} />
-                  ) : (
-                    <RatingButtons
-                      value={ratings.cute}
-                      onChange={(v) => handleRating("cute", v)}
-                    />
-                  )}
-                </div>
-              </td>
-            </tr>
-
-            {/* Submit Button Row */}
-            {!submitted && (
-              <tr>
-                <td colSpan={3} className="pt-2">
-                  <button
-                    onClick={handleSubmit}
-                    disabled={isSubmitting || total === 0}
-                    className="px-3 py-1 bg-orkut-bg border border-orkut-border text-[11px] text-[#5a5a5a] rounded cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orkut-border"
-                  >
-                    {isSubmitting ? "Enviando..." : "Avaliar"}
-                  </button>
-                  {error && (
-                    <span className="ml-2 text-[11px] text-red-500">{error}</span>
-                  )}
-                </td>
-              </tr>
-            )}
-
-            {/* Average Display */}
-            {submitted && (
-              <tr>
-                <td colSpan={3} className="pt-2">
-                  <div className="text-[11px] text-[#5a5a5a]">
-                    Média: <strong>{average.toFixed(1)}</strong>/10 ({total}/30)
-                  </div>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-        <div className="border-t border-orkut-border"></div>
-      </td>
-    </tr>
-  );
-}
-
-function RatingButtons({
-  value,
-  onChange,
-}: {
-  value: number;
-  onChange: (value: number) => void;
-}) {
-  return (
-    <div className="flex gap-0.5">
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-        <button
-          key={num}
-          type="button"
-          onClick={() => onChange(num)}
-          className={`w-4 h-4 text-[10px] leading-4 rounded-full border ${
-            value >= num
-              ? "bg-orkut-bg border-orkut-border"
-              : "bg-white border-gray-200"
-          }`}
-          title={`${num}/10`}
-        >
-          {num}
-        </button>
-      ))}
-    </div>
+    <>
+      <div className="flex gap-4 py-1">
+        {CATEGORIES.map((category) => (
+          <IconRating
+            key={category.key}
+            label={category.label}
+            icons={category.icons}
+            averageFraction={displayed[category.avgField]}
+            disabled={averages === null || isSubmitting}
+            onRate={(step) => handleRate(category, step)}
+          />
+        ))}
+      </div>
+      {error && <div className="text-[11px] text-red-500">{error}</div>}
+    </>
   );
 }

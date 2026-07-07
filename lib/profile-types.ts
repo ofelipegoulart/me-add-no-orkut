@@ -83,6 +83,35 @@ export interface RemoveFriendParams {
   friendUserId: UUID;
 }
 
+// Espelha FriendRequestDTO do backend (Spring).
+// - Em pedidos recebidos, `userId`/`name`/`avatar` são de quem ENVIOU o pedido.
+// - Em pedidos enviados, são de quem VAI RECEBER o pedido.
+export interface FriendRequest {
+  requestId: UUID;
+  userId: UUID;
+  name: string;
+  avatar?: string | null;
+  createdAt?: string | null;
+}
+
+export type FriendRequestListResponse = FriendRequest[];
+
+export interface AcceptFriendRequestParams {
+  requestId: UUID;
+}
+
+export interface DeleteFriendRequestParams {
+  requestId: UUID;
+}
+
+// Relação do viewer com o dono do perfil visitado, resolvida no servidor para
+// escolher o estado do botão de amizade.
+export type FriendRelation =
+  | { kind: "none" }
+  | { kind: "friend" }
+  | { kind: "outgoing"; requestId: UUID } // eu enviei um pedido, aguardando
+  | { kind: "incoming"; requestId: UUID }; // ele me enviou um pedido
+
 export interface CreateCommunityRequest {
   name: string;
   description?: string;
@@ -108,16 +137,21 @@ export interface LeaveCommunityParams {
   communityId: UUID;
 }
 
+// Espelha CreateProfileRatingRequest do backend (Spring): cada categoria é um
+// "passo" inteiro de 1 a 6, correspondendo aos 6 meios-ícones (3 ícones × 2 metades).
+// O backend converte para fração via step / 6.
 export interface CreateProfileRatingRequest {
-  trust?: number;
-  cool?: number;
-  cute?: number;
+  legal?: number; // 1..6
+  trustworthy?: number; // 1..6
+  sexy?: number; // 1..6
 }
 
-export interface RatingValues {
-  trust: number;
-  cool: number;
-  cute: number;
+// Espelha RatingsDTO do backend: médias das avaliações recebidas, em frações 0..1.
+// 0 significa "nenhuma nota recebida".
+export interface RatingsAverage {
+  legalPercentage: number;
+  trustworthyPercentage: number;
+  sexyPercentage: number;
 }
 
 export interface ProfileRatingParams {

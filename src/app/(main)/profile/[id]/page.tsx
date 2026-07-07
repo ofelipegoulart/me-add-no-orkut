@@ -40,13 +40,6 @@ export default async function ProfilePage({
     ? transformCommunitiesForUI(overview.communities)
     : COMMUNITIES;
 
-  // A amizade é bidirecional no backend, então o viewer aparece na lista de
-  // amigos do perfil visitado quando já são amigos.
-  const viewerId = session?.user?.userId;
-  const isFriend = Boolean(
-    viewerId && overview?.friends?.some((friend) => friend.id === viewerId),
-  );
-
   const profileRowsByTab: ProfileRowsByTab = await loadProfileRows(jwt);
 
   // Render appropriate profile page based on ownership
@@ -66,7 +59,6 @@ export default async function ProfilePage({
             userId={id}
             profileRowsByTab={profileRowsByTab}
             overview={overview}
-            isFriend={isFriend}
           />
         )}
       </div>
