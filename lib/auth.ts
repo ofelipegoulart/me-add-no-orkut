@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         return {
-          id: String(data.userId).replace(/-/g, "").substring(0, 8),
+          id: String(data.userId),
           name: data.name,
           email: data.email,
           jwt: data.token,

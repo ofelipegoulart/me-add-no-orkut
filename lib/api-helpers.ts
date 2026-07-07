@@ -12,10 +12,14 @@ export async function authenticatedFetch(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Para FormData, deixamos o fetch definir o Content-Type (com o boundary do
+  // multipart). Só definimos application/json para os demais bodies.
+  const isFormData = init?.body instanceof FormData;
+
   const res = await fetch(`${process.env.API_URL}${path}`, {
     ...init,
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       Authorization: `Bearer ${session.user.jwt}`,
       ...init?.headers,
     },

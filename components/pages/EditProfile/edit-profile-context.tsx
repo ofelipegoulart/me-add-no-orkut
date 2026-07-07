@@ -7,7 +7,7 @@ const DEFAULT_AVATAR = "/avatar/default.png";
 type AvatarContextValue = {
   avatarSrc: string;
   isDefault: boolean;
-  setAvatar: (base64: string) => void;
+  setAvatar: (file: File) => void;
   removeAvatar: () => void;
 };
 
@@ -25,16 +25,27 @@ export function EditProfileProvider({
   const avatarSrc = avatar || DEFAULT_AVATAR;
   const isDefault = !avatar || avatar === DEFAULT_AVATAR;
 
-  async function setAvatar(base64: string) {
-    setAvatarState(base64);
+  async function setAvatar(file: File) {
+    // Preview otimista imediato enquanto o upload acontece.
+    const previewUrl = URL.createObjectURL(file);
+    setAvatarState(previewUrl);
     try {
-      await fetch("/api/profile/avatar", {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/profile/avatar", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ avatar: base64 }),
+        body: formData,
       });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.avatar) {
+          // Troca o preview local pela URL definitiva retornada pelo backend.
+          setAvatarState(data.avatar);
+          URL.revokeObjectURL(previewUrl);
+        }
+      }
     } catch {
-      // keep local state even if upload fails
+      // keep local preview even if upload fails
     }
   }
 

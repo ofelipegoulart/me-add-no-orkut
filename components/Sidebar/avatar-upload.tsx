@@ -29,15 +29,10 @@ export default function AvatarUpload({
     if (!file) return;
     setFilePath(file.name);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64 = reader.result as string;
-      if (ctx) {
-        ctx.setAvatar(base64);
-      }
-      setDialogOpen(false);
-    };
-    reader.readAsDataURL(file);
+    if (ctx) {
+      ctx.setAvatar(file);
+    }
+    setDialogOpen(false);
   }
 
   function handleRemove() {
