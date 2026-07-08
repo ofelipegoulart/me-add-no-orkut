@@ -18,9 +18,8 @@ export function UserProfile({ displayName, userId, profileRowsByTab, overview }:
       {/* Atalhos (recados, fotos, vídeos, fãs) com as avaliações ao lado de "fãs" */}
       <ProfileShortcuts
         userId={userId}
-        isMyProfile={false}
         overview={overview}
-        ratings={<ProfileRatings targetUserId={userId} />}
+        ratings={<ProfileRatings targetUserId={userId} isOwnProfile={false} />}
       />
       <ProfileRowsSection profileRowsByTab={profileRowsByTab} />
     </ProfileCard>

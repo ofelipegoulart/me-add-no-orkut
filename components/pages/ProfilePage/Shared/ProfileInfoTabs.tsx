@@ -48,17 +48,26 @@ function getTabClassName(isActive: boolean) {
 }
 
 export function ProfileInfoTabs({ rowsByTab = EMPTY_ROWS_BY_TAB }: { rowsByTab?: ProfileRowsByTab }) {
-  const [activeTab, setActiveTab] = useState<ProfileTab>("geral");
-  const rows = rowsByTab[activeTab];
+  const visibleTabs = TABS.filter((tab) => rowsByTab[tab.key].length > 0);
+  const [activeTab, setActiveTab] = useState<ProfileTab | null>(visibleTabs[0]?.key ?? null);
+
+  if (!visibleTabs.length) {
+    return null;
+  }
+
+  const currentTab = visibleTabs.some((tab) => tab.key === activeTab)
+    ? (activeTab as ProfileTab)
+    : visibleTabs[0].key;
+  const rows = rowsByTab[currentTab];
 
   return (
     <>
       <div className="mb-0 border-b border-[#ccc] p-0">
-        {TABS.map((tab) => (
+        {visibleTabs.map((tab) => (
           <button
             key={tab.key}
             type="button"
-            className={getTabClassName(activeTab === tab.key)}
+            className={getTabClassName(currentTab === tab.key)}
             onClick={() => setActiveTab(tab.key)}
           >
             {tab.label}
@@ -75,33 +84,22 @@ export function ProfileInfoTabs({ rowsByTab = EMPTY_ROWS_BY_TAB }: { rowsByTab?:
           <col />
         </colgroup>
         <tbody>
-          {rows.length ? (
-            rows.map((row, i) => (
-              <tr
-                key={row.label}
-                className={[
-                  i % 2 === 0 ? "bg-[#E6F0FA]" : "bg-[#F5F9FF]",
-                  "border-b border-orkut-border last:border-b-0",
-                ].join(" ")}
-              >
-                <td className="box-border whitespace-nowrap px-2 py-0.5 text-right text-[12px] leading-[17px] text-[#676767]">
-                  {row.label}
-                </td>
-                <td className="px-1.5 py-0.5 text-left text-[12px] leading-[17px] text-black">
-                  {row.value}
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr className="border-b border-orkut-border bg-[#E6F0FA] last:border-b-0">
+          {rows.map((row, i) => (
+            <tr
+              key={row.label}
+              className={[
+                i % 2 === 0 ? "bg-[#E6F0FA]" : "bg-[#F5F9FF]",
+                "border-b border-orkut-border last:border-b-0",
+              ].join(" ")}
+            >
               <td className="box-border whitespace-nowrap px-2 py-0.5 text-right text-[12px] leading-[17px] text-[#676767]">
-                {" "}
+                {row.label}
               </td>
-              <td className="px-1.5 py-0.5 text-left text-[12px] leading-[17px] text-[#676767]">
-                nenhuma informação cadastrada
+              <td className="px-1.5 py-0.5 text-left text-[12px] leading-[17px] text-black">
+                {row.value}
               </td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
     </>

@@ -9,6 +9,7 @@ type OrkutMainColumnProps = {
   isOwnProfile: boolean;
   profileRowsByTab: ProfileRowsByTab;
   overview: ProfileOverviewResponse | null;
+  isHome?: boolean;
 };
 
 export function OrkutMainColumn({
@@ -17,6 +18,7 @@ export function OrkutMainColumn({
   isOwnProfile,
   profileRowsByTab,
   overview,
+  isHome = false,
 }: OrkutMainColumnProps) {
   if (isOwnProfile) {
     return (
@@ -25,6 +27,7 @@ export function OrkutMainColumn({
         userId={userId}
         profileRowsByTab={profileRowsByTab}
         overview={overview}
+        isHome={isHome}
       />
     );
   }

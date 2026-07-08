@@ -42,6 +42,13 @@ export default async function ProfilePage({
 
   const profileRowsByTab: ProfileRowsByTab = await loadProfileRows(jwt);
 
+  // Gênero do perfil visitado, para os textos de depoimentos na 3ª pessoa.
+  // A resposta real do overview traz o gênero em `general`; mantemos o fallback
+  // para `user.gender` do tipo tipado.
+  const gender =
+    (overview as unknown as { general?: { gender?: string | null } } | null)
+      ?.general?.gender ?? overview?.user?.gender ?? null;
+
   // Render appropriate profile page based on ownership
   return (
     <div className="min-h-screen w-full bg-orkut-bg">
@@ -52,6 +59,7 @@ export default async function ProfilePage({
             userId={id}
             profileRowsByTab={profileRowsByTab}
             overview={overview}
+            gender={gender}
           />
         ) : (
           <UserProfilePage
@@ -59,6 +67,7 @@ export default async function ProfilePage({
             userId={id}
             profileRowsByTab={profileRowsByTab}
             overview={overview}
+            gender={gender}
           />
         )}
       </div>

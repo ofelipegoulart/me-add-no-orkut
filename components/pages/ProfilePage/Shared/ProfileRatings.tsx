@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { rateProfile, getAverageRatings } from "@/lib/profile-service";
-import type { RatingsAverage } from "@/lib/profile-types";
+import type { CreateProfileRatingRequest, RatingsAverage } from "@/lib/profile-types";
 import { IconRating, type IconSet } from "./IconRating";
 
 type ProfileRatingsProps = {
   targetUserId: string;
+  /** No próprio perfil o usuário não avalia a si mesmo: só lê a média recebida. */
+  isOwnProfile: boolean;
 };
 
 type CategoryKey = "trustworthy" | "legal" | "sexy";
@@ -58,12 +61,62 @@ const EMPTY_AVERAGES: RatingsAverage = {
   sexyPercentage: 0,
 };
 
-export function ProfileRatings({ targetUserId }: ProfileRatingsProps) {
-  const [averages, setAverages] = useState<RatingsAverage | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+// TODO(backend): criar um endpoint que informe quais categorias o usuário logado
+// já avaliou no perfil visitado (ex.: GET /api/profile/ratings/{targetUserId}/me).
+// Hoje o backend só expõe POST e /average, então usamos o localStorage como
+// paliativo, uma chave por categoria: após avaliar uma categoria, ela passa a
+// exibir a média recebida. Isso é por-navegador e não sobrevive a troca de
+// dispositivo/limpeza de storage — quando o endpoint existir, trocar por ele.
+function ratedStorageKey(
+  currentUserId: string,
+  targetUserId: string,
+  category: CategoryKey,
+): string {
+  return `me-add:rated:${currentUserId}:${targetUserId}:${category}`;
+}
 
+export function ProfileRatings({ targetUserId, isOwnProfile }: ProfileRatingsProps) {
+  const { data: session } = useSession();
+  const currentUserId = session?.user?.userId ?? null;
+
+  const [averages, setAverages] = useState<RatingsAverage | null>(null);
+  // Categorias que o usuário já avaliou neste perfil (leitura da média).
+  const [rated, setRated] = useState<Set<CategoryKey>>(new Set());
+  // Categorias com envio em andamento (evita clique duplo).
+  const [submitting, setSubmitting] = useState<Set<CategoryKey>>(new Set());
+  const [error, setError] = useState<string | null>(null);
+  // Só liberamos os cliques depois de saber o que já foi avaliado.
+  const [hydrated, setHydrated] = useState(isOwnProfile);
+
+  // Descobre no localStorage quais categorias o usuário já avaliou.
   useEffect(() => {
+    if (isOwnProfile) {
+      setHydrated(true);
+      return;
+    }
+    if (!currentUserId) return; // aguarda a sessão hidratar no cliente
+    const next = new Set<CategoryKey>();
+    for (const category of CATEGORIES) {
+      try {
+        if (
+          localStorage.getItem(
+            ratedStorageKey(currentUserId, targetUserId, category.key),
+          ) === "1"
+        ) {
+          next.add(category.key);
+        }
+      } catch {
+        // Sem localStorage: trata como não avaliado.
+      }
+    }
+    setRated(next);
+    setHydrated(true);
+  }, [isOwnProfile, currentUserId, targetUserId]);
+
+  // Busca a média quando há alguma categoria em modo leitura (próprio perfil ou
+  // já avaliada). Re-executa a cada avaliação para refletir a nota recém-enviada.
+  useEffect(() => {
+    if (!isOwnProfile && rated.size === 0) return;
     let active = true;
     getAverageRatings(targetUserId)
       .then((data) => {
@@ -75,42 +128,60 @@ export function ProfileRatings({ targetUserId }: ProfileRatingsProps) {
     return () => {
       active = false;
     };
-  }, [targetUserId]);
+  }, [isOwnProfile, targetUserId, rated]);
 
-  const handleRate = async (category: Category, step: number) => {
-    setIsSubmitting(true);
+  const handleRate = async (category: CategoryKey, step: number) => {
+    if (!currentUserId || rated.has(category) || submitting.has(category)) return;
+    setSubmitting((prev) => new Set(prev).add(category));
     setError(null);
-    // Feedback otimista: reflete o voto na hora; depois recarrega a média real.
-    setAverages((prev) =>
-      prev ? { ...prev, [category.avgField]: step / 6 } : prev,
-    );
+
+    const request: CreateProfileRatingRequest = { [category]: step };
 
     try {
-      await rateProfile({ targetUserId }, { [category.key]: step });
-      const fresh = await getAverageRatings(targetUserId);
-      setAverages(fresh);
+      await rateProfile({ targetUserId }, request);
+      try {
+        localStorage.setItem(
+          ratedStorageKey(currentUserId, targetUserId, category),
+          "1",
+        );
+      } catch {
+        // Sem localStorage: a média já será exibida nesta sessão mesmo assim.
+      }
+      setRated((prev) => new Set(prev).add(category));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro ao avaliar perfil");
     } finally {
-      setIsSubmitting(false);
+      setSubmitting((prev) => {
+        const next = new Set(prev);
+        next.delete(category);
+        return next;
+      });
     }
   };
 
-  const displayed = averages ?? EMPTY_AVERAGES;
+  const avg = averages ?? EMPTY_AVERAGES;
 
   return (
     <>
       <div className="flex gap-4 py-1">
-        {CATEGORIES.map((category) => (
-          <IconRating
-            key={category.key}
-            label={category.label}
-            icons={category.icons}
-            averageFraction={displayed[category.avgField]}
-            disabled={averages === null || isSubmitting}
-            onRate={(step) => handleRate(category, step)}
-          />
-        ))}
+        {CATEGORIES.map((category) => {
+          const isReadOnly = isOwnProfile || rated.has(category.key);
+          return (
+            <IconRating
+              key={category.key}
+              label={category.label}
+              // Categoria avaliada mostra a média; a avaliar começa vazia.
+              averageFraction={isReadOnly ? avg[category.avgField] : 0}
+              icons={category.icons}
+              disabled={
+                isReadOnly
+                  ? averages === null // aguardando a média carregar
+                  : !hydrated || !currentUserId || submitting.has(category.key)
+              }
+              onRate={(step) => handleRate(category.key, step)}
+            />
+          );
+        })}
       </div>
       {error && <div className="text-[11px] text-red-500">{error}</div>}
     </>

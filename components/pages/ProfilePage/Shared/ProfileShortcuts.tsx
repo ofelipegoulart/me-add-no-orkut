@@ -7,7 +7,6 @@ import type { ProfileOverviewResponse } from "@/lib/profile-types";
 
 type ProfileShortcutsProps = {
   userId: string;
-  isMyProfile: boolean;
   overview: ProfileOverviewResponse | null;
   /** Conteúdo exibido ao lado de "fãs" (ex.: avaliações confiável/legal/sexy). */
   ratings?: ReactNode;
@@ -51,18 +50,14 @@ function ShortcutCell({ href, label, icon, count }: { href: string; label: strin
   );
 }
 
-export function ProfileShortcuts({ userId, isMyProfile, overview, ratings }: ProfileShortcutsProps) {
-  // Use counts from overview API or fallback to defaults
-  const counts = overview?.counts
-    ? {
-        recados: overview.counts.scrapsCount || 0,
-        fotos: 0, // TODO: Add photos count when available
-        videos: 0, // TODO: Add videos count when available
-        fans: overview.counts.testimonialsCount || 0,
-      }
-    : isMyProfile
-    ? { recados: 0, fotos: 0, videos: 0, fans: 0 }
-    : { recados: 114, fotos: 0, videos: 5, fans: 15 };
+export function ProfileShortcuts({ userId, overview, ratings }: ProfileShortcutsProps) {
+  // Counts come from the overview API; default to zero when unavailable.
+  const counts = {
+    recados: overview?.counts?.scrapsCount ?? 0,
+    fotos: 0, // TODO: Add photos count when available
+    videos: 0, // TODO: Add videos count when available
+    fans: overview?.counts?.testimonialsCount ?? 0,
+  };
 
   return (
     <tr>

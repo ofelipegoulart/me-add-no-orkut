@@ -6,8 +6,8 @@ import OrkutCommunities from "@/components/pages/Social/orkut-communities";
 import OrkutFriends from "@/components/pages/Social/orkut-friends";
 import OrkutLeftSidebar from "@/components/Sidebar/container-bar";
 import MyProfilePage from "@/components/pages/ProfilePage/MyProfilePage";
-import { FriendRequestsCard } from "@/components/pages/Social/friend-requests-card";
 import { loadProfileRows } from "@/lib/profile-data";
+import { loadSidebarProfile } from "@/lib/sidebar-profile";
 import { getReceivedFriendRequestsServer } from "@/lib/profile-service-server";
 import type { ProfileRowsByTab } from "@/components/pages/ProfilePage/Shared/ProfileInfoTabs";
 import type { FriendRequest } from "@/lib/profile-types";
@@ -23,6 +23,12 @@ export default async function HomePage() {
   const displayName = session?.user?.name ?? "Usuário";
   const userId = session!.user.userId;
 
+  const { avatarUrl, infoLines } = await loadSidebarProfile(
+    session?.user?.jwt,
+    userId,
+    true,
+  );
+
   let friendRequests: FriendRequest[] = [];
   if (session?.user?.jwt) {
     try {
@@ -35,11 +41,10 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen w-full bg-orkut-bg">
       <div className="orkut-col-left border border-orkut-border bg-white shadow-sm">
-        <OrkutLeftSidebar displayName={displayName} isOwnProfile userId={userId} showAddPhoto />
+        <OrkutLeftSidebar displayName={displayName} isOwnProfile userId={userId} avatarUrl={avatarUrl} infoLines={infoLines} />
       </div>
       <div className="orkut-col-main flex flex-col gap-1.25">
-        <FriendRequestsCard initialRequests={friendRequests} />
-        <MyProfilePage displayName={displayName} userId={userId} profileRowsByTab={profileRowsByTab} />
+        <MyProfilePage displayName={displayName} userId={userId} profileRowsByTab={profileRowsByTab} isHome friendRequests={friendRequests} />
       </div>
       <div className="orkut-col-right">
         <div className="border border-orkut-border bg-white shadow-sm rounded-lg">
