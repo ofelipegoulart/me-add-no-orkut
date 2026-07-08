@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import OrkutLeftSidebar from "@/components/Sidebar/container-bar";
 import { EditProfileProvider } from "@/components/pages/EditProfile/edit-profile-context";
+import { loadSidebarProfile } from "@/lib/sidebar-profile";
 
 export default async function EditSummaryLayout({
   children,
@@ -12,23 +13,16 @@ export default async function EditSummaryLayout({
   const displayName = session?.user?.name ?? "";
   const userId = session?.user?.userId ?? "";
 
-  let avatarUrl = "";
-  if (session?.user?.jwt) {
-    try {
-      const res = await fetch(`${process.env.API_URL}/users/me`, {
-        headers: { Authorization: `Bearer ${session.user.jwt}` },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        avatarUrl = data.avatar ?? "";
-      }
-    } catch {}
-  }
+  const { avatarUrl, infoLines } = await loadSidebarProfile(
+    session?.user?.jwt,
+    userId,
+    true,
+  );
 
   return (
     <EditProfileProvider initialAvatar={avatarUrl}>
       <div className="orkut-col-left border border-orkut-border bg-white shadow-sm">
-        <OrkutLeftSidebar displayName={displayName} isOwnProfile userId={userId} avatarUrl={avatarUrl} showAddPhoto />
+        <OrkutLeftSidebar displayName={displayName} isOwnProfile userId={userId} avatarUrl={avatarUrl} infoLines={infoLines} showAddPhoto />
       </div>
       {children}
     </EditProfileProvider>

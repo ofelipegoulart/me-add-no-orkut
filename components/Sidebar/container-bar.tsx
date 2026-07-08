@@ -5,15 +5,19 @@ import AvatarUpload from "./avatar-upload";
 export default function OrkutLeftSidebar({
   displayName,
   isOwnProfile = false,
+  isFriend = false,
   userId,
   avatarUrl,
   showAddPhoto = false,
+  infoLines = ["masculino, solteiro(a)", "tangara da serra, Brasil"],
 }: {
   displayName: string;
   isOwnProfile?: boolean;
+  isFriend?: boolean;
   userId?: string;
   avatarUrl?: string;
   showAddPhoto?: boolean;
+  infoLines?: string[];
 }) {
   const menuItems: [string, string][] = [
     [ORKUT_MENU_ICONS.perfil, "perfil"],
@@ -33,22 +37,32 @@ export default function OrkutLeftSidebar({
         <div className="mt-1 font-bold text-orkut-link-blue">
           <a href={profileHref}>{displayName}</a>
         </div>
-        <div className="text-[11px] text-left" style={{color: "#5a5a5a"}}>masculino, solteiro(a)</div>
-        <div className="text-[11px] text-left" style={{color: "#5a5a5a"}}>tangara da serra, Brasil</div>
+        {infoLines.length > 0 && (
+          <div className="text-[11px] text-gray-400 text-left">{infoLines.join(", ")}</div>
+        )}
       </div>
 
       {/* ── Divisória ── */}
       <div className="border-t border-orkut-border" />
 
-      {/* ── Bloco 2: + amigo (somente para perfis que não são do usuário logado) ── */}
+      {/* ── Bloco 2: ação de relacionamento (só em perfis de terceiros) ──
+          "+ amigo" e "criar depoimento" nunca coexistem: quem ainda não é amigo
+          vê "+ amigo"; quem já é amigo vê "criar depoimento" no lugar. */}
       {!isOwnProfile && (
         <>
           <div className="py-1 pl-1.5">
             <div>
-              <a href={userId ? `/profile/${userId}/FriendAdd` : "#"} className="inline-flex items-center gap-1 text-orkut-link-blue text-[12px]">
-                <OrkutMenuIcon src={ORKUT_MENU_ICONS.perfil} />
-                + amigo
-              </a>
+              {isFriend ? (
+                <a href={userId ? `/profile/${userId}/MainTestimonialWrite` : "#"} className="inline-flex items-center gap-1 text-orkut-link-blue text-[12px]">
+                  <OrkutMenuIcon src={ORKUT_MENU_ICONS.depoimentos} />
+                  criar depoimento
+                </a>
+              ) : (
+                <a href={userId ? `/profile/${userId}/FriendAdd` : "#"} className="inline-flex items-center gap-1 text-orkut-link-blue text-[12px]">
+                  <OrkutMenuIcon src={ORKUT_MENU_ICONS.perfil} />
+                  + amigo
+                </a>
+              )}
             </div>
             <div className="mt-0.5">
               <a href="#" className="text-orkut-link-blue text-[12px] pl-5">mais »</a>
@@ -78,7 +92,7 @@ export default function OrkutLeftSidebar({
               return (
                 <tr
                   key={label}
-                  className={isOwnProfile ? "bg-white hover:bg-[#f5f5f5]" : "bg-[#ddeeff] hover:bg-[#c8e0f5]"}
+                  className="bg-white hover:bg-[#f5f5f5]"
                 >
                   <td className="px-1.5 py-0.75">
                     <div className="flex items-center justify-between">

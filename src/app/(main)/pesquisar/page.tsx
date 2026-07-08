@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import OrkutLeftSidebar from "@/components/Sidebar/container-bar";
 import { SearchScreen } from "@/components/pages/Search/SearchScreen";
 import { getUniversalSearchResultsServer } from "@/lib/search-service-server";
+import { loadSidebarProfile } from "@/lib/sidebar-profile";
 import type {
   SearchLanguageFilter,
   SearchLocationFilter,
@@ -50,12 +51,15 @@ export default async function SearchPage({
   const displayName = session.user?.name ?? "Usuário";
   const userId = session.user?.userId;
 
-  const results = await getUniversalSearchResultsServer(term, session.user?.jwt);
+  const [results, sidebar] = await Promise.all([
+    getUniversalSearchResultsServer(term, session.user?.jwt),
+    loadSidebarProfile(session.user?.jwt, userId, true),
+  ]);
 
   return (
     <div className="min-h-screen w-full bg-orkut-bg">
       <div className="orkut-col-left border border-orkut-border bg-white shadow-sm">
-        <OrkutLeftSidebar displayName={displayName} isOwnProfile userId={userId} />
+        <OrkutLeftSidebar displayName={displayName} isOwnProfile userId={userId} avatarUrl={sidebar.avatarUrl} infoLines={sidebar.infoLines} />
       </div>
       <SearchScreen
         term={term}
