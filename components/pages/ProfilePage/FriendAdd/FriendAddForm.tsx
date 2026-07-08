@@ -77,9 +77,13 @@ export function FriendAddForm({
             className="flex items-center gap-1 text-[14px] font-normal text-orkut-link-dark cursor-pointer bg-transparent border-0 p-0 tracking-tight"
             aria-expanded={groupsOpen}
           >
-            <span className="inline-block w-3 text-[10px]">
-              {groupsOpen ? "▶" : "▼"}
-            </span>
+            <img
+              src={groupsOpen ? "/icons/arr_expanded.gif" : "/icons/arr_collapsed.gif"}
+              alt=""
+              width={11}
+              height={11}
+              className="inline-block align-middle"
+            />
             organize seus amigos
           </button>
           {groupsOpen && (

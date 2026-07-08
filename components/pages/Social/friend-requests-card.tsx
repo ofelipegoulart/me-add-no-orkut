@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { acceptFriendRequest, deleteFriendRequest } from "@/lib/profile-service";
+import { OrkutActionButton } from "@/components/buttons/orkut-action-button";
 import type { FriendRequest } from "@/lib/profile-types";
 
 type FriendRequestsCardProps = {
@@ -39,71 +40,161 @@ export function FriendRequestsCard({ initialRequests }: FriendRequestsCardProps)
   };
 
   return (
-    <div className="border border-orkut-border bg-white shadow-sm p-3 orkut-tahoma">
-      <div className="text-lg leading-5.25 mb-2 font-bold text-black">
-        solicitações de novos amigos{" "}
-        <span className="text-[#8c8c8c]">({requests.length})</span>
+    <div className="border border-orkut-border bg-white shadow-sm rounded-lg orkut-tahoma text-[#5a5a5a] p-1.5">
+      <h2 className="text-[16px] font-semibold text-black tracking-normal">
+        Novos pedidos de amizade ({requests.length})
+      </h2>
+
+      <div className="mt-3 bg-[#eef5fd] p-3 flex flex-col gap-4">
+        {requests.map((request) => (
+          <FriendRequestItem
+            key={request.requestId}
+            request={request}
+            busy={pendingId === request.requestId}
+            onAccept={() =>
+              resolve(request, () =>
+                acceptFriendRequest({ requestId: request.requestId }),
+              )
+            }
+            onReject={() =>
+              resolve(request, () =>
+                deleteFriendRequest({ requestId: request.requestId }),
+              )
+            }
+          />
+        ))}
       </div>
 
-      <ul className="flex flex-col">
-        {requests.map((request) => {
-          const busy = pendingId === request.requestId;
-          return (
-            <li
-              key={request.requestId}
-              className="flex items-center gap-3 border-t border-orkut-border py-2 first:border-t-0"
-            >
-              <a href={`/profile/${request.userId}`} className="shrink-0">
-                <img
-                  src={
-                    request.avatar ||
-                    `https://picsum.photos/seed/${request.userId}/40/40`
-                  }
-                  alt=""
-                  width={40}
-                  height={40}
-                  className="border border-orkut-border"
-                />
-              </a>
-              <div className="flex-1 text-[12px] text-[#5a5a5a]">
-                <a
-                  href={`/profile/${request.userId}`}
-                  className="text-orkut-link-blue font-semibold"
-                >
-                  {request.name}
-                </a>{" "}
-                quer ser seu amigo.
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <button
-                  onClick={() =>
-                    resolve(request, () =>
-                      acceptFriendRequest({ requestId: request.requestId }),
-                    )
-                  }
-                  disabled={busy}
-                  className="px-3 py-1 bg-orkut-bg border border-orkut-border text-[11px] text-[#5a5a5a] rounded cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orkut-border"
-                >
-                  {busy ? "..." : "sim"}
-                </button>
-                <button
-                  onClick={() =>
-                    resolve(request, () =>
-                      deleteFriendRequest({ requestId: request.requestId }),
-                    )
-                  }
-                  disabled={busy}
-                  className="px-3 py-1 bg-orkut-bg border border-orkut-border text-[11px] text-[#5a5a5a] rounded cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orkut-border"
-                >
-                  não
-                </button>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+      {error && <p className="text-[11px] text-red-500 mt-2">{error}</p>}
+    </div>
+  );
+}
 
-      {error && <div className="mt-2 text-[11px] text-red-500">{error}</div>}
+type FriendRequestItemProps = {
+  request: FriendRequest;
+  busy: boolean;
+  onAccept: () => void;
+  onReject: () => void;
+};
+
+function FriendRequestItem({
+  request,
+  busy,
+  onAccept,
+  onReject,
+}: FriendRequestItemProps) {
+  const [groupsOpen, setGroupsOpen] = useState(false);
+  const [groups, setGroups] = useState({
+    escola: false,
+    familia: false,
+    melhores: false,
+  });
+
+  const profileHref = `/profile/${request.userId}`;
+
+  return (
+    <div className="flex gap-3">
+      <a href={profileHref} className="shrink-0">
+        <img
+          src={
+            request.avatar ||
+            `https://picsum.photos/seed/${request.userId}/40/40`
+          }
+          alt=""
+          width={40}
+          height={40}
+          className="border border-orkut-border"
+        />
+      </a>
+
+      <div className="flex-1">
+        <a
+          href={profileHref}
+          className="text-[13px] font-semibold text-orkut-link-blue uppercase tracking-tight"
+        >
+          {request.name}
+        </a>
+
+        {/* Seção expansível: organize seus amigos */}
+        <div className="mt-2">
+          <button
+            type="button"
+            onClick={() => setGroupsOpen((v) => !v)}
+            className="flex items-center gap-1 text-[14px] font-normal text-orkut-link-dark cursor-pointer bg-transparent border-0 p-0 tracking-tight"
+            aria-expanded={groupsOpen}
+          >
+            <img
+              src={groupsOpen ? "/icons/arr_expanded.gif" : "/icons/arr_collapsed.gif"}
+              alt=""
+              width={11}
+              height={11}
+              className="inline-block align-middle"
+            />
+            organize seus amigos
+          </button>
+          {groupsOpen && (
+            <div className="mt-2 ml-4 flex flex-col gap-1">
+              <label className="flex items-center gap-2 text-[12px] font-normal text-black cursor-pointer font-[Arial,Helvetica,sans-serif] tracking-normal">
+                <input
+                  type="checkbox"
+                  checked={groups.escola}
+                  onChange={(e) =>
+                    setGroups((g) => ({ ...g, escola: e.target.checked }))
+                  }
+                />
+                escola
+              </label>
+              <label className="flex items-center gap-2 text-[12px] font-normal text-black cursor-pointer font-[Arial,Helvetica,sans-serif] tracking-normal">
+                <input
+                  type="checkbox"
+                  checked={groups.familia}
+                  onChange={(e) =>
+                    setGroups((g) => ({ ...g, familia: e.target.checked }))
+                  }
+                />
+                família
+              </label>
+              <label className="flex items-center gap-2 text-[12px] font-normal text-black cursor-pointer font-[Arial,Helvetica,sans-serif] tracking-normal">
+                <input
+                  type="checkbox"
+                  checked={groups.melhores}
+                  onChange={(e) =>
+                    setGroups((g) => ({ ...g, melhores: e.target.checked }))
+                  }
+                />
+                melhores amigos(as)
+              </label>
+              <a
+                href="#"
+                className="text-orkut-link-dark underline text-[12px] font-normal mt-1 tracking-tight"
+              >
+                gerenciar grupos
+              </a>
+            </div>
+          )}
+        </div>
+
+        {/* Pergunta + botões */}
+        <p className="mt-3 text-[13px] font-bold text-black tracking-normal">
+          {request.name} é seu(sua) amigo(a)?
+        </p>
+        <div className="mt-1 flex items-center gap-2">
+          <OrkutActionButton
+            onClick={onAccept}
+            disabled={busy}
+            className="orkut-tahoma px-3"
+          >
+            {busy ? "..." : "sim"}
+          </OrkutActionButton>
+          <OrkutActionButton
+            onClick={onReject}
+            disabled={busy}
+            className="orkut-tahoma px-3"
+          >
+            não
+          </OrkutActionButton>
+        </div>
+      </div>
     </div>
   );
 }
