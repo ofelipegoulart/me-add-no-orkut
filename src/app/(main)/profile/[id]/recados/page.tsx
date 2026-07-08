@@ -6,10 +6,12 @@ import OrkutCommunities from "@/components/pages/Social/orkut-communities";
 import OrkutFriends from "@/components/pages/Social/orkut-friends";
 import { MarkScrapsRead } from "@/components/pages/Scraps/mark-scraps-read";
 import { ScrapsList } from "@/components/pages/Scraps/scraps-list";
+import { loadSidebarProfile } from "@/lib/sidebar-profile";
 
 export default async function RecadosPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const session = await getServerSession(authOptions);
+  const isOwner = session?.user?.userId === id;
 
   let scraps: Scrap[] = [];
   let totalCount = 0;
@@ -29,13 +31,30 @@ export default async function RecadosPage({ params }: { params: Promise<{ id: st
     }
   }
 
-  const unreadIds = scraps.filter((s) => s.readAt === null).map((s) => s.id);
+  // Nome do perfil visitado, para o título "Página de recados de {nome}".
+  const profileName = isOwner
+    ? undefined
+    : (await loadSidebarProfile(session?.user?.jwt, id)).name;
+
+  // Só marcamos como lido quando é o dono do perfil que está visualizando os
+  // próprios recados.
+  const unreadIds = isOwner
+    ? scraps.filter((s) => s.readAt === null).map((s) => s.id)
+    : [];
 
   return (
     <div className="min-h-screen w-full bg-orkut-bg">
       <MarkScrapsRead scrapIds={unreadIds} />
       <div className="orkut-col-main flex flex-col gap-1.25">
-        <ScrapsList initialScraps={scraps} ownerId={id} totalCount={totalCount} />
+        <ScrapsList
+          initialScraps={scraps}
+          ownerId={id}
+          totalCount={totalCount}
+          isOwner={isOwner}
+          profileName={profileName}
+          currentUserId={session?.user?.userId}
+          currentUserName={session?.user?.name ?? undefined}
+        />
       </div>
       <div className="orkut-col-right">
         <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">

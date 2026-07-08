@@ -10,16 +10,14 @@ const UNREAD_STYLES = {
 } as const;
 
 const READ_STYLES = {
-  root: "border-[#e8a500] bg-[#fef8e8]",
-  reply: "border-[#c4a24a] bg-[#fdf3d7]",
+  root: "border-[#8aa9d6] bg-[#eef4fc]",
+  reply: "border-[#a9c0e0] bg-[#f4f8fd]",
 } as const;
 
 function formatTimestamp(iso: string) {
   const date = new Date(iso);
-  const hours = date.getHours();
+  const hours = date.getHours().toString().padStart(2, "0");
   const minutes = date.getMinutes().toString().padStart(2, "0");
-  const ampm = hours >= 12 ? "pm" : "am";
-  const h12 = hours % 12 || 12;
 
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
@@ -30,9 +28,9 @@ function formatTimestamp(iso: string) {
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     if (diffHours < 1) {
       const diffMins = Math.floor(diffMs / (1000 * 60));
-      relative = `${diffMins} min atrás`;
+      relative = `${diffMins} ${diffMins === 1 ? "minuto" : "minutos"} atrás`;
     } else {
-      relative = `${diffHours}h atrás`;
+      relative = `${diffHours} ${diffHours === 1 ? "hora" : "horas"} atrás`;
     }
   } else if (diffDays === 1) {
     relative = "ontem";
@@ -40,7 +38,7 @@ function formatTimestamp(iso: string) {
     relative = `${diffDays} dias atrás`;
   }
 
-  return `${h12}:${minutes} ${ampm} (${relative})`;
+  return `${hours}:${minutes} (${relative})`;
 }
 
 function buildThreads(scraps: Scrap[]) {
@@ -72,6 +70,8 @@ function findRootId(parentId: string, scraps: Scrap[]): string {
 function ScrapCard({
   scrap,
   isReply,
+  isOwner,
+  currentUserId,
   selected,
   onSelect,
   onReply,
@@ -79,26 +79,37 @@ function ScrapCard({
 }: {
   scrap: Scrap;
   isReply?: boolean;
+  isOwner: boolean;
+  currentUserId?: string;
   selected: boolean;
   onSelect: (checked: boolean) => void;
   onReply: () => void;
   onDelete: () => void;
 }) {
-  const isUnread = scrap.readAt === null;
+  // O destaque lido/não lido só existe para quem recebeu o recado (dono do
+  // perfil) e ainda não o leu. Para o público, o recado aparece sempre normal.
+  const isUnread = isOwner && scrap.readAt === null;
   const variant = isReply ? "reply" : "root";
   const styles = isUnread ? UNREAD_STYLES[variant] : READ_STYLES[variant];
+
+  // O dono do perfil apaga qualquer recado; um visitante só apaga os que ele
+  // mesmo escreveu.
+  const canDelete = isOwner || scrap.authorId === currentUserId;
 
   return (
     <div className={`border-l-4 ${styles} p-3 ${isReply ? "ml-8" : ""}`}>
       <div className="flex gap-3">
-        <div className="shrink-0">
-          <input
-            type="checkbox"
-            className="mt-1"
-            checked={selected}
-            onChange={(e) => onSelect(e.target.checked)}
-          />
-        </div>
+        {/* A seleção em massa é uma ação do dono do perfil. */}
+        {isOwner && (
+          <div className="shrink-0">
+            <input
+              type="checkbox"
+              className="mt-1"
+              checked={selected}
+              onChange={(e) => onSelect(e.target.checked)}
+            />
+          </div>
+        )}
         <div className="flex gap-3 grow">
           <div className="shrink-0">
             <a href={`/profile/${scrap.authorId}`}>
@@ -112,7 +123,7 @@ function ScrapCard({
             </a>
           </div>
           <div className="grow">
-            <div className="flex justify-between items-start">
+            <div className="flex justify-between items-start gap-2">
               <div className="flex items-center gap-1.5">
                 <a href={`/profile/${scrap.authorId}`} className="text-orkut-link font-bold text-[13px]">
                   {scrap.authorName}:
@@ -124,8 +135,18 @@ function ScrapCard({
                   <span className="text-[10px] text-[#999] italic">privado</span>
                 )}
               </div>
-              <div className="text-[#999] text-[11px]">
-                {formatTimestamp(scrap.createdAt)}
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="text-[#999] text-[11px]">
+                  {formatTimestamp(scrap.createdAt)}
+                </span>
+                {canDelete && (
+                  <OrkutActionButton
+                    className="orkut-tahoma text-[11px] px-2 py-0.5"
+                    onClick={onDelete}
+                  >
+                    apagar
+                  </OrkutActionButton>
+                )}
               </div>
             </div>
             <div className="text-[#333] text-[12px] leading-4 mt-1">
@@ -133,10 +154,7 @@ function ScrapCard({
             </div>
             <div className="mt-2 flex gap-4 text-orkut-link text-[11px]">
               <button type="button" className="underline" onClick={onReply}>
-                reply
-              </button>
-              <button type="button" className="underline" onClick={onDelete}>
-                delete
+                responder
               </button>
             </div>
           </div>
@@ -150,10 +168,18 @@ export function ScrapsList({
   initialScraps,
   ownerId,
   totalCount: initialTotal,
+  isOwner,
+  profileName,
+  currentUserId,
+  currentUserName,
 }: {
   initialScraps: Scrap[];
   ownerId: string;
   totalCount: number;
+  isOwner: boolean;
+  profileName?: string;
+  currentUserId?: string;
+  currentUserName?: string;
 }) {
   const [scraps, setScraps] = useState(initialScraps);
   const [totalCount, setTotalCount] = useState(initialTotal);
@@ -161,9 +187,21 @@ export function ScrapsList({
   const [newScrapContent, setNewScrapContent] = useState("");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  // Só há o que visualizar quando existe algum conteúdo digitado.
+  const canPreview = newScrapContent.trim().length > 0;
 
   const threads = buildThreads(scraps);
-  const unreadCount = scraps.filter((s) => s.readAt === null).length;
+  // Só o dono do perfil enxerga a contagem de não lidos.
+  const unreadCount = isOwner
+    ? scraps.filter((s) => s.readAt === null).length
+    : 0;
+  const pageTitle = isOwner
+    ? "Minha página de recados"
+    : `Página de recados de ${profileName ?? ""}`.trimEnd();
+  // Nível intermediário do breadcrumb: o nome do dono do perfil (o próprio
+  // usuário quando é a sua página).
+  const breadcrumbName = isOwner ? currentUserName : profileName;
 
   function toggleSelect(id: string, checked: boolean) {
     setSelectedIds((prev) => {
@@ -205,8 +243,11 @@ export function ScrapsList({
   }
 
   async function handleDeleteScrap(id: string) {
+    // Dono do mural apaga via /scraps/{id}; visitante (autor) apaga o próprio
+    // recado via /scraps/sent/{id} — cada endpoint tem a autorização correta.
+    const endpoint = isOwner ? `/api/scraps/${id}` : `/api/scraps/sent/${id}`;
     try {
-      const res = await fetch(`/api/scraps/${id}`, { method: "DELETE" });
+      const res = await fetch(endpoint, { method: "DELETE" });
       if (res.ok) {
         setScraps((prev) => prev.filter((s) => s.id !== id));
         setTotalCount((c) => c - 1);
@@ -267,7 +308,11 @@ export function ScrapsList({
           <OrkutActionButton className="orkut-tahoma text-[12px] px-3" onClick={handleSendScrap} disabled={sending}>
             {sending ? "enviando..." : "enviar recado"}
           </OrkutActionButton>
-          <OrkutActionButton className="orkut-tahoma text-[12px] px-3">
+          <OrkutActionButton
+            className="orkut-tahoma text-[12px] px-3"
+            onClick={() => setShowPreview(true)}
+            disabled={!canPreview}
+          >
             visualizar
           </OrkutActionButton>
           <OrkutActionButton className="orkut-tahoma text-[12px] px-3">
@@ -277,6 +322,45 @@ export function ScrapsList({
         </div>
       </div>
 
+      {/* Visualizar: mostra como o recado vai aparecer para quem recebe (estilo
+          de recado novo, ainda não lido). */}
+      {showPreview && (
+        <div className="border border-orkut-border bg-white shadow-sm p-2 rounded-lg">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-[16px] font-semibold text-black tracking-normal">visualizar</h2>
+          </div>
+          <div className="border-l-4 border-[#e8a500] bg-[#fff3a8] p-3">
+            <div className="flex gap-3">
+              <div className="shrink-0">
+                <img
+                  src={`https://picsum.photos/seed/${currentUserId ?? "me"}/48/48`}
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="border border-orkut-border"
+                />
+              </div>
+              <div className="grow">
+                <div className="flex justify-between items-start">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-orkut-link font-bold text-[13px]">
+                      {currentUserName ?? "Você"}:
+                    </span>
+                    <span className="text-[10px] font-bold text-[#b8860b]">novo</span>
+                  </div>
+                  <div className="text-[#999] text-[11px]">agora</div>
+                </div>
+                <div className="text-[#333] text-[12px] leading-4 mt-1 whitespace-pre-wrap">
+                  {newScrapContent.trim()
+                    ? newScrapContent
+                    : "(digite um recado para visualizar)"}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Scraps List Box */}
       <div className="border border-orkut-border bg-white shadow-sm rounded-lg">
         <table className="w-full border-collapse" cellPadding={0} cellSpacing={0}>
@@ -284,54 +368,41 @@ export function ScrapsList({
             <tr>
               <td className="flex flex-row pb-2 px-2 pt-2">
                 <h1 className="orkut-edit-title text-black py-1.75 pb-1.25">
-                  Minha página de recados ({totalCount})
+                  {pageTitle} ({totalCount})
                   {unreadCount > 0 && (
                     <span className="text-[12px] font-normal text-[#b8860b] ml-1">
                       — {unreadCount} {unreadCount === 1 ? "novo" : "novos"}
                     </span>
                   )}
                 </h1>
-                <div className="text-[12px] ml-auto">
-                  <span className="text-[#5a5a5a]">todos podem enviar recados  • </span><a href="#" className="text-orkut-link-blue underline">alterar configurações</a>
-                </div>
+                {isOwner && (
+                  <div className="text-[12px] ml-auto">
+                    <span className="text-[#5a5a5a]">todos podem enviar recados  • </span><a href="#" className="text-orkut-link-blue underline">alterar configurações</a>
+                  </div>
+                )}
               </td>
             </tr>
             <tr>
               <td className="flex flex-row gap-1 px-2">
                 <a href="#">Início</a>
+                {breadcrumbName && (
+                  <>
+                    {" > "}
+                    <a href={`/profile/${ownerId}`} className="text-orkut-link-blue underline">
+                      {breadcrumbName}
+                    </a>
+                  </>
+                )}
                 {" > "}
-                <span className="text-[#5a5a5a]">Minha página de recados</span>
+                <span className="text-[#5a5a5a]">{pageTitle}</span>
               </td>
             </tr>
             <tr>
-              <td className="px-2 py-2">
-                <div className="flex justify-between items-center py-2 border-t border-b border-orkut-border">
-                  <div className="flex justify-between items-center text-[#5a5a5a] text-[12px]">
-                    <div className="flex gap-2">
-                      <OrkutActionButton
-                        className="orkut-tahoma text-[12px] px-3"
-                        onClick={handleDeleteSelected}
-                        disabled={selectedIds.size === 0}
-                      >
-                        excluir recados selecionados
-                      </OrkutActionButton>
-                      <OrkutActionButton className="orkut-tahoma text-[12px] px-3">
-                        denunciar spam
-                      </OrkutActionButton>
-                    </div>
-                  </div>
-                  <div className="text-[#5a5a5a] text-[12px]">
-                    <select className="text-[11px] border border-orkut-border px-1 py-0.5">
-                      <option>Ver 10 recados</option>
-                      <option>Ver 20 recados</option>
-                      <option>Ver 50 recados</option>
-                    </select>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td className="flex justify-end items-center text-[#5a5a5a] text-[12px] px-2 py-2 border-b border-orkut-border">
+              <td
+                className={`flex justify-end items-center text-[#5a5a5a] text-[12px] px-2 py-2 border-orkut-border ${
+                  isOwner ? "border-t" : "border-b"
+                }`}
+              >
                 <div className="flex gap-2">
                   <span>primeira</span>
                   <span className="text-[#ccc]">{"<"} anterior</span>
@@ -340,15 +411,48 @@ export function ScrapsList({
                 </div>
               </td>
             </tr>
+            {/* Ações em massa + seletor de quantidade: só o dono do mural vê. No
+                visitante essa linha some e a paginação encosta na lista. */}
+            {isOwner && (
+              <tr>
+                <td className="px-2 py-2">
+                  <div className="flex justify-between items-center py-2 border-t border-orkut-border">
+                    <div className="flex justify-between items-center text-[#5a5a5a] text-[12px]">
+                      <div className="flex gap-2">
+                        <OrkutActionButton
+                          className="orkut-tahoma text-[12px] px-3"
+                          onClick={handleDeleteSelected}
+                          disabled={selectedIds.size === 0}
+                        >
+                          excluir recados selecionados
+                        </OrkutActionButton>
+                        <OrkutActionButton className="orkut-tahoma text-[12px] px-3">
+                          denunciar spam
+                        </OrkutActionButton>
+                      </div>
+                    </div>
+                    <div className="text-[#5a5a5a] text-[12px]">
+                      <select className="text-[11px] border border-orkut-border px-1 py-0.5">
+                        <option>Ver 10 recados</option>
+                        <option>Ver 20 recados</option>
+                        <option>Ver 50 recados</option>
+                      </select>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            )}
 
             {/* Recados list - threaded */}
             <tr>
               <td className="px-2 pb-3">
-                <div className="space-y-2 mt-2">
+                <div className={`space-y-2 ${isOwner ? "mt-2" : "mt-0"}`}>
                   {threads.map((thread) => (
                     <div key={thread.root.id} className="space-y-1">
                       <ScrapCard
                         scrap={thread.root}
+                        isOwner={isOwner}
+                        currentUserId={currentUserId}
                         selected={selectedIds.has(thread.root.id)}
                         onSelect={(c) => toggleSelect(thread.root.id, c)}
                         onReply={() => handleReply(thread.root.id)}
@@ -361,6 +465,8 @@ export function ScrapsList({
                               key={reply.id}
                               scrap={reply}
                               isReply
+                              isOwner={isOwner}
+                              currentUserId={currentUserId}
                               selected={selectedIds.has(reply.id)}
                               onSelect={(c) => toggleSelect(reply.id, c)}
                               onReply={() => handleReply(thread.root.id)}
