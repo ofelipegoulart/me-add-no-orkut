@@ -1,5 +1,15 @@
 import type { SearchResultItem, SearchResultType } from "@/lib/search-types";
 
+const DEFAULT_AVATAR = "/avatar/default.png";
+
+// Foto real quando existe; usuários sem foto usam o mesmo default.png da lateral.
+// Comunidades/tópicos continuam com a miniatura gerada por seed.
+function avatarSrc(item: SearchResultItem): string {
+  if (item.avatarUrl) return item.avatarUrl;
+  if (item.type === "user") return DEFAULT_AVATAR;
+  return `https://picsum.photos/seed/${item.avatarSeed}/56/56`;
+}
+
 const TYPE_LABEL: Record<SearchResultType, string> = {
   user: "usuário",
   community: "comunidade",
@@ -26,7 +36,7 @@ export function SearchResultCard({ item }: { item: SearchResultItem }) {
     <li className="orkut-search-card">
       <a href={item.href} className="orkut-search-card-thumb">
         <img
-          src={`https://picsum.photos/seed/${item.avatarSeed}/56/56`}
+          src={avatarSrc(item)}
           alt=""
           width={56}
           height={56}

@@ -18,7 +18,8 @@ export interface SearchResultItem {
   id: string;
   type: SearchResultType;
   name: string;
-  avatarSeed: string; // usado para gerar a miniatura via picsum
+  avatarSeed: string; // usado para gerar a miniatura via picsum (fallback de comunidades/tópicos)
+  avatarUrl?: string; // foto real do usuário; ausente => default.png
   online: boolean;
   city?: string;
   state?: string;
@@ -86,7 +87,8 @@ export function normalizeBackendResults(
       id: r.id,
       type: isUser ? "user" : "community",
       name: r.name,
-      avatarSeed: r.avatarUrl || r.id,
+      avatarSeed: r.id,
+      avatarUrl: r.avatarUrl || undefined,
       online: false,
       country: "Brasil",
       language: "pt-BR",
