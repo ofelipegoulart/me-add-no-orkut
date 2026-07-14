@@ -1,8 +1,8 @@
 import type { SearchResultItem, SearchResultType } from "@/lib/search-types";
 
-const DEFAULT_AVATAR = "/avatar/default.png";
+const DEFAULT_AVATAR = "/avatar/i_nophoto128.gif";
 
-// Foto real quando existe; usuários sem foto usam o mesmo default.png da lateral.
+// Foto real quando existe; usuários sem foto usam o mesmo placeholder da lateral.
 // Comunidades/tópicos continuam com a miniatura gerada por seed.
 function avatarSrc(item: SearchResultItem): string {
   if (item.avatarUrl) return item.avatarUrl;

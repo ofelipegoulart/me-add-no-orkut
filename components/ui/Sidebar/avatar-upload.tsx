@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useAvatarContext } from "@/components/pages/EditProfile/edit-profile-context";
 
-const DEFAULT_AVATAR = "/avatar/default.png";
+const DEFAULT_AVATAR = "/avatar/i_nophoto128.gif";
 
 export default function AvatarUpload({
   avatarUrl,

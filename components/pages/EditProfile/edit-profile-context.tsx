@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from "react";
 
-const DEFAULT_AVATAR = "/avatar/default.png";
+const DEFAULT_AVATAR = "/avatar/i_nophoto128.gif";
 
 type AvatarContextValue = {
   avatarSrc: string;

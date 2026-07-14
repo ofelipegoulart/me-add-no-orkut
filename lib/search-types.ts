@@ -19,7 +19,7 @@ export interface SearchResultItem {
   type: SearchResultType;
   name: string;
   avatarSeed: string; // usado para gerar a miniatura via picsum (fallback de comunidades/tópicos)
-  avatarUrl?: string; // foto real do usuário; ausente => default.png
+  avatarUrl?: string; // foto real do usuário; ausente => i_nophoto128.gif
   online: boolean;
   city?: string;
   state?: string;

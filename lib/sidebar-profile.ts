@@ -64,7 +64,7 @@ export async function loadSidebarProfile(
         avatarUrl = data.avatar ?? "";
       }
     } catch {
-      // Ignora: mantém o default.png.
+      // Ignora: mantém o placeholder i_nophoto128.gif.
     }
   }
 
