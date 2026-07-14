@@ -1,6 +1,6 @@
 "use client";
 
-import { OrkutActionButton } from "@/components/buttons/orkut-action-button";
+import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -93,15 +93,25 @@ export default function OnboardingPage() {
 
     setLoading(true);
 
-    const birthDate = `${year}-${String(Number(month) + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-    const name = lastName.trim()
-      ? `${firstName.trim()} ${lastName.trim()}`
-      : firstName.trim();
+    // Grava os campos coletados aqui exatamente como o editar perfil faz:
+    // mesmo endpoint (PATCH /api/profile/general) e mesmo formato de campos
+    // (mês por nome, dia/ano como string). Todos públicos, exceto o ano.
+    const payload = {
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      gender,
+      country,
+      birthMonth: MONTHS[Number(month)],
+      birthDay: String(Number(day)),
+      birthDatePrivacy: "EVERYONE",
+      birthYear: year,
+      birthYearPrivacy: "ONLY_ME",
+    };
 
-    const res = await fetch("/api/onboarding", {
-      method: "PUT",
+    const res = await fetch("/api/profile/general", {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, birthDate }),
+      body: JSON.stringify(payload),
     });
 
     setLoading(false);
