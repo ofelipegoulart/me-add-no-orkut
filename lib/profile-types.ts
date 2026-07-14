@@ -197,6 +197,10 @@ export interface UpdateTestimonialDecisionParams {
   testimonialId: UUID;
 }
 
+export interface DeleteTestimonialParams {
+  testimonialId: UUID;
+}
+
 export interface GetSentTestimonialsParams {
   userId: UUID;
 }

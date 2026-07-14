@@ -13,6 +13,7 @@ import type {
   CreateTestimonialParams,
   UpdateTestimonialDecisionRequest,
   UpdateTestimonialDecisionParams,
+  DeleteTestimonialParams,
   GetSentTestimonialsParams,
   GetReceivedTestimonialsParams,
   TestimonialListResponse,
@@ -276,6 +277,22 @@ export async function respondToTestimonial(
   }
 }
 
+// Apaga um depoimento. O dono do perfil remove os que recebeu; o autor remove
+// os que escreveu — a autorização fica a cargo do backend (mesmo endpoint).
+export async function deleteTestimonial(
+  params: DeleteTestimonialParams,
+): Promise<void> {
+  const { testimonialId } = params;
+  const response = await apiFetch(
+    `/api/profile/testimonials/${testimonialId}`,
+    { method: "DELETE" },
+  );
+
+  if (!response.ok && response.status !== 204) {
+    throw new Error(`Failed to delete testimonial: ${response.status}`);
+  }
+}
+
 export async function getSentTestimonials(
   params: GetSentTestimonialsParams,
 ): Promise<TestimonialListResponse> {
@@ -335,6 +352,7 @@ export const profileService = {
 
   sendTestimonial,
   respondToTestimonial,
+  deleteTestimonial,
   getSentTestimonials,
   getReceivedTestimonials,
 };

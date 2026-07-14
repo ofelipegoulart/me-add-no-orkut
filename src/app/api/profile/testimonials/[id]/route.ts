@@ -12,3 +12,13 @@ export async function POST(
     body: JSON.stringify(body),
   });
 }
+
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id } = await params;
+  return authenticatedFetch(`/api/profile/testimonials/${id}`, {
+    method: "DELETE",
+  });
+}

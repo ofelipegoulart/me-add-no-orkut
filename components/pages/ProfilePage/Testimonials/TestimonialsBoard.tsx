@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
 import {
+  deleteTestimonial,
   getReceivedTestimonials,
   getSentTestimonials,
 } from "@/lib/profile-service";
@@ -71,7 +73,15 @@ function Pagination({
   );
 }
 
-function TestimonialRow({ testimonial }: { testimonial: TestimonialResponse }) {
+function TestimonialRow({
+  testimonial,
+  canDelete,
+  onDelete,
+}: {
+  testimonial: TestimonialResponse;
+  canDelete: boolean;
+  onDelete: () => void;
+}) {
   return (
     <li className="flex items-start gap-3 border-b border-orkut-border py-3 last:border-b-0">
       <Link href={`/profile/${testimonial.authorId}`} className="shrink-0">
@@ -91,9 +101,19 @@ function TestimonialRow({ testimonial }: { testimonial: TestimonialResponse }) {
           >
             {testimonial.authorName}
           </Link>
-          <span className="shrink-0 text-[11px] text-[#999]">
-            {formatTestimonialDate(testimonial.createdAt)}
-          </span>
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="text-[11px] text-[#999]">
+              {formatTestimonialDate(testimonial.createdAt)}
+            </span>
+            {canDelete && (
+              <OrkutActionButton
+                className="orkut-tahoma text-[11px] px-2 py-0.5"
+                onClick={onDelete}
+              >
+                apagar
+              </OrkutActionButton>
+            )}
+          </div>
         </div>
         <p className="text-[12px] text-[#333] leading-4 mt-1 break-words">
           {testimonial.message}
@@ -146,6 +166,25 @@ export function TestimonialsBoard({
     setPage(0);
   };
 
+  // O dono do perfil apaga os depoimentos que recebeu (aba "recebidos") e os
+  // que ele mesmo escreveu (aba "escrevi"). Um visitante não apaga nada — as
+  // duas listas mostradas pertencem ao dono do perfil. A autorização final
+  // fica no backend; aqui só decidimos exibir o botão.
+  const canDelete = isOwner;
+
+  async function handleDelete(id: string) {
+    const setList =
+      activeTab === "received" ? setReceived : setWritten;
+    const previous = activeTab === "received" ? received : written;
+    // Remoção otimista; restaura a lista caso o backend recuse.
+    setList((list) => list.filter((t) => t.id !== id));
+    try {
+      await deleteTestimonial({ testimonialId: id });
+    } catch {
+      setList(previous);
+    }
+  }
+
   const tabs: { key: TabKey; label: string }[] = [
     { key: "received", label: receivedTestimonialsLabel(isOwner, gender) },
     { key: "written", label: writtenTestimonialsLabel(isOwner, gender) },
@@ -184,7 +223,12 @@ export function TestimonialsBoard({
       ) : (
         <ul className="flex flex-col px-1">
           {pageItems.map((testimonial) => (
-            <TestimonialRow key={testimonial.id} testimonial={testimonial} />
+            <TestimonialRow
+              key={testimonial.id}
+              testimonial={testimonial}
+              canDelete={canDelete}
+              onDelete={() => handleDelete(testimonial.id)}
+            />
           ))}
         </ul>
       )}
