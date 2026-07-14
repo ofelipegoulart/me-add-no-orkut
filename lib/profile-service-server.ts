@@ -9,6 +9,7 @@ import type {
   ProfileOverviewParams,
   ProfileOverviewResponse,
   FriendRequestListResponse,
+  CommunityDashboard,
 } from "./profile-types";
 
 const API_BASE_URL = process.env.API_URL || "";
@@ -92,6 +93,34 @@ export async function getSentFriendRequestsServer(
 
   if (!response.ok) {
     throw new Error(`Failed to fetch sent friend requests: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+/**
+ * Dashboard (ficha + fórum + enquete + membros) de uma comunidade.
+ * O backend responde 403 quando o conteúdo é RESTRICTED e o usuário não é
+ * membro, e 404 quando a comunidade não existe.
+ */
+export async function getCommunityDashboardServer(
+  jwt: string,
+  id: string,
+): Promise<CommunityDashboard> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/community/${id}/dashboard`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      cache: "no-store",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch community dashboard: ${response.status}`);
   }
 
   return response.json();

@@ -5,8 +5,15 @@ import type {
   RemoveFriendParams,
   CreateCommunityRequest,
   CommunityResponse,
+  CommunityCategoryOption,
+  CommunityIconResponse,
   JoinCommunityParams,
+  JoinCommunityResponse,
   LeaveCommunityParams,
+  CommunityJoinRequest,
+  CommunityJoinRequestParams,
+  CommunityCard,
+  MyCommunityCard,
   CreateProfileRatingRequest,
   ProfileRatingParams,
   CreateTestimonialRequest,
@@ -148,10 +155,41 @@ export async function removeFriend(params: RemoveFriendParams): Promise<void> {
   }
 }
 
+// Categorias do formulário de criação (GET /api/community/categories → [{value,label}]).
+export async function getCommunityCategories(): Promise<CommunityCategoryOption[]> {
+  const response = await apiFetch(`/api/community/categories`, { method: "GET" });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch community categories: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// Upload multipart da imagem da comunidade. Devolve a URL para mandar em `icon`.
+// Usa fetch cru (sem apiFetch) para o browser definir o boundary do multipart.
+export async function uploadCommunityIcon(
+  file: File,
+): Promise<CommunityIconResponse> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`/api/community/icon`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to upload community icon: ${response.status}`);
+  }
+
+  return response.json();
+}
+
 export async function createCommunity(
   request: CreateCommunityRequest,
 ): Promise<CommunityResponse> {
-  const response = await apiFetch(`/api/profile/communities`, {
+  const response = await apiFetch(`/api/community`, {
     method: "POST",
     body: JSON.stringify(request),
   });
@@ -163,31 +201,161 @@ export async function createCommunity(
   return response.json();
 }
 
+// Atualiza a comunidade com o payload completo do formulário de edição
+// (mesmo formato de createCommunity). Só o dono pode editar.
+export async function updateCommunity(
+  id: string,
+  request: CreateCommunityRequest,
+): Promise<CommunityResponse> {
+  const response = await apiFetch(`/api/community/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to update community: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// Entra (ou pede para entrar) numa comunidade. 200 → { status } diz se entrou
+// direto (APPROVED, pública) ou ficou pendente (PENDING, moderada). 409 se já
+// for membro ou já tiver pedido pendente.
 export async function joinCommunity(
   params: JoinCommunityParams,
-): Promise<void> {
+): Promise<JoinCommunityResponse> {
   const { communityId } = params;
   const response = await apiFetch(
-    `/api/profile/communities/${communityId}/join`,
+    `/api/community/${communityId}/join`,
     { method: "POST" },
   );
 
-  if (!response.ok && response.status !== 204) {
+  if (!response.ok) {
     throw new Error(`Failed to join community: ${response.status}`);
   }
+
+  return response.json();
 }
 
+// Sai da comunidade ou retira um pedido de participação ainda pendente.
 export async function leaveCommunity(
   params: LeaveCommunityParams,
 ): Promise<void> {
   const { communityId } = params;
   const response = await apiFetch(
-    `/api/profile/communities/${communityId}/leave`,
+    `/api/community/${communityId}/leave`,
     { method: "DELETE" },
   );
 
   if (!response.ok && response.status !== 204) {
     throw new Error(`Failed to leave community: ${response.status}`);
+  }
+}
+
+// ── Listagens (cards) ──
+
+// Comunidades de uma categoria, mais membros primeiro.
+export async function getCommunitiesByCategory(
+  category: string,
+  page = 0,
+  size = 20,
+): Promise<CommunityCard[]> {
+  const query = new URLSearchParams({
+    category,
+    page: String(page),
+    size: String(size),
+  });
+  const response = await apiFetch(`/api/community?${query.toString()}`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch communities by category: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// Busca por nome (case-insensitive, casa qualquer parte). Nome em branco
+// devolve lista vazia — nem chamamos o backend nesse caso.
+export async function searchCommunities(
+  name: string,
+  page = 0,
+  size = 20,
+): Promise<CommunityCard[]> {
+  if (!name.trim()) {
+    return [];
+  }
+  const query = new URLSearchParams({
+    name,
+    page: String(page),
+    size: String(size),
+  });
+  const response = await apiFetch(`/api/community/search?${query.toString()}`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to search communities: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// Comunidades que o usuário é dono, participa, ou está pendente (campo relation).
+export async function getMyCommunities(): Promise<MyCommunityCard[]> {
+  const response = await apiFetch(`/api/community/mine`, { method: "GET" });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch my communities: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// ── Moderação de pedidos de participação (só o dono da comunidade) ──
+
+export async function getCommunityJoinRequests(
+  communityId: string,
+): Promise<CommunityJoinRequest[]> {
+  const response = await apiFetch(
+    `/api/community/${communityId}/join-requests`,
+    { method: "GET" },
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch join requests: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function approveCommunityJoinRequest(
+  params: CommunityJoinRequestParams,
+): Promise<void> {
+  const { communityId, userId } = params;
+  const response = await apiFetch(
+    `/api/community/${communityId}/join-requests/${userId}/approve`,
+    { method: "POST" },
+  );
+
+  if (!response.ok && response.status !== 204) {
+    throw new Error(`Failed to approve join request: ${response.status}`);
+  }
+}
+
+export async function rejectCommunityJoinRequest(
+  params: CommunityJoinRequestParams,
+): Promise<void> {
+  const { communityId, userId } = params;
+  const response = await apiFetch(
+    `/api/community/${communityId}/join-requests/${userId}`,
+    { method: "DELETE" },
+  );
+
+  if (!response.ok && response.status !== 204) {
+    throw new Error(`Failed to reject join request: ${response.status}`);
   }
 }
 
@@ -342,9 +510,18 @@ export const profileService = {
   acceptFriendRequest,
   deleteFriendRequest,
 
+  getCommunityCategories,
+  uploadCommunityIcon,
   createCommunity,
+  updateCommunity,
+  getCommunitiesByCategory,
+  searchCommunities,
+  getMyCommunities,
   joinCommunity,
   leaveCommunity,
+  getCommunityJoinRequests,
+  approveCommunityJoinRequest,
+  rejectCommunityJoinRequest,
 
   rateProfile,
   getAverageRatings,

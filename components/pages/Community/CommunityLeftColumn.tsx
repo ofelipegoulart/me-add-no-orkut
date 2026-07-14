@@ -1,0 +1,49 @@
+import { NavItem } from "@/components/pages/Community/NavItem";
+import type { CommunityRole } from "@/components/pages/Community/types";
+
+export function CommunityLeftColumn({
+  role,
+  icon,
+  name,
+  membersCount,
+  editHref,
+}: {
+  role: CommunityRole;
+  icon: string;
+  name: string;
+  membersCount: number;
+  editHref: string;
+}) {
+  return (
+    <div className="orkut-col-left border border-orkut-border bg-white">
+      <div className="text-center mb-1.5">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={icon} alt={name} width={130} className="mx-auto" />
+      </div>
+      <div className="text-[11px] leading-3.5 px-1.25 mb-0.75">
+        <a href="#" className="text-orkut-link font-bold">{name}</a>
+        <br />
+        ({membersCount} {membersCount === 1 ? "membro" : "membros"})
+      </div>
+      <div className="orkut-divider my-1.5" />
+      {role === "owner" ? (
+        <>
+          {/* Grupo 1: ações do dono */}
+          <NavItem icon="/icons/i_friend.gif" label="convidar amigos" divider={false} />
+          <NavItem icon="/icons/i_editcomm.gif" label="editar perfil" href={editHref} />
+          {/* Grupo 2: recursos da comunidade */}
+          <NavItem icon="/icons/c_forum.gif" label="fórum" divider={false} />
+          <NavItem icon="/icons/i_poll.gif" label="enquetes" divider={false} />
+          <NavItem icon="/icons/c_events.gif" label="eventos" divider={false} />
+          <NavItem icon="/icons/i_friendgroup.png" label="membros" divider={false} />
+        </>
+      ) : (
+        <>
+          <NavItem icon="/icons/c_join.png" label="entrar" bold />
+          <NavItem icon="/icons/c_forum.gif" label="fórum" divider={false} />
+          <NavItem icon="/icons/c_events.gif" label="eventos" />
+        </>
+      )}
+    </div>
+  );
+}
