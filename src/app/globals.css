@@ -670,6 +670,46 @@
   background: #eef3fc;
 }
 
+/* ── Botão-pílula clássico do orkut (ex.: "new topic") ──
+   Recriação do sprite original de 2 spans (inline-table + GIF de
+   gradiente): gradiente cinza-claro + border-radius no lugar das
+   tampas. Texto minúsculo, bold, azul-petróleo (--orkut-link). */
+.orkut-btn-pill {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 2px 10px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: lowercase;
+  white-space: nowrap;
+  color: var(--orkut-link);
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #c5ccd6;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #fdfdfd 0%, #f0f1f3 50%, #e4e6ea 100%);
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+.orkut-btn-pill:hover {
+  color: #00344f;
+  text-decoration: none;
+  background: linear-gradient(to bottom, #ffffff 0%, #f5f6f8 50%, #e9ebee 100%);
+}
+
+.orkut-btn-pill:active {
+  background: linear-gradient(to bottom, #e4e6ea 0%, #eceef1 100%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.orkut-btn-pill:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .orkut-edit-required-note {
   padding: 4px 10px;
 
