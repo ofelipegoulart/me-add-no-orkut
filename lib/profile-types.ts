@@ -158,6 +158,16 @@ export interface ProfileRatingParams {
   targetUserId: UUID;
 }
 
+// Espelha a resposta de GET /api/profile/ratings/{targetUserId}/me: para cada
+// categoria, `true` indica que o usuário logado já enviou uma nota neste perfil.
+// Deriva das colunas per-categoria da ProfileRating (null até avaliar), então é
+// server-side e sobrevive a troca de dispositivo / limpeza de storage.
+export interface RatedCategoriesResponse {
+  legal: boolean;
+  trustworthy: boolean;
+  sexy: boolean;
+}
+
 export interface CreateTestimonialRequest {
   message: string;
 }

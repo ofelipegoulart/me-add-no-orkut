@@ -223,6 +223,21 @@ export async function getAverageRatings(
   return response.json();
 }
 
+export async function getRatedCategories(
+  targetUserId: string,
+): Promise<import("./profile-types").RatedCategoriesResponse> {
+  const response = await apiFetch(
+    `/api/profile/ratings/${targetUserId}/me`,
+    { method: "GET" },
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch rated categories: ${response.status}`);
+  }
+
+  return response.json();
+}
+
 export async function sendTestimonial(
   params: CreateTestimonialParams,
   request: CreateTestimonialRequest,
@@ -316,6 +331,7 @@ export const profileService = {
 
   rateProfile,
   getAverageRatings,
+  getRatedCategories,
 
   sendTestimonial,
   respondToTestimonial,
