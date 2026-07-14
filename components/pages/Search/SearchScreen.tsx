@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { UniversalSearch } from "@/components/Search/UniversalSearch";
+import Link from "next/link";
+import { UniversalSearch } from "@/components/ui/Search/UniversalSearch";
 import {
   SEARCH_PAGE_SIZE,
   type SearchLanguageFilter,
@@ -120,7 +121,7 @@ export function SearchScreen({
     <>
       <div className="orkut-col-main orkut-search-main">
         <p className="orkut-edit-breadcrumb">
-          <a href="/">Início</a>
+          <Link href="/">Início</Link>
           <span className="orkut-breadcrumb-sep">&gt;</span>
           <span>Pesquisar</span>
         </p>

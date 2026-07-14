@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import OrkutLeftSidebar from "@/components/Sidebar/container-bar";
+import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
 import { EditProfileProvider } from "@/components/pages/EditProfile/edit-profile-context";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
 

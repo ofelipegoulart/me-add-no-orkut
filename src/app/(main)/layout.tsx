@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { OrkutHeader } from "@/components/Header/orkut-header";
+import { OrkutHeader } from "@/components/ui/Header/orkut-header";
 
 export default async function MainLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);

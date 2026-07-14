@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function ForgotPasswdPage() {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ export default function ForgotPasswdPage() {
       <div className="text-right pt-1 pr-1.5" style={{ fontSize: "smaller" }}>
         <a href="https://www.google.com.br">Página inicial do Google</a>
         {" | "}
-        <a href="/account">Login</a>
+        <Link href="/account">Login</Link>
       </div>
 
       {/* Header: logo + blue bar + "Contas do Google" */}
@@ -129,7 +130,7 @@ export default function ForgotPasswdPage() {
               <a href="#">este artigo de ajuda</a>.
             </div>
             <div className="text-xs">
-              <a href="/account">Clique aqui</a> para continuar.
+              <Link href="/account">Clique aqui</Link> para continuar.
             </div>
           </>
         )}

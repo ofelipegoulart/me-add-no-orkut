@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ORKUT_MENU_ICONS } from "@/data/mock-data";
 import OrkutMenuIcon from "./menu-icon";
 import AvatarUpload from "./avatar-upload";
@@ -53,15 +54,15 @@ export default function OrkutLeftSidebar({
           <div className="py-1 pl-1.5">
             <div>
               {isFriend ? (
-                <a href={userId ? `/profile/${userId}/MainTestimonialWrite` : "#"} className="inline-flex items-center gap-1 text-orkut-link-blue text-[12px]">
+                <Link href={userId ? `/profile/${userId}/MainTestimonialWrite` : "#"} className="inline-flex items-center gap-1 text-orkut-link-blue text-[12px]">
                   <OrkutMenuIcon src={ORKUT_MENU_ICONS.depoimentos} />
                   criar depoimento
-                </a>
+                </Link>
               ) : (
-                <a href={userId ? `/profile/${userId}/FriendAdd` : "#"} className="inline-flex items-center gap-1 text-orkut-link-blue text-[12px]">
+                <Link href={userId ? `/profile/${userId}/FriendAdd` : "#"} className="inline-flex items-center gap-1 text-orkut-link-blue text-[12px]">
                   <OrkutMenuIcon src={ORKUT_MENU_ICONS.perfil} />
                   + amigo
-                </a>
+                </Link>
               )}
             </div>
             <div className="mt-0.5">
@@ -96,20 +97,20 @@ export default function OrkutLeftSidebar({
                 >
                   <td className="px-1.5 py-0.75">
                     <div className="flex items-center justify-between">
-                      <a
+                      <Link
                         href={href}
                         className="inline-flex items-center gap-1.25 text-[#5a5a5a]! text-xs no-underline"
                       >
                         <OrkutMenuIcon src={iconSrc} />
                         {label}
-                      </a>
+                      </Link>
                       {isOwnProfile && isPerfil && (
-                        <a
+                        <Link
                           href="/profile/EditSummary"
                           className="text-orkut-link-blue text-[11px]"
                         >
                           editar
-                        </a>
+                        </Link>
                       )}
                     </div>
                   </td>

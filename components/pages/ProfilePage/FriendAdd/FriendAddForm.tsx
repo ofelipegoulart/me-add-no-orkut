@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addFriend } from "@/lib/profile-service";
-import { OrkutActionButton } from "@/components/buttons/orkut-action-button";
+import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
 
 type FriendAddFormProps = {
   targetUserId: string;

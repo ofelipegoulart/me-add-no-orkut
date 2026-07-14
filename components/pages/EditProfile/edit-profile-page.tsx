@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { OrkutActionButton } from "@/components/buttons/orkut-action-button";
+import Link from "next/link";
+import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
 import { ProfileField } from "./profile-field";
 import { useTabForm } from "./use-tab-form";
 import { TAB_TO_SECTION } from "@/lib/profile-mappers";
@@ -740,9 +741,9 @@ export function EditProfilePage() {
     <div className="orkut-edit-page">
       <h2 className="orkut-edit-title">Editar perfil</h2>
       <p className="orkut-edit-breadcrumb">
-        <a href="/">Início</a>
+        <Link href="/">Início</Link>
         <span className="orkut-breadcrumb-sep">&gt;</span>
-        <a href="/profile">Meu perfil</a>
+        <Link href="/profile">Meu perfil</Link>
         <span className="orkut-breadcrumb-sep">&gt;</span>
         Editar perfil
       </p>

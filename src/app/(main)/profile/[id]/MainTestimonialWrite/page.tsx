@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -32,11 +33,11 @@ export default async function MainTestimonialWritePage({
 
           {/* Breadcrumb — abaixo do título */}
           <p className="orkut-edit-breadcrumb flex items-center mb-3">
-            <a href="/Home">Início</a>
+            <Link href="/Home">Início</Link>
             {profileName && (
               <>
                 <span className="orkut-breadcrumb-sep">&gt;</span>
-                <a href={`/profile/${id}`}>{profileName}</a>
+                <Link href={`/profile/${id}`}>{profileName}</Link>
               </>
             )}
             <span className="orkut-breadcrumb-sep">&gt;</span>

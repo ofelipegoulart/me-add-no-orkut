@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import OrkutLeftSidebar from "@/components/Sidebar/container-bar";
+import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
 import { SearchScreen } from "@/components/pages/Search/SearchScreen";
 import { getUniversalSearchResultsServer } from "@/lib/search-service-server";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";

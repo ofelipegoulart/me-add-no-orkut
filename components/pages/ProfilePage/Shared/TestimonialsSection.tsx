@@ -7,7 +7,7 @@ import {
   getSentTestimonials,
   sendTestimonial,
 } from "@/lib/profile-service";
-import { OrkutActionButton } from "@/components/buttons/orkut-action-button";
+import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
 import type { TestimonialResponse } from "@/lib/profile-types";
 
 const TABS = [

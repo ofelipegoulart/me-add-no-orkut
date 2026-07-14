@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { FRIENDS, COMMUNITIES } from "@/data/mock-data";
@@ -33,16 +34,16 @@ export default async function TestimonialsPage({
             </h1>
           </div>
           <div className="flex flex-row gap-1 px-2 pb-3 text-[12px]">
-            <a href="/Home">Início</a>
+            <Link href="/Home">Início</Link>
             {profileName && (
               <>
                 {" > "}
-                <a
+                <Link
                   href={`/profile/${id}`}
                   className="text-orkut-link-blue underline"
                 >
                   {profileName}
-                </a>
+                </Link>
               </>
             )}
             {" > "}

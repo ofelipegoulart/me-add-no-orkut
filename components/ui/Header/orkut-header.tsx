@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { LogoutButton } from "./logout-button";
-import { UniversalSearch } from "@/components/Search/UniversalSearch";
+import { UniversalSearch } from "@/components/ui/Search/UniversalSearch";
 
 type OrkutHeaderProps = {
   email: string;
@@ -13,7 +14,7 @@ export function OrkutHeader({ email, userId }: OrkutHeaderProps) {
       <div id="headerin">
         <ul className="header-nav">
           <li className="header-brand">
-            <a href="/" className="header-logo-link">
+            <Link href="/" className="header-logo-link">
               <span className="header-logo-box">
                 <Image
                   src="/icons/orkut_logo_sml.png"
@@ -24,22 +25,22 @@ export function OrkutHeader({ email, userId }: OrkutHeaderProps) {
                   priority
                 />
               </span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/">Início</a>
+            <Link href="/">Início</Link>
           </li>
           <li>
-            <a href={userId ? `/profile/${userId}` : "#"}>Perfil</a>
+            <Link href={userId ? `/profile/${userId}` : "#"}>Perfil</Link>
           </li>
           <li>
-            <a href={`/profile/${userId}/recados`}>Página de recados</a>
+            <Link href={`/profile/${userId}/recados`}>Página de recados</Link>
           </li>
           <li>
             <a href="#">Amigos</a>
           </li>
           <li>
-            <a href="#">Comunidades</a>
+            <Link href="/Communities">Comunidades</Link>
           </li>
         </ul>
         <ul className="header-user">

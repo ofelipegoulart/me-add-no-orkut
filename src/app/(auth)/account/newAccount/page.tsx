@@ -1,6 +1,7 @@
 "use client";
 
-import { AuthSubmitButton } from "@/components/buttons/auth-submit-button";
+import { AuthSubmitButton } from "@/components/ui/buttons/auth-submit-button";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { terms } from "@/data/terms";
@@ -150,9 +151,9 @@ export default function Register() {
           </p>
           <p>
             Se você já tem uma Conta do Google, pode{' '}
-            <a href="/account" className="text-[#0000cc]">
+            <Link href="/account" className="text-[#0000cc]">
               fazer login aqui
-            </a>
+            </Link>
             .
           </p>
         </div>

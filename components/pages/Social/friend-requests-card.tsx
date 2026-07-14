@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { acceptFriendRequest, deleteFriendRequest } from "@/lib/profile-service";
-import { OrkutActionButton } from "@/components/buttons/orkut-action-button";
+import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
 import type { FriendRequest } from "@/lib/profile-types";
 
 type FriendRequestsCardProps = {

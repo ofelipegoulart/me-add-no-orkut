@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { OrkutActionButton } from "@/components/buttons/orkut-action-button";
+import Link from "next/link";
+import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
 import type { Scrap } from "@/data/mock-data";
 
 const UNREAD_STYLES = {
@@ -112,7 +113,7 @@ function ScrapCard({
         )}
         <div className="flex gap-3 grow">
           <div className="shrink-0">
-            <a href={`/profile/${scrap.authorId}`}>
+            <Link href={`/profile/${scrap.authorId}`}>
               <img
                 src={scrap.authorAvatar ? scrap.authorAvatar : `https://picsum.photos/seed/${scrap.authorId}/48/48`}
                 alt=""
@@ -120,14 +121,14 @@ function ScrapCard({
                 height={48}
                 className="border border-orkut-border"
               />
-            </a>
+            </Link>
           </div>
           <div className="grow">
             <div className="flex justify-between items-start gap-2">
               <div className="flex items-center gap-1.5">
-                <a href={`/profile/${scrap.authorId}`} className="text-orkut-link font-bold text-[13px]">
+                <Link href={`/profile/${scrap.authorId}`} className="text-orkut-link font-bold text-[13px]">
                   {scrap.authorName}:
-                </a>
+                </Link>
                 {isUnread && (
                   <span className="text-[10px] font-bold text-[#b8860b]">novo</span>
                 )}
@@ -388,9 +389,9 @@ export function ScrapsList({
                 {breadcrumbName && (
                   <>
                     {" > "}
-                    <a href={`/profile/${ownerId}`} className="text-orkut-link-blue underline">
+                    <Link href={`/profile/${ownerId}`} className="text-orkut-link-blue underline">
                       {breadcrumbName}
-                    </a>
+                    </Link>
                   </>
                 )}
                 {" > "}

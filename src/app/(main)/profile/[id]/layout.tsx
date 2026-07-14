@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import OrkutLeftSidebar from "@/components/Sidebar/container-bar";
+import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
 
 export default async function ProfileLayout({

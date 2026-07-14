@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 
-import OrkutMenuIcon from "@/components/Sidebar/menu-icon";
+import OrkutMenuIcon from "@/components/ui/Sidebar/menu-icon";
 import { ORKUT_MENU_ICONS } from "@/data/mock-data";
 import type { ProfileOverviewResponse } from "@/lib/profile-types";
 

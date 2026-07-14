@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthSubmitButton } from "@/components/buttons/auth-submit-button";
+import { AuthSubmitButton } from "@/components/ui/buttons/auth-submit-button";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
