@@ -34,7 +34,7 @@ export default async function ProfilePage({
 
   // Transform friends and communities for UI components
   const friendsForUI = overview
-    ? transformFriendsForUI(overview.friends, overview.counts)
+    ? transformFriendsForUI(overview.friends)
     : FRIENDS;
   const communitiesForUI = overview
     ? transformCommunitiesForUI(overview.communities)

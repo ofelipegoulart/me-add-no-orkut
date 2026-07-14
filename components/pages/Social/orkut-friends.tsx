@@ -1,4 +1,6 @@
-import { OrkutActionButton } from "@/components/buttons/orkut-action-button";
+import Link from "next/link";
+import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
+import { ThumbCardGrid } from "@/components/ui/thumb-card-grid";
 
 type friends = { id: string; name: string; count: number; seed: string }[]
 
@@ -8,7 +10,7 @@ export default function OrkutFriends({ friends, userId }: { friends: friends; us
             <div>
                 <div className="orkut-tahoma text-sm leading-5.25 mt-1.25 mb-1.5 font-bold">
                     <span className="text-black">meus amigos </span>
-                    <a href={`/profile/${userId}/amigos`} className="text-orkut-link-blue font-bold">({friends.length})</a>
+                    <Link href={`/profile/${userId}/amigos`} className="text-orkut-link-blue font-bold">({friends.length})</Link>
                 </div>
 
                 {friends.length === 0 ? (
@@ -32,41 +34,18 @@ export default function OrkutFriends({ friends, userId }: { friends: friends; us
                         </div>
                     </div>
                 ) : (
-                    <div className="-mx-0.75">
-                        <table
-                            className="w-full text-center border-separate border-spacing-0.75"
-                            cellPadding={0}
-                            cellSpacing={0}
-                        >
-                            <tbody>
-                                {[0, 1, 2].map((row) => (
-                                    <tr key={row}>
-                                        {friends.slice(row * 3, row * 3 + 3).map((f: any) => (
-                                            <td
-                                                key={f.id}
-                                                className="align-top w-1/3 bg-orkut-tab-inactive px-3 py-4"
-                                            >
-                                                <a href={`/profile/${f.id}`}>
-                                                    <img
-                                                        src={`https://picsum.photos/seed/${f.seed}/48/48`}
-                                                        alt=""
-                                                        width={48}
-                                                        height={48}
-                                                        className="mx-auto border border-orkut-border"
-                                                    />
-                                                </a>
-                                                <div className="orkut-uname mt-1">
-                                                    <a href={`/profile/${f.id}`}>{f.name}</a>{" "}
-                                                    <span className="text-[#8c8c8c]">({f.count})</span>
-                                                </div>
-                                            </td>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div>
+                        <ThumbCardGrid
+                            items={friends.map((f) => ({
+                                key: f.id,
+                                href: `/profile/${f.id}`,
+                                src: `https://picsum.photos/seed/${f.seed}/48/48`,
+                                name: f.name,
+                                count: f.count,
+                            }))}
+                        />
                         <div className="border-t border-orkut-border pt-1 mt-0.5">
-                            <a href={`/profile/${userId}/amigos`} className="underline">ver todos</a>
+                            <Link href={`/profile/${userId}/amigos`} className="underline">ver todos</Link>
                         </div>
                     </div>
                 )}

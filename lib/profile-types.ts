@@ -25,6 +25,7 @@ export interface FriendSummary {
   name: string;
   firstName: string;
   avatarUrl?: string;
+  friendsCount: number;
 }
 
 export interface CommunitySummary {
@@ -54,14 +55,11 @@ export interface ProfileOverviewResponse {
   receivedTestimonials: TestimonialSummary[];
 }
 
-export function transformFriendsForUI(
-  friends: FriendSummary[],
-  counts?: { friendsCount: number }
-): FriendsForUI {
+export function transformFriendsForUI(friends: FriendSummary[]): FriendsForUI {
   return friends.slice(0, 9).map((f, index) => ({
     id: f.id,
     name: f.firstName || f.name,
-    count: counts?.friendsCount || 0,
+    count: f.friendsCount || 0,
     seed: f.id || String(index),
   }));
 }
