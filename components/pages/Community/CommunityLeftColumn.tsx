@@ -7,12 +7,16 @@ export function CommunityLeftColumn({
   name,
   membersCount,
   editHref,
+  membersHref,
+  onJoinClick,
 }: {
   role: CommunityRole;
   icon: string;
   name: string;
   membersCount: number;
   editHref: string;
+  membersHref: string;
+  onJoinClick?: () => void;
 }) {
   return (
     <div className="orkut-col-left border border-orkut-border bg-white">
@@ -35,13 +39,18 @@ export function CommunityLeftColumn({
           <NavItem icon="/icons/c_forum.gif" label="fórum" divider={false} />
           <NavItem icon="/icons/i_poll.gif" label="enquetes" divider={false} />
           <NavItem icon="/icons/c_events.gif" label="eventos" divider={false} />
-          <NavItem icon="/icons/i_friendgroup.png" label="membros" divider={false} />
+          <NavItem icon="/icons/i_friendgroup.png" label="membros" href={membersHref} divider={false} />
         </>
       ) : (
         <>
-          <NavItem icon="/icons/c_join.png" label="entrar" bold />
+          {role === "member" ? (
+            <NavItem icon="/icons/i_unjoin.gif" label="deixar comunidade" bold />
+          ) : (
+            <NavItem icon="/icons/c_join.png" label="entrar" bold onClick={onJoinClick} />
+          )}
           <NavItem icon="/icons/c_forum.gif" label="fórum" divider={false} />
-          <NavItem icon="/icons/c_events.gif" label="eventos" />
+          <NavItem icon="/icons/c_events.gif" label="eventos" divider={false} />
+          <NavItem icon="/icons/i_friendgroup.png" label="membros" href={membersHref} divider={false} />
         </>
       )}
     </div>

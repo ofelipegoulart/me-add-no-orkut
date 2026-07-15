@@ -9,13 +9,17 @@ export function NavItem({
   href = "#",
   bold = false,
   divider = true,
+  onClick,
 }: {
   icon: string;
   label: string;
   href?: string;
   bold?: boolean;
   divider?: boolean;
+  onClick?: () => void;
 }) {
+  const linkClassName = bold ? "text-orkut-link font-bold" : "text-orkut-link";
+
   return (
     <>
       <div className="flow-root">
@@ -24,7 +28,17 @@ export function NavItem({
           <img src={icon} alt="" width={14} height={14} />
         </span>
         <div className="ml-6 pt-0.75 pb-0.5 text-[11px] leading-3.5">
-          <Link href={href} className={bold ? "text-orkut-link font-bold" : "text-orkut-link"}>{label}</Link>
+          {onClick ? (
+            <button
+              type="button"
+              onClick={onClick}
+              className={`${linkClassName} cursor-pointer border-0 bg-transparent p-0 text-left`}
+            >
+              {label}
+            </button>
+          ) : (
+            <Link href={href} className={linkClassName}>{label}</Link>
+          )}
         </div>
       </div>
       {divider && <div className="orkut-divider my-1.5" />}

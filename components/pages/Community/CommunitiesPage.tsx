@@ -137,7 +137,7 @@ function MyCommunitiesPanel({ communities }: { communities: MyCommunityCard[] })
           {shown.map((c, i) => (
             <tr key={c.id} className={i % 2 === 0 ? "bg-[#E6F0FA]" : "bg-[#F5F9FF]"}>
               <td>
-                <Link href={`/comunidade/${c.id}`} className="text-orkut-link">
+                <Link href={`/Community/${c.id}`} className="text-orkut-link">
                   {c.name}
                 </Link>
               </td>

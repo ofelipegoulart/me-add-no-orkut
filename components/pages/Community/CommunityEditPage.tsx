@@ -212,7 +212,7 @@ export default function CommunityEditPage({
           : await createCommunity(payload);
 
       // 3) leva para a página da comunidade (nova ou já existente).
-      router.push(`/comunidade/${community.id}`);
+      router.push(`/Community/${community.id}`);
     } catch {
       setError(
         mode === "edit"
@@ -451,7 +451,7 @@ export default function CommunityEditPage({
           <OrkutActionButton variant="edit" onClick={handleSubmit} disabled={saving}>
             {saving ? "salvando..." : botaoLabel}
           </OrkutActionButton>{" "}
-          <Link href={mode === "edit" && communityId ? `/comunidade/${communityId}` : "/Communities"}>
+          <Link href={mode === "edit" && communityId ? `/Community/${communityId}` : "/Communities"}>
             <OrkutActionButton variant="edit" disabled={saving}>cancelar</OrkutActionButton>
           </Link>
         </div>

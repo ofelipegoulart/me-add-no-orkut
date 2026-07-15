@@ -35,7 +35,7 @@ export function CommunityInfoCard({ community, category }: { community: Communit
         <InfoRow label="categoria:" alt><a href="#" className="text-orkut-link">{category}</a></InfoRow>
         <InfoRow label="dono:" alt={false}>
           {c.ownerId ? (
-            <Link href={`/profile/${c.ownerId}`} className="text-orkut-link">{c.ownerName || "—"}</Link>
+            <Link href={`/Profile/${c.ownerId}`} className="text-orkut-link">{c.ownerName || "—"}</Link>
           ) : (
             c.ownerName || "—"
           )}

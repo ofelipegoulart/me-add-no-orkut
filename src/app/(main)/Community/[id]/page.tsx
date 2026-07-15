@@ -26,5 +26,5 @@ export default async function Page({
     notFound();
   }
 
-  return <CommunityPage dashboard={dashboard} viewerId={session.user.userId} />;
+  return <CommunityPage dashboard={dashboard} />;
 }

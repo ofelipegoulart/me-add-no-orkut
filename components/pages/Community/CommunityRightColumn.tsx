@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
 import { ThumbCardGrid } from "@/components/ui/thumb-card-grid";
 import type { CommunityMemberSummary } from "@/lib/profile-types";
@@ -9,12 +10,16 @@ export function CommunityRightColumn({
   role,
   membersCount,
   members,
+  membersHref,
+  hideMemberBoxes = false,
 }: {
   role: CommunityRole;
   membersCount: number;
   members: CommunityMemberSummary[];
+  membersHref: string;
+  hideMemberBoxes?: boolean;
 }) {
-  if (role !== "owner") {
+  if (role !== "owner" || hideMemberBoxes) {
     return (
       <div className="float-right w-[284px]">
         <div className="text-center mt-2">
@@ -42,7 +47,7 @@ export function CommunityRightColumn({
             <ThumbCardGrid
               items={members.map((m) => ({
                 key: m.id,
-                href: `/profile/${m.id}`,
+                href: `/Profile/${m.id}`,
                 src: m.photoUrl || NOPHOTO,
                 name: m.name,
               }))}
@@ -50,7 +55,7 @@ export function CommunityRightColumn({
           </div>
         )}
         <div className="px-2 pb-2 pt-1">
-          <a href="#" className="text-[11px] font-bold text-orkut-link underline">ver membros</a>
+          <Link href={membersHref} className="text-[11px] font-bold text-orkut-link underline">ver membros</Link>
         </div>
       </div>
 
