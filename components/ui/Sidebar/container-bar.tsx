@@ -28,14 +28,14 @@ export default function OrkutLeftSidebar({
     [ORKUT_MENU_ICONS.depoimentos, "depoimentos"],
   ];
 
-  const profileHref = userId ? `/profile/${userId}` : "#";
+  const profileHref = userId ? `/Profile/${userId}` : "#";
 
   return (
     <div>
       {/* ── Bloco 1: foto + nome + info ── */}
       <div className="pb-2 text-center">
         <AvatarUpload avatarUrl={avatarUrl} showAddPhoto={showAddPhoto} profileHref={profileHref} />
-        <div className="mt-1 font-bold text-orkut-link-blue">
+        <div className="mt-1 font-bold text-orkut-link">
           <a href={profileHref}>{displayName}</a>
         </div>
         {infoLines.length > 0 && (
@@ -54,19 +54,19 @@ export default function OrkutLeftSidebar({
           <div className="py-1 pl-1.5">
             <div>
               {isFriend ? (
-                <Link href={userId ? `/profile/${userId}/MainTestimonialWrite` : "#"} className="inline-flex items-center gap-1 text-orkut-link-blue text-[12px]">
+                <Link href={userId ? `/Profile/${userId}/MainTestimonialWrite` : "#"} className="inline-flex items-center gap-1 text-orkut-link text-[12px]">
                   <OrkutMenuIcon src={ORKUT_MENU_ICONS.depoimentos} />
                   criar depoimento
                 </Link>
               ) : (
-                <Link href={userId ? `/profile/${userId}/FriendAdd` : "#"} className="inline-flex items-center gap-1 text-orkut-link-blue text-[12px]">
+                <Link href={userId ? `/Profile/${userId}/FriendAdd` : "#"} className="inline-flex items-center gap-1 text-orkut-link text-[12px]">
                   <OrkutMenuIcon src={ORKUT_MENU_ICONS.perfil} />
                   + amigo
                 </Link>
               )}
             </div>
             <div className="mt-0.5">
-              <a href="#" className="text-orkut-link-blue text-[12px] pl-5">mais »</a>
+              <a href="#" className="text-orkut-link text-[12px] pl-5">mais »</a>
             </div>
           </div>
           <div className="border-t border-orkut-border" />
@@ -84,9 +84,10 @@ export default function OrkutLeftSidebar({
             {menuItems.map(([iconSrc, label]) => {
               const isPerfil = label === "perfil";
               const href = userId
-                ? label === "recados" ? `/profile/${userId}/recados`
-                : label === "fotos" ? `/profile/${userId}/fotos`
-                : label === "perfil" ? `/profile/${userId}`
+                ? label === "recados" ? (isOwnProfile ? "/Home/Scraps" : `/Profile/${userId}/Scraps`)
+                : label === "fotos" ? `/Profile/${userId}/fotos`
+                : label === "perfil" ? `/Profile/${userId}`
+                : label === "depoimentos" ? (isOwnProfile ? "/Home/Testimonials" : `/Profile/${userId}/Testimonials`)
                 : "#"
                 : "#";
 
@@ -106,8 +107,8 @@ export default function OrkutLeftSidebar({
                       </Link>
                       {isOwnProfile && isPerfil && (
                         <Link
-                          href="/profile/EditSummary"
-                          className="text-orkut-link-blue text-[11px]"
+                          href="/Profile/EditSummary"
+                          className="text-orkut-link text-[11px]"
                         >
                           editar
                         </Link>
