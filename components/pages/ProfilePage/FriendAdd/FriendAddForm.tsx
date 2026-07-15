@@ -28,7 +28,7 @@ export function FriendAddForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const profileHref = `/profile/${targetUserId}`;
+  const profileHref = `/Profile/${targetUserId}`;
 
   const handleSubmit = async () => {
     if (message.length > MAX_MESSAGE) {

@@ -95,7 +95,7 @@ export function normalizeBackendResults(
       email: isUser ? r.email || undefined : undefined,
       bio: r.aboutMe || undefined,
       scrapsCount: isUser ? r.scrapCount ?? 0 : r.memberCount ?? 0,
-      href: isUser ? `/profile/${r.id}` : `/communities/${r.id}`,
+      href: isUser ? `/Profile/${r.id}` : `/communities/${r.id}`,
     };
   });
 }

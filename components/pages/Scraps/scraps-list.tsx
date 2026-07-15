@@ -113,7 +113,7 @@ function ScrapCard({
         )}
         <div className="flex gap-3 grow">
           <div className="shrink-0">
-            <Link href={`/profile/${scrap.authorId}`}>
+            <Link href={`/Profile/${scrap.authorId}`}>
               <img
                 src={scrap.authorAvatar ? scrap.authorAvatar : `https://picsum.photos/seed/${scrap.authorId}/48/48`}
                 alt=""
@@ -126,7 +126,7 @@ function ScrapCard({
           <div className="grow">
             <div className="flex justify-between items-start gap-2">
               <div className="flex items-center gap-1.5">
-                <Link href={`/profile/${scrap.authorId}`} className="text-orkut-link font-bold text-[13px]">
+                <Link href={`/Profile/${scrap.authorId}`} className="text-orkut-link font-bold text-[13px]">
                   {scrap.authorName}:
                 </Link>
                 {isUnread && (
@@ -319,7 +319,7 @@ export function ScrapsList({
           <OrkutActionButton className="orkut-tahoma text-[12px] px-3">
             adicionar foto
           </OrkutActionButton>
-          <a href="#" className="text-orkut-link-blue underline text-[12px]">dicas de recados</a>
+          <a href="#" className="text-orkut-link underline text-[12px]">dicas de recados</a>
         </div>
       </div>
 
@@ -378,7 +378,7 @@ export function ScrapsList({
                 </h1>
                 {isOwner && (
                   <div className="text-[12px] ml-auto">
-                    <span className="text-[#5a5a5a]">todos podem enviar recados  • </span><a href="#" className="text-orkut-link-blue underline">alterar configurações</a>
+                    <span className="text-[#5a5a5a]">todos podem enviar recados  • </span><a href="#" className="text-orkut-link underline">alterar configurações</a>
                   </div>
                 )}
               </td>
@@ -389,7 +389,7 @@ export function ScrapsList({
                 {breadcrumbName && (
                   <>
                     {" > "}
-                    <Link href={`/profile/${ownerId}`} className="text-orkut-link-blue underline">
+                    <Link href={`/Profile/${ownerId}`} className="text-orkut-link underline">
                       {breadcrumbName}
                     </Link>
                   </>
@@ -407,8 +407,8 @@ export function ScrapsList({
                 <div className="flex gap-2">
                   <span>primeira</span>
                   <span className="text-[#ccc]">{"<"} anterior</span>
-                  <span className="text-orkut-link-blue underline">próxima {">"}</span>
-                  <span className="text-orkut-link-blue underline">última</span>
+                  <span className="text-orkut-link underline">próxima {">"}</span>
+                  <span className="text-orkut-link underline">última</span>
                 </div>
               </td>
             </tr>

@@ -25,7 +25,7 @@ export default async function FriendAddPage({
 
   // Não faz sentido enviar pedido para si mesmo.
   if (viewerId === id) {
-    redirect(`/profile/${id}`);
+    redirect(`/Profile/${id}`);
   }
 
   let targetName = "Usuário";
@@ -53,7 +53,7 @@ export default async function FriendAddPage({
   }
 
   if (backToProfile) {
-    redirect(`/profile/${id}`);
+    redirect(`/Profile/${id}`);
   }
 
   return (

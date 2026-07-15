@@ -31,7 +31,7 @@ export default function LoginPage() {
         email,
         password,
         redirect: false,
-        callbackUrl: `${window.location.origin}/profile`,
+        callbackUrl: `${window.location.origin}/Profile`,
       });
     } catch {
       setError("O nome de usuário e senha são incorretos.");
@@ -46,7 +46,7 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/profile");
+    router.push("/Profile");
   }
 
   return (

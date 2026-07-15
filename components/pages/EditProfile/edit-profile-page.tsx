@@ -743,7 +743,7 @@ export function EditProfilePage() {
       <p className="orkut-edit-breadcrumb">
         <Link href="/">Início</Link>
         <span className="orkut-breadcrumb-sep">&gt;</span>
-        <Link href="/profile">Meu perfil</Link>
+        <Link href="/Profile">Meu perfil</Link>
         <span className="orkut-breadcrumb-sep">&gt;</span>
         Editar perfil
       </p>

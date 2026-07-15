@@ -9,5 +9,5 @@ export default async function ProfileIndex() {
     redirect("/account");
   }
 
-  redirect(`/profile/${session.user.userId}`);
+  redirect(`/Profile/${session.user.userId}`);
 }

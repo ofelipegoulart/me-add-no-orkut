@@ -7,6 +7,9 @@ import OrkutFriends from "@/components/pages/Social/orkut-friends";
 import { MarkScrapsRead } from "@/components/pages/Scraps/mark-scraps-read";
 import { ScrapsList } from "@/components/pages/Scraps/scraps-list";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
+import { getProfileOverviewServer } from "@/lib/profile-service-server";
+import { transformFriendsForUI, transformCommunitiesForUI } from "@/lib/profile-types";
+import type { ProfileOverviewResponse } from "@/lib/profile-types";
 
 export default async function RecadosPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -36,6 +39,19 @@ export default async function RecadosPage({ params }: { params: Promise<{ id: st
     ? undefined
     : (await loadSidebarProfile(session?.user?.jwt, id)).name;
 
+  let overview: ProfileOverviewResponse | null = null;
+  if (session?.user?.jwt) {
+    try {
+      overview = await getProfileOverviewServer(session.user.jwt, { userId: id });
+    } catch {
+      // Fallback para os dados mockados se a API falhar.
+    }
+  }
+  const friendsForUI = overview ? transformFriendsForUI(overview.friends) : FRIENDS;
+  const communitiesForUI = overview
+    ? transformCommunitiesForUI(overview.communities)
+    : COMMUNITIES;
+
   // Só marcamos como lido quando é o dono do perfil que está visualizando os
   // próprios recados.
   const unreadIds = isOwner
@@ -58,10 +74,10 @@ export default async function RecadosPage({ params }: { params: Promise<{ id: st
       </div>
       <div className="orkut-col-right">
         <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
-          <OrkutFriends friends={FRIENDS} userId={id} />
+          <OrkutFriends friends={friendsForUI} userId={id} />
         </div>
         <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
-          <OrkutCommunities communities={COMMUNITIES} userId={id} />
+          <OrkutCommunities communities={communitiesForUI} userId={id} />
         </div>
       </div>
     </div>
