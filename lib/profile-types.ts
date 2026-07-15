@@ -1,6 +1,6 @@
 export type UUID = string;
-export type FriendsForUI = { id: string; name: string; count: number; seed: string }[];
-export type CommunitiesForUI = { name: string; seed: string }[];
+export type FriendsForUI = { id: string; name: string; count: number; seed: string; avatarUrl?: string }[];
+export type CommunitiesForUI = { name: string; seed: string; icon?: string; count: number }[];
 
 
 export interface ProfileOverviewParams {
@@ -17,20 +17,24 @@ export interface ProfileUser {
   city: string;
   state: string;
   country: string;
-  avatarUrl?: string;
+  avatar?: string | null;
 }
 
+// Espelha ProfileOverviewDTO.FriendCardDTO do backend (Spring): o campo da
+// foto se chama `avatar`, não `avatarUrl`.
 export interface FriendSummary {
   id: UUID;
   name: string;
   firstName: string;
-  avatarUrl?: string;
+  avatar?: string | null;
   friendsCount: number;
 }
 
+// Espelha ProfileOverviewDTO.CommunityCardDTO do backend.
 export interface CommunitySummary {
   id: UUID;
   name: string;
+  icon?: string | null;
   memberCount: number;
 }
 
@@ -61,6 +65,7 @@ export function transformFriendsForUI(friends: FriendSummary[]): FriendsForUI {
     name: f.firstName || f.name,
     count: f.friendsCount || 0,
     seed: f.id || String(index),
+    avatarUrl: f.avatar ?? undefined,
   }));
 }
 
@@ -70,6 +75,8 @@ export function transformCommunitiesForUI(
   return communities.slice(0, 9).map((c) => ({
     name: c.name,
     seed: c.id,
+    icon: c.icon ?? undefined,
+    count: c.memberCount || 0,
   }));
 }
 
@@ -213,9 +220,13 @@ export interface MyCommunityCard extends CommunityCard {
   relation: CommunityRelation;
 }
 
+// Vínculo do viewer com a comunidade em GET /api/community/{id}/dashboard.
+// Igual a CommunityRelation, mas com "NONE" para quem não participa.
+export type CommunityViewerRelation = CommunityRelation | "NONE";
+
 // ── Dashboard de uma comunidade (GET /api/community/{id}/dashboard) ──
 // Ficha completa + fórum + enquete ativa + membros em destaque. É o que
-// alimenta a página /comunidade/{id}. RESTRICTED responde 403 a não-membros.
+// alimenta a página /Community/{id}. RESTRICTED responde 403 a não-membros.
 
 export interface CommunityInfo {
   id: UUID;
@@ -233,6 +244,7 @@ export interface CommunityInfo {
   features?: CommunityFeatures;
   membersCount: number;
   createdAt?: string | null;
+  viewerRelation?: CommunityViewerRelation;
 }
 
 export interface CommunityTopicBrief {

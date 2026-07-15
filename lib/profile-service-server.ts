@@ -10,6 +10,8 @@ import type {
   ProfileOverviewResponse,
   FriendRequestListResponse,
   CommunityDashboard,
+  MyCommunityCard,
+  CommunityJoinRequest,
 } from "./profile-types";
 
 const API_BASE_URL = process.env.API_URL || "";
@@ -121,6 +123,54 @@ export async function getCommunityDashboardServer(
 
   if (!response.ok) {
     throw new Error(`Failed to fetch community dashboard: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+/**
+ * Comunidades que o usuário é dono, participa, ou está pendente (campo relation).
+ */
+export async function getMyCommunitiesServer(
+  jwt: string,
+): Promise<MyCommunityCard[]> {
+  const response = await fetch(`${API_BASE_URL}/api/community/mine`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch my communities: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+/**
+ * Pedidos de participação pendentes de uma comunidade (só o dono vê).
+ */
+export async function getCommunityJoinRequestsServer(
+  jwt: string,
+  communityId: string,
+): Promise<CommunityJoinRequest[]> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/community/${communityId}/join-requests`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      cache: "no-store",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch join requests: ${response.status}`);
   }
 
   return response.json();
