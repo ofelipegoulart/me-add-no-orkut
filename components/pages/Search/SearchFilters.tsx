@@ -15,9 +15,9 @@ type SearchFiltersProps = {
 
 const TYPE_OPTIONS: { value: SearchTypeFilter; label: string; icon: React.ReactNode }[] = [
   { value: "all", label: "todos os resultados", icon: <AllIcon /> },
-  { value: "user", label: "usuários", icon: <UserIcon /> },
-  { value: "community", label: "comunidades", icon: <CommunityIcon /> },
-  { value: "topic", label: "tópicos", icon: <TopicIcon /> },
+  { value: "user", label: "usuários", icon: <img src="/icons/i_friendgroup.png" width={12} height={12} alt="" /> },
+  { value: "community", label: "comunidades", icon: <img src="/icons/p_globe.gif" width={12} height={12} alt="" /> },
+  { value: "topic", label: "tópicos", icon: <img src="/icons/i_forum.gif" width={12} height={12} alt="" /> },
 ];
 
 const LOCAL_OPTIONS: { value: SearchLocationFilter; label: string }[] = [
@@ -91,38 +91,10 @@ export function SearchFilters({
 function AllIcon() {
   return (
     <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor" />
-      <rect x="9" y="1" width="6" height="6" rx="1" fill="currentColor" />
-      <rect x="1" y="9" width="6" height="6" rx="1" fill="currentColor" />
-      <rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor" />
-    </svg>
-  );
-}
-
-function UserIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="5" r="3" fill="currentColor" />
-      <path d="M2 15c0-3.3 2.7-5 6-5s6 1.7 6 5z" fill="currentColor" />
-    </svg>
-  );
-}
-
-function CommunityIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="5" cy="5" r="2.4" fill="currentColor" />
-      <circle cx="11" cy="5" r="2.4" fill="currentColor" />
-      <path d="M1 14c0-2.5 1.8-4 4-4s4 1.5 4 4z" fill="currentColor" />
-      <path d="M7 14c0-2.5 1.8-4 4-4s4 1.5 4 4z" fill="currentColor" />
-    </svg>
-  );
-}
-
-function TopicIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M2 3h12v8H7l-3 3v-3H2z" fill="currentColor" />
+      <rect x="1" y="1" width="6" height="6" rx="1" fill="#4b7bd4" />
+      <rect x="9" y="1" width="6" height="6" rx="1" fill="#4b7bd4" />
+      <rect x="1" y="9" width="6" height="6" rx="1" fill="#4b7bd4" />
+      <rect x="9" y="9" width="6" height="6" rx="1" fill="#4b7bd4" />
     </svg>
   );
 }

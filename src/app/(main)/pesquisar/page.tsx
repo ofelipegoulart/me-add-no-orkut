@@ -57,7 +57,7 @@ export default async function SearchPage({
   ]);
 
   return (
-    <div className="min-h-screen w-full bg-orkut-bg">
+    <div className="min-h-screen w-full bg-orkut-bg orkut-search-page">
       <div className="orkut-col-left border border-orkut-border bg-white shadow-sm">
         <OrkutLeftSidebar displayName={displayName} isOwnProfile userId={userId} avatarUrl={sidebar.avatarUrl} infoLines={sidebar.infoLines} />
       </div>

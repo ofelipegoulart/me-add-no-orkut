@@ -30,66 +30,79 @@ function locationLine(item: SearchResultItem): string {
 }
 
 export function SearchResultCard({ item }: { item: SearchResultItem }) {
-  const typeTag = `${TYPE_LABEL[item.type]} · ${item.country}`;
+  const typeTag = `${TYPE_LABEL[item.type]} - ${item.country}`;
 
   return (
     <li className="orkut-search-card">
-      <a href={item.href} className="orkut-search-card-thumb">
-        <img
-          src={avatarSrc(item)}
-          alt=""
-          width={56}
-          height={56}
-        />
-      </a>
+      <div className="orkut-search-card-tag">{typeTag}</div>
 
-      <div className="orkut-search-card-body">
-        <div className="orkut-search-card-head">
-          <span className="orkut-search-name-wrap">
-            {item.online && (
-              <span className="orkut-search-online" title="online agora" aria-label="online" />
+      <div className="orkut-search-card-row">
+        <a href={item.href} className="orkut-search-card-thumb">
+          <img
+            src={avatarSrc(item)}
+            alt=""
+            width={64}
+            height={64}
+          />
+        </a>
+
+        <div className="orkut-search-card-body">
+          <div className="orkut-search-card-head">
+            <span className="orkut-search-name-wrap">
+              {item.online && (
+                <span className="orkut-search-online" title="online agora" aria-label="online" />
+              )}
+              <SmallUserIcon />
+              <a href={item.href} className="orkut-search-name">
+                {item.name}
+              </a>
+            </span>
+          </div>
+
+          <div className="orkut-search-loc">{locationLine(item)}</div>
+
+          <dl className="orkut-search-fields">
+            {item.email && (
+              <div className="orkut-search-field">
+                <dt>e-mail:</dt>
+                <dd>{item.email}</dd>
+              </div>
             )}
-            <a href={item.href} className="orkut-search-name">
-              {item.name}
+            {item.homepage && (
+              <div className="orkut-search-field">
+                <dt>página da Web:</dt>
+                <dd>
+                  <a href={item.homepage} target="_blank" rel="noreferrer">
+                    {item.homepage}
+                  </a>
+                </dd>
+              </div>
+            )}
+            {item.bio && (
+              <div className="orkut-search-field">
+                <dt>quem sou eu:</dt>
+                <dd className="orkut-search-bio">{item.bio}</dd>
+              </div>
+            )}
+          </dl>
+
+          <div className="orkut-search-card-foot">
+            <a href={item.href} className="orkut-search-scraps">
+              <span className="orkut-search-scraps-ico" aria-hidden="true" />
+              {item.scrapsCount.toLocaleString("pt-BR")} {FOOTER_LABEL[item.type]}
             </a>
-          </span>
-          <span className="orkut-search-tag">{typeTag}</span>
-        </div>
-
-        <div className="orkut-search-loc">{locationLine(item)}</div>
-
-        <dl className="orkut-search-fields">
-          {item.email && (
-            <div className="orkut-search-field">
-              <dt>e-mail:</dt>
-              <dd>{item.email}</dd>
-            </div>
-          )}
-          {item.homepage && (
-            <div className="orkut-search-field">
-              <dt>página web:</dt>
-              <dd>
-                <a href={item.homepage} target="_blank" rel="noreferrer">
-                  {item.homepage}
-                </a>
-              </dd>
-            </div>
-          )}
-          {item.bio && (
-            <div className="orkut-search-field">
-              <dt>quem sou eu:</dt>
-              <dd className="orkut-search-bio">{item.bio}</dd>
-            </div>
-          )}
-        </dl>
-
-        <div className="orkut-search-card-foot">
-          <a href={item.href} className="orkut-search-scraps">
-            <span className="orkut-search-scraps-ico" aria-hidden="true" />
-            {item.scrapsCount.toLocaleString("pt-BR")} {FOOTER_LABEL[item.type]}
-          </a>
+          </div>
         </div>
       </div>
     </li>
+  );
+}
+
+function SmallUserIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="8" cy="5" r="3" fill="#e8a33d" />
+      <path d="M2 15c0-3.3 2.7-5 6-5s6 1.7 6 5z" fill="#4b7bd4" />
+    </svg>
   );
 }

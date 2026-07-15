@@ -120,13 +120,14 @@ export function SearchScreen({
   return (
     <>
       <div className="orkut-col-main orkut-search-main">
-        <p className="orkut-edit-breadcrumb">
-          <Link href="/">Início</Link>
-          <span className="orkut-breadcrumb-sep">&gt;</span>
-          <span>Pesquisar</span>
-        </p>
-
-        <h1 className="orkut-search-title">{heading}</h1>
+        <div className="orkut-search-heading">
+          <h1 className="orkut-search-title">{heading}</h1>
+          <p className="orkut-edit-breadcrumb">
+            <Link href="/">Início</Link>
+            <span className="orkut-breadcrumb-sep">&gt;</span>
+            <span>Pesquisar</span>
+          </p>
+        </div>
 
         {/* Abas de navegação */}
         <div className="orkut-search-tabs">
@@ -145,28 +146,36 @@ export function SearchScreen({
         {/* Subformulário "pesquisar novamente" */}
         <div className="orkut-search-again">
           <span className="orkut-search-again-label">Pesquisar novamente:</span>
-          <UniversalSearch
-            variant="inline"
-            defaultTerm={term}
-            preserve={{ type, local, idioma }}
-          />
-          <a href="#" className="orkut-search-safety">
-            filtro de segurança ativado
-          </a>
+          <div className="orkut-search-again-form">
+            <UniversalSearch
+              variant="inline"
+              defaultTerm={term}
+              preserve={{ type, local, idioma }}
+            />
+            <a href="#" className="orkut-search-safety">
+              filtro de segurança ativado
+            </a>
+          </div>
         </div>
 
-        {/* Título repetido + refinar */}
+        {/* Faixa de status */}
         <div className="orkut-search-subhead">
-          <h2 className="orkut-search-subtitle">{heading}</h2>
+          <span className="orkut-search-subhead-text">
+            <SearchStatusIcon />
+            {heading}
+          </span>
           <a href="#" className="orkut-search-refine">
-            refinar os resultados »
+            refinar os resultados
+            <span className="orkut-search-refine-arrow" aria-hidden="true">
+              ▶
+            </span>
           </a>
         </div>
 
         {/* Contador + paginação */}
         <div className="orkut-search-meta">
           <span className="orkut-search-counter">
-            Resultados {rangeStart} - {rangeEnd} de mais de {total}
+            Resultados <b>{rangeStart} - {rangeEnd}</b> de mais de <b>{total}</b>
           </span>
           {totalPages > 1 && (
             <nav className="orkut-search-pagination" aria-label="paginação">
@@ -219,5 +228,14 @@ export function SearchScreen({
         />
       </div>
     </>
+  );
+}
+
+function SearchStatusIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="7" cy="7" r="5" fill="none" stroke="#4b7bd4" strokeWidth="2" />
+      <line x1="11" y1="11" x2="15" y2="15" stroke="#4b7bd4" strokeWidth="2" strokeLinecap="round" />
+    </svg>
   );
 }
