@@ -15,7 +15,15 @@ export type ThumbCardGridItem = {
  * de deixar o card esticar, garantindo a mesma largura/altura mesmo quando a
  * linha final não tem os 3 itens.
  */
-export function ThumbCardGrid({ items, columns = 3 }: { items: ThumbCardGridItem[]; columns?: number }) {
+export function ThumbCardGrid({
+  items,
+  columns = 3,
+  size,
+}: {
+  items: ThumbCardGridItem[];
+  columns?: number;
+  size?: number;
+}) {
   const rows = Math.ceil(items.length / columns);
 
   return (
@@ -39,6 +47,7 @@ export function ThumbCardGrid({ items, columns = 3 }: { items: ThumbCardGridItem
                     src={item.src}
                     name={item.name}
                     count={item.count}
+                    {...(size != null ? { size } : {})}
                   />
                 ) : (
                   <td key={col} className="align-top w-1/3" />

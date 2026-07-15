@@ -36,10 +36,10 @@ export default async function FotosPage({ params }: { params: Promise<{ id: stri
       </div>
       <div className="orkut-col-right">
         <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
-          <OrkutFriends friends={FRIENDS} userId={id} />
+          <OrkutFriends friends={FRIENDS} userId={id} title="amigos" />
         </div>
         <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
-          <OrkutCommunities communities={COMMUNITIES} userId={id} />
+          <OrkutCommunities communities={COMMUNITIES} userId={id} title="comunidades" />
         </div>
       </div>
     </div>

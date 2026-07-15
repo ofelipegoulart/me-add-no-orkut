@@ -7,6 +7,8 @@ import { getProfileOverviewServer } from "@/lib/profile-service-server";
 import { transformFriendsForUI } from "@/lib/profile-types";
 import type { CommunitySummary, ProfileOverviewResponse } from "@/lib/profile-types";
 
+const NOPHOTO = "/avatar/i_nophoto128.gif";
+
 export default async function ComunidadesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const session = await getServerSession(authOptions);
@@ -21,7 +23,7 @@ export default async function ComunidadesPage({ params }: { params: Promise<{ id
   }
 
   const communities: CommunitySummary[] =
-    overview?.communities ?? COMMUNITIES.map((c) => ({ id: c.seed, name: c.name, memberCount: 0 }));
+    overview?.communities ?? COMMUNITIES.map((c) => ({ id: c.seed, name: c.name, memberCount: c.count }));
   const friendsForUI = overview
     ? transformFriendsForUI(overview.friends)
     : FRIENDS;
@@ -54,9 +56,10 @@ export default async function ComunidadesPage({ params }: { params: Promise<{ id
                     <ThumbCard
                       key={c.id}
                       className="align-top bg-orkut-tab-inactive px-3 py-4 text-center"
-                      href={`/comunidade/${c.id}`}
-                      src={`https://picsum.photos/seed/comm-${c.id}/48/48`}
+                      href={`/Community/${c.id}`}
+                      src={c.icon || NOPHOTO}
                       name={c.name}
+                      count={c.memberCount}
                     />
                   ))}
                 </div>
@@ -67,7 +70,7 @@ export default async function ComunidadesPage({ params }: { params: Promise<{ id
       </div>
       <div className="orkut-col-right">
         <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
-          <OrkutFriends friends={friendsForUI} userId={id} />
+          <OrkutFriends friends={friendsForUI} userId={id} title="amigos" />
         </div>
       </div>
     </div>

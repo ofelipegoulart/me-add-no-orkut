@@ -7,6 +7,8 @@ import { getProfileOverviewServer } from "@/lib/profile-service-server";
 import { transformCommunitiesForUI } from "@/lib/profile-types";
 import type { FriendSummary, ProfileOverviewResponse } from "@/lib/profile-types";
 
+const NOPHOTO = "/avatar/i_nophoto128.gif";
+
 export default async function AmigosPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const session = await getServerSession(authOptions);
@@ -53,9 +55,9 @@ export default async function AmigosPage({ params }: { params: Promise<{ id: str
                 <div className="grid grid-cols-3 gap-2">
                   {friends.map((f) => (
                     <div key={f.id} className="align-top bg-orkut-tab-inactive px-3 py-4 text-center">
-                      <Link href={`/profile/${f.id}`}>
+                      <Link href={`/Profile/${f.id}`}>
                         <img
-                          src={f.avatarUrl || `https://picsum.photos/seed/${f.id}/48/48`}
+                          src={f.avatar || NOPHOTO}
                           alt=""
                           width={48}
                           height={48}
@@ -63,7 +65,7 @@ export default async function AmigosPage({ params }: { params: Promise<{ id: str
                         />
                       </Link>
                       <div className="orkut-uname mt-1">
-                        <Link href={`/profile/${f.id}`}>{f.firstName || f.name}</Link>{" "}
+                        <Link href={`/Profile/${f.id}`}>{f.firstName || f.name}</Link>{" "}
                         <span className="text-[#8c8c8c]">({f.friendsCount})</span>
                       </div>
                     </div>
@@ -76,7 +78,7 @@ export default async function AmigosPage({ params }: { params: Promise<{ id: str
       </div>
       <div className="orkut-col-right">
         <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
-          <OrkutCommunities communities={communitiesForUI} userId={id} />
+          <OrkutCommunities communities={communitiesForUI} userId={id} title="comunidades" />
         </div>
       </div>
     </div>

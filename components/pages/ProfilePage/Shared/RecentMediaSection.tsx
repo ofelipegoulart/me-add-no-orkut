@@ -72,7 +72,7 @@ export function RecentMediaSection({
         <div className="pb-1 text-right">
           <Link
             href={seeAllHref}
-            className="text-orkut-link-blue text-[11px] underline"
+            className="text-orkut-link text-[11px] underline"
           >
             {seeAllLabel}
           </Link>

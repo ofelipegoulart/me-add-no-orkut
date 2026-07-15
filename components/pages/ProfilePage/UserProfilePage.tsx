@@ -35,7 +35,7 @@ export default function UserProfilePage({
       <RecentMediaSection
         title="fotos recentes"
         count={photos}
-        seeAllHref={`/profile/${userId}/fotos`}
+        seeAllHref={`/Profile/${userId}/fotos`}
         seeAllLabel="ver todas as fotos »"
         emptyLabel="nenhuma foto adicionada ainda."
       />

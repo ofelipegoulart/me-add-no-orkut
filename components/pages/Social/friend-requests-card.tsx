@@ -90,7 +90,7 @@ function FriendRequestItem({
     melhores: false,
   });
 
-  const profileHref = `/profile/${request.userId}`;
+  const profileHref = `/Profile/${request.userId}`;
 
   return (
     <div className="flex gap-3">
@@ -110,7 +110,7 @@ function FriendRequestItem({
       <div className="flex-1">
         <a
           href={profileHref}
-          className="text-[13px] font-semibold text-orkut-link-blue uppercase tracking-tight"
+          className="text-[13px] font-semibold text-orkut-link uppercase tracking-tight"
         >
           {request.name}
         </a>

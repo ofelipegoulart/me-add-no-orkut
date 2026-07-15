@@ -73,10 +73,10 @@ export default async function ProfilePage({
       </div>
       <div className="orkut-col-right">
         <div className="border border-orkut-border bg-white shadow-sm rounded-lg">
-          <OrkutFriends friends={friendsForUI} userId={id} />
+          <OrkutFriends friends={friendsForUI} userId={id} title="amigos" />
         </div>
         <div className="border border-orkut-border bg-white shadow-sm rounded-lg">
-          <OrkutCommunities communities={communitiesForUI} userId={id} />
+          <OrkutCommunities communities={communitiesForUI} userId={id} title="comunidades" />
         </div>
       </div>
     </div>

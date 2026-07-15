@@ -1,6 +1,7 @@
 import { OrkutMainColumn } from "@/components/pages/ProfilePage/main-column";
 import { UpdatesSection } from "@/components/pages/ProfilePage/MyProfile/UpdatesSection";
 import { PendingTestimonials } from "@/components/pages/ProfilePage/Shared/PendingTestimonials";
+import { PendingCommunityMembersNotice } from "@/components/pages/ProfilePage/Shared/PendingCommunityMembersNotice";
 import { TestimonialsSection } from "@/components/pages/ProfilePage/Shared/TestimonialsSection";
 import { RecentMediaSection } from "@/components/pages/ProfilePage/Shared/RecentMediaSection";
 import { ReceivedTestimonialsPreview } from "@/components/pages/ProfilePage/Shared/ReceivedTestimonialsPreview";
@@ -17,6 +18,7 @@ export default function MyProfilePage({
   gender,
   isHome = false,
   friendRequests = [],
+  pendingCommunityId = null,
 }: {
   displayName: string;
   userId: string;
@@ -25,6 +27,7 @@ export default function MyProfilePage({
   gender?: string | null;
   isHome?: boolean;
   friendRequests?: FriendRequest[];
+  pendingCommunityId?: string | null;
 }) {
   const { photos, videos } = mediaCountsFromOverview(overview);
 
@@ -42,6 +45,9 @@ export default function MyProfilePage({
       </div>
       {isHome ? (
         <>
+          {pendingCommunityId && (
+            <PendingCommunityMembersNotice communityId={pendingCommunityId} />
+          )}
           <FriendRequestsCard initialRequests={friendRequests} />
           <div className="orkut-col-section mt-1 bg-white border border-orkut-border px-2 py-1">
             <UpdatesSection />
@@ -55,7 +61,7 @@ export default function MyProfilePage({
           <RecentMediaSection
             title="minhas fotos recentes"
             count={photos}
-            seeAllHref={`/profile/${userId}/fotos`}
+            seeAllHref={`/Profile/${userId}/fotos`}
             seeAllLabel="ver todas as fotos »"
             emptyLabel="nenhuma foto adicionada ainda."
           />
