@@ -31,18 +31,18 @@ describe("Scraps (Recados)", () => {
     cy.get('input[type="checkbox"]').check();
     cy.contains("tudo certo, pode criar minha conta!").click();
 
-    cy.visit("/profile");
+    cy.visit("/Profile");
     cy.get("#header").contains("Sair").click();
   });
 
   beforeEach(() => {
     cy.login(testEmail, testPassword);
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
   });
 
   function goToScraps() {
     cy.contains("a", "recados").click();
-    cy.url().should("include", "/recados");
+    cy.url().should("include", "/Scraps");
     cy.contains("Minha página de recados").should("be.visible");
   }
 

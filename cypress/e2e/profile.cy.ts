@@ -31,13 +31,13 @@ describe("Edit Profile", () => {
     cy.get('input[type="checkbox"]').check();
     cy.contains("tudo certo, pode criar minha conta!").click();
 
-    cy.visit("/profile");
+    cy.visit("/Profile");
     cy.get("#header").contains("Sair").click();
   });
 
   beforeEach(() => {
     cy.login(testEmail, testPassword);
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
   });
 
   // ── Happy path ──

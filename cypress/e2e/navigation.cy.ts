@@ -31,20 +31,20 @@ describe("Navigation & UX", () => {
     cy.get('input[type="checkbox"]').check();
     cy.contains("tudo certo, pode criar minha conta!").click();
 
-    cy.visit("/profile");
+    cy.visit("/Profile");
     cy.get("#header").contains("Sair").click();
   });
 
   beforeEach(() => {
     cy.login(testEmail, testPassword);
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
   });
 
   // ── Header navigation ──
 
   it("should navigate to home via header logo", () => {
     cy.get("#header").find('a[href="/"]').first().click();
-    cy.location("pathname").should("match", /^\/profile\/[^/]+$/);
+    cy.location("pathname").should("match", /^\/Profile\/[^/]+$/);
   });
 
   it("should navigate to home via Início link", () => {
@@ -77,12 +77,12 @@ describe("Navigation & UX", () => {
 
   it("should navigate to profile via sidebar", () => {
     cy.contains("a", "perfil").click();
-    cy.url().should("include", "/profile/");
+    cy.url().should("include", "/Profile/");
   });
 
   it("should navigate to scraps via sidebar", () => {
     cy.contains("a", "recados").click();
-    cy.url().should("include", "/recados");
+    cy.url().should("include", "/Scraps");
   });
 
   it("should navigate to photos via sidebar", () => {
@@ -92,7 +92,7 @@ describe("Navigation & UX", () => {
 
   it("should show edit link in sidebar for own profile", () => {
     cy.get("a").contains("editar").should("be.visible");
-    cy.get("a").contains("editar").should("have.attr", "href", "/profile/EditSummary");
+    cy.get("a").contains("editar").should("have.attr", "href", "/Profile/EditSummary");
   });
 
   // ── Full user flows ──
@@ -110,7 +110,7 @@ describe("Navigation & UX", () => {
 
     // Navigate to scraps
     cy.contains("a", "recados").click();
-    cy.url().should("include", "/recados");
+    cy.url().should("include", "/Scraps");
 
     // Send a scrap
     cy.intercept("POST", "/api/scraps").as("sendScrap");
@@ -124,18 +124,18 @@ describe("Navigation & UX", () => {
 
   it("should handle browser back button", () => {
     cy.contains("a", "recados").click();
-    cy.url().should("include", "/recados");
+    cy.url().should("include", "/Scraps");
 
     cy.go("back");
-    cy.url().should("include", "/profile/");
+    cy.url().should("include", "/Profile/");
   });
 
   it("should handle page refresh on any page", () => {
     cy.contains("a", "recados").click();
-    cy.url().should("include", "/recados");
+    cy.url().should("include", "/Scraps");
 
     cy.reload();
-    cy.url().should("include", "/recados");
+    cy.url().should("include", "/Scraps");
     cy.contains("Minha página de recados").should("be.visible");
   });
 
@@ -148,7 +148,7 @@ describe("Navigation & UX", () => {
     cy.get("#Email").type(testEmail);
     cy.get("#Passwd").type(`${testPassword}{enter}`);
 
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
   });
 
   it("should have proper tab order on login page", () => {

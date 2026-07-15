@@ -36,7 +36,7 @@ describe("Auth - Active User Login", () => {
     cy.contains("tudo certo, pode criar minha conta!").click();
 
     // Now the user is ready - logout for clean state
-    cy.visit("/profile");
+    cy.visit("/Profile");
     cy.get("#header").contains("Sair").click();
   });
 
@@ -51,12 +51,12 @@ describe("Auth - Active User Login", () => {
     cy.get("#Passwd").type(testPassword);
     cy.get('input[name="login"]').click();
 
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
   });
 
   it("should persist session after page refresh", () => {
     cy.login(testEmail, testPassword);
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
 
     cy.reload();
     cy.url().should("not.include", "/account");
@@ -64,7 +64,7 @@ describe("Auth - Active User Login", () => {
 
   it("should show user email in header after login", () => {
     cy.login(testEmail, testPassword);
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
     cy.get("#header").should("contain.text", testEmail);
   });
 
@@ -73,7 +73,7 @@ describe("Auth - Active User Login", () => {
 
     // Should NOT see SignUp page
     cy.url().should("not.include", "/SignUp");
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
   });
 
   // ── Validations ──
@@ -191,7 +191,7 @@ describe("Auth - Active User Login", () => {
   });
 
   it("should redirect unauthenticated user from protected route", () => {
-    cy.visit("/profile");
+    cy.visit("/Profile");
     cy.url().should("include", "/account");
   });
 
@@ -211,7 +211,7 @@ describe("Auth - Active User Login", () => {
 
   it("should logout and redirect to login page", () => {
     cy.login(testEmail, testPassword);
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
 
     cy.get("#header").contains("Sair").click();
     cy.url().should("include", "/account");

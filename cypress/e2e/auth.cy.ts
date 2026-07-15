@@ -18,12 +18,12 @@ describe("Login", () => {
     cy.get("#Passwd").type(TEST_PASSWORD);
     cy.get('input[name="login"]').click();
 
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
   });
 
   it("should persist session after page refresh", () => {
     cy.login(testEmail, TEST_PASSWORD);
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
 
     cy.reload();
     cy.url().should("not.include", "/account");
@@ -31,7 +31,7 @@ describe("Login", () => {
 
   it("should show user email in header after login", () => {
     cy.login(testEmail, TEST_PASSWORD);
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
     cy.get("#header").should("contain.text", testEmail);
   });
 
@@ -137,7 +137,7 @@ describe("Login", () => {
   });
 
   it("should redirect unauthenticated user from protected route", () => {
-    cy.visit("/profile");
+    cy.visit("/Profile");
     cy.url().should("include", "/account");
   });
 
@@ -157,7 +157,7 @@ describe("Login", () => {
 
   it("should logout and redirect to login page", () => {
     cy.login(testEmail, TEST_PASSWORD);
-    cy.url().should("include", "/profile");
+    cy.url().should("include", "/Profile");
 
     cy.get("#header").contains("Sair").click();
     cy.url().should("include", "/account");

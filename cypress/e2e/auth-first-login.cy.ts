@@ -45,7 +45,7 @@ describe("Auth - First Login (New User Onboarding)", () => {
 
       // Should redirect to SignUp onboarding or profile (if backend marks as onboarded)
       // Wait for redirect to complete
-      cy.url().should("match", /(\/SignUp|\/profile)/);
+      cy.url().should("match", /(\/SignUp|\/Profile)/);
     });
 
     // ── Happy path ──
