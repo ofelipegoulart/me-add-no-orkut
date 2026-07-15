@@ -49,7 +49,7 @@ function TestimonialList({ items }: { items: TestimonialResponse[] }) {
           />
           <div className="min-w-0 flex-1">
             <Link
-              href={`/profile/${testimonial.authorId}`}
+              href={`/Profile/${testimonial.authorId}`}
               className="orkut-uname text-orkut-link-dark"
             >
               {testimonial.authorName}
@@ -112,7 +112,7 @@ export function TestimonialsSection({
 
   return (
     <div className="orkut-col-section mt-1 bg-white border border-orkut-border px-2 py-1">
-      <h2 className="orkut-edit-title text-black py-1.75 pb-1.25">depoimentos</h2>
+      <h2 className="orkut-tahoma text-sm leading-5.25 font-bold text-black py-1.75 pb-1.25">depoimentos</h2>
 
       {canWrite && (
         <div className="pb-2">

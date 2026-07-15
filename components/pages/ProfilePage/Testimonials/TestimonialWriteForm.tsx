@@ -35,7 +35,7 @@ export function TestimonialWriteForm({
         { targetUserId: userId },
         { message: message.trim() },
       );
-      router.push(`/profile/${userId}/Testimonials`);
+      router.push(`/Profile/${userId}/Testimonials`);
     } catch {
       setError("Não foi possível enviar. Tente novamente.");
       setSending(false);
@@ -43,7 +43,7 @@ export function TestimonialWriteForm({
   };
 
   const handleCancel = () => {
-    router.push(`/profile/${userId}`);
+    router.push(`/Profile/${userId}`);
   };
 
   return (
@@ -94,19 +94,14 @@ export function TestimonialWriteForm({
         <div className="pt-1 text-[11px] text-[#c00]">{error}</div>
       )}
 
-      {/* Botões enviar / cancelar (OrkutActionButton), lado a lado, à esquerda */}
-      <div className="mt-3 flex items-center gap-2">
+      <div className="orkut-edit-buttons">
         <OrkutActionButton
-          variant="edit"
-          className="px-3"
           onClick={handleSend}
           disabled={!canSend}
         >
           {sending ? "enviando..." : "enviar"}
-        </OrkutActionButton>
+        </OrkutActionButton>{" "}
         <OrkutActionButton
-          variant="edit"
-          className="px-3"
           onClick={handleCancel}
           disabled={sending}
         >

@@ -39,8 +39,8 @@ export default async function TestimonialsPage({
               <>
                 {" > "}
                 <Link
-                  href={`/profile/${id}`}
-                  className="text-orkut-link-blue underline"
+                  href={`/Profile/${id}`}
+                  className="text-orkut-link underline"
                 >
                   {profileName}
                 </Link>
@@ -56,10 +56,10 @@ export default async function TestimonialsPage({
       </div>
       <div className="orkut-col-right">
         <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
-          <OrkutFriends friends={FRIENDS} userId={id} />
+          <OrkutFriends friends={FRIENDS} userId={id} title="amigos" />
         </div>
         <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
-          <OrkutCommunities communities={COMMUNITIES} userId={id} />
+          <OrkutCommunities communities={COMMUNITIES} userId={id} title="comunidades" />
         </div>
       </div>
     </div>

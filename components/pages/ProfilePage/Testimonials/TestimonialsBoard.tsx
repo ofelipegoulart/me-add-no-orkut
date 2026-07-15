@@ -40,7 +40,7 @@ function Pagination({
 }) {
   const isFirst = page <= 0;
   const isLast = page >= totalPages - 1;
-  const active = "text-orkut-link-blue underline cursor-pointer";
+  const active = "text-orkut-link underline cursor-pointer";
   const disabled = "text-[#ccc]";
 
   return (
@@ -83,8 +83,8 @@ function TestimonialRow({
   onDelete: () => void;
 }) {
   return (
-    <li className="flex items-start gap-3 border-b border-orkut-border py-3 last:border-b-0">
-      <Link href={`/profile/${testimonial.authorId}`} className="shrink-0">
+    <li className="flex items-start gap-3 border-b border-orkut-border bg-[#eef4fc] p-3">
+      <Link href={`/Profile/${testimonial.authorId}`} className="shrink-0">
         <img
           src={avatarSrc(testimonial)}
           alt=""
@@ -96,7 +96,7 @@ function TestimonialRow({
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline justify-between gap-2">
           <Link
-            href={`/profile/${testimonial.authorId}`}
+            href={`/Profile/${testimonial.authorId}`}
             className="text-orkut-link font-bold text-[13px]"
           >
             {testimonial.authorName}

@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getReceivedTestimonials } from "@/lib/profile-service";
-import {
-  formatTestimonialDate,
-  testimonialsTitle,
-  type Gender,
-} from "@/lib/testimonial-labels";
+import { testimonialsTitle, type Gender } from "@/lib/testimonial-labels";
 import type { TestimonialResponse } from "@/lib/profile-types";
 
 // Quantos depoimentos aparecem na prévia da coluna do meio antes do
@@ -72,9 +68,9 @@ export function ReceivedTestimonialsPreview({
           {preview.map((testimonial) => (
             <li
               key={testimonial.id}
-              className="flex items-start gap-2 border-b border-orkut-border py-2 last:border-b-0"
+              className="flex items-start gap-2 border-b border-orkut-border bg-[#eef5fd] p-2"
             >
-              <Link href={`/profile/${testimonial.authorId}`} className="shrink-0">
+              <Link href={`/Profile/${testimonial.authorId}`} className="shrink-0">
                 <img
                   src={avatarSrc(testimonial)}
                   alt=""
@@ -84,17 +80,12 @@ export function ReceivedTestimonialsPreview({
                 />
               </Link>
               <div className="min-w-0 flex-1">
-                <div className="flex items-baseline justify-between gap-2">
-                  <Link
-                    href={`/profile/${testimonial.authorId}`}
-                    className="orkut-uname text-orkut-link-dark"
-                  >
-                    {testimonial.authorName}
-                  </Link>
-                  <span className="shrink-0 text-[11px] text-[#999]">
-                    {formatTestimonialDate(testimonial.createdAt)}
-                  </span>
-                </div>
+                <Link
+                  href={`/Profile/${testimonial.authorId}`}
+                  className="orkut-uname text-orkut-link-dark"
+                >
+                  {testimonial.authorName}
+                </Link>
                 <p className="text-[12px] text-black break-words">
                   {testimonial.message}
                 </p>
@@ -103,7 +94,7 @@ export function ReceivedTestimonialsPreview({
                 <button
                   type="button"
                   onClick={() => handleDelete(testimonial.id)}
-                  className="shrink-0 self-center text-orkut-link-blue text-[11px] underline"
+                  className="shrink-0 self-center text-orkut-link text-[11px] underline"
                 >
                   apagar
                 </button>
@@ -116,8 +107,8 @@ export function ReceivedTestimonialsPreview({
       {(hasMore || preview.length > 0) && (
         <div className="pb-1 pt-1 text-right">
           <Link
-            href={`/profile/${userId}/Testimonials`}
-            className="text-orkut-link-blue text-[11px] underline"
+            href={`/Profile/${userId}/Testimonials`}
+            className="text-orkut-link text-[11px] underline"
           >
             ver todos os depoimentos »
           </Link>

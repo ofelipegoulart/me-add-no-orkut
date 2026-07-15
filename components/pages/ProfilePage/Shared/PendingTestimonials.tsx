@@ -50,7 +50,7 @@ export function PendingTestimonials({ userId }: { userId: string }) {
 
   return (
     <div className="orkut-col-section mt-1 bg-white border border-orkut-border px-2 py-1">
-      <h2 className="orkut-edit-title text-black py-1.75 pb-1.25">
+      <h2 className="orkut-tahoma text-sm leading-5.25 font-bold text-black py-1.75 pb-1.25">
         novos depoimentos ({pending.length})
       </h2>
       <ul className="flex flex-col">
@@ -68,7 +68,7 @@ export function PendingTestimonials({ userId }: { userId: string }) {
             />
             <div className="min-w-0 flex-1">
               <Link
-                href={`/profile/${testimonial.authorId}`}
+                href={`/Profile/${testimonial.authorId}`}
                 className="orkut-uname text-orkut-link-dark"
               >
                 {testimonial.authorName}
