@@ -42,16 +42,16 @@ export const FRIENDS: { id: string; name: string; count: number; seed: string }[
   { id: "wX9yZ0aB", name: "Camila", count: 22, seed: "i" },
 ];
 
-export const COMMUNITIES: { name: string; seed: string }[] = [
-  { name: "As Ninas de...", seed: "1" },
-  { name: "Só faço...", seed: "2" },
-  { name: "Anime-Sai", seed: "3" },
-  { name: "Rock BR", seed: "4" },
-  { name: "Cinema", seed: "5" },
-  { name: "Dev Web", seed: "6" },
-  { name: "Futebol", seed: "7" },
-  { name: "Música MPB", seed: "8" },
-  { name: "Games", seed: "9" },
+export const COMMUNITIES: { name: string; seed: string; count: number }[] = [
+  { name: "As Ninas de...", seed: "1", count: 4210 },
+  { name: "Só faço...", seed: "2", count: 3187 },
+  { name: "Anime-Sai", seed: "3", count: 2054 },
+  { name: "Rock BR", seed: "4", count: 1893 },
+  { name: "Cinema", seed: "5", count: 1502 },
+  { name: "Dev Web", seed: "6", count: 987 },
+  { name: "Futebol", seed: "7", count: 745 },
+  { name: "Música MPB", seed: "8", count: 611 },
+  { name: "Games", seed: "9", count: 402 },
 ];
 
 export const ORKUT_MENU_ICONS = {
