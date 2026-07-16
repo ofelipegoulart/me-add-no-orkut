@@ -6,6 +6,8 @@ import type { Scrap } from "@/data/mock-data";
 import OrkutCommunities from "@/components/pages/Social/orkut-communities";
 import OrkutFriends from "@/components/pages/Social/orkut-friends";
 import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
+import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
+import { SidebarSocialBox } from "@/components/ui/boxes/SidebarSocialBox";
 import { MarkScrapsRead } from "@/components/pages/Scraps/mark-scraps-read";
 import { ScrapsList } from "@/components/pages/Scraps/scraps-list";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
@@ -65,7 +67,7 @@ export default async function HomeScrapsPage() {
   return (
     <div className="min-h-screen w-full bg-orkut-bg">
       <MarkScrapsRead scrapIds={unreadIds} />
-      <div className="orkut-col-left border border-orkut-border bg-white shadow-sm">
+      <SidebarLeftBox>
         <OrkutLeftSidebar
           displayName={displayName}
           isOwnProfile
@@ -73,7 +75,7 @@ export default async function HomeScrapsPage() {
           avatarUrl={avatarUrl}
           infoLines={infoLines}
         />
-      </div>
+      </SidebarLeftBox>
       <div className="orkut-col-main flex flex-col gap-1.25">
         <ScrapsList
           initialScraps={scraps}
@@ -85,12 +87,12 @@ export default async function HomeScrapsPage() {
         />
       </div>
       <div className="orkut-col-right">
-        <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
+        <SidebarSocialBox>
           <OrkutFriends friends={friendsForUI} userId={userId} />
-        </div>
-        <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
+        </SidebarSocialBox>
+        <SidebarSocialBox>
           <OrkutCommunities communities={communitiesForUI} userId={userId} />
-        </div>
+        </SidebarSocialBox>
       </div>
     </div>
   );

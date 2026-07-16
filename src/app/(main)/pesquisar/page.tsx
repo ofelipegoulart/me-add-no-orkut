@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
+import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
 import { SearchScreen } from "@/components/pages/Search/SearchScreen";
 import { getUniversalSearchResultsServer } from "@/lib/search-service-server";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
@@ -58,9 +59,9 @@ export default async function SearchPage({
 
   return (
     <div className="min-h-screen w-full bg-orkut-bg orkut-search-page">
-      <div className="orkut-col-left border border-orkut-border bg-white shadow-sm">
+      <SidebarLeftBox>
         <OrkutLeftSidebar displayName={displayName} isOwnProfile userId={userId} avatarUrl={sidebar.avatarUrl} infoLines={sidebar.infoLines} />
-      </div>
+      </SidebarLeftBox>
       <SearchScreen
         term={term}
         results={results}

@@ -225,8 +225,8 @@ export default function CommunityEditPage({
 
   return (
     <div className="orkut-edit-page">
-      <h2 className="orkut-edit-title">{titulo}</h2>
-      <p className="orkut-edit-breadcrumb">
+      <h2 className="orkut-title">{titulo}</h2>
+      <p className="orkut-breadcrumb">
         <Link href="/">Início</Link>
         <span className="orkut-breadcrumb-sep">&gt;</span>
         <Link href="/Communities">Comunidades</Link>

@@ -1,5 +1,6 @@
 import { NavItem } from "@/components/pages/Community/NavItem";
 import type { CommunityRole } from "@/components/pages/Community/types";
+import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
 
 export function CommunityLeftColumn({
   role,
@@ -19,7 +20,7 @@ export function CommunityLeftColumn({
   onJoinClick?: () => void;
 }) {
   return (
-    <div className="orkut-col-left border border-orkut-border bg-white">
+    <SidebarLeftBox>
       <div className="text-center mb-1.5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={icon} alt={name} width={130} className="mx-auto" />
@@ -53,6 +54,6 @@ export function CommunityLeftColumn({
           <NavItem icon="/icons/i_friendgroup.png" label="membros" href={membersHref} divider={false} />
         </>
       )}
-    </div>
+    </SidebarLeftBox>
   );
 }

@@ -1,4 +1,5 @@
 import { formatDateShort } from "@/components/pages/Community/format";
+import { SmallSoftCard } from "@/components/ui/boxes/SmallSoftCard";
 import type { CommunityRole } from "@/components/pages/Community/types";
 import type { CommunityTopicBrief } from "@/lib/profile-types";
 
@@ -42,9 +43,9 @@ function ForumRows({ topics, showTools }: { topics: CommunityTopicBrief[]; showT
 
 export function CommunityForumBox({ topics, role }: { topics: CommunityTopicBrief[]; role: CommunityRole }) {
   return (
-    <div className="border border-orkut-border bg-white rounded-[6px]">
+    <SmallSoftCard>
       <div className="pt-[7px] pl-3 pr-2 pb-[5px]">
-        <h2 className="orkut-section-heading flex items-center gap-1.5">
+        <h2 className="orkut-subtitle flex items-center gap-1.5">
           fórum
         </h2>
       </div>
@@ -60,6 +61,6 @@ export function CommunityForumBox({ topics, role }: { topics: CommunityTopicBrie
           <span className="orkut-btn-pill text-[#aaa] cursor-not-allowed pointer-events-none">novo tópico</span>
         )}
       </div>
-    </div>
+    </SmallSoftCard>
   );
 }

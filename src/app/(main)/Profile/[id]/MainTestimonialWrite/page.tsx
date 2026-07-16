@@ -26,8 +26,8 @@ export default async function MainTestimonialWritePage({
       {/* Ocupa toda a largura que restou sem as colunas de amigos/comunidades */}
       <div className="orkut-col-full border border-orkut-border bg-white shadow-sm">
         <div className="orkut-edit-page">
-          <h2 className="orkut-edit-title">Criar depoimento</h2>
-          <p className="orkut-edit-breadcrumb">
+          <h2 className="orkut-title">Criar depoimento</h2>
+          <p className="orkut-breadcrumb">
             <Link href="/Home">Início</Link>
             {profileName && (
               <>

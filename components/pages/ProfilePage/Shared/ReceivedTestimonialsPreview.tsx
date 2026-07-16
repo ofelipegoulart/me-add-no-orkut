@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getReceivedTestimonials } from "@/lib/profile-service";
+import { BigSoftSection } from "@/components/ui/boxes/BigSoftSection";
 import { testimonialsTitle, type Gender } from "@/lib/testimonial-labels";
 import type { TestimonialResponse } from "@/lib/profile-types";
 
@@ -53,12 +54,12 @@ export function ReceivedTestimonialsPreview({
   };
 
   return (
-    <div className="orkut-col-section mt-1 bg-white border border-orkut-border px-2 py-1">
-      <h2 className="orkut-tahoma text-sm leading-5.25 font-bold text-black py-1.75 pb-1.25">
-        <img src="/icons/arr_expanded.gif" alt="" width={11} height={11} className="inline-block mr-1 align-middle" />
-        {title}
-      </h2>
-
+    <BigSoftSection
+      title={title}
+      icon
+      seeAllHref={hasMore || preview.length > 0 ? `/Profile/${userId}/Testimonials` : undefined}
+      seeAllLabel="ver todos os depoimentos »"
+    >
       {preview.length === 0 ? (
         <div className="py-2 text-[12px] text-[#5a5a5a]">
           nenhum depoimento ainda.
@@ -103,17 +104,6 @@ export function ReceivedTestimonialsPreview({
           ))}
         </ul>
       )}
-
-      {(hasMore || preview.length > 0) && (
-        <div className="pb-1 pt-1 text-right">
-          <Link
-            href={`/Profile/${userId}/Testimonials`}
-            className="text-orkut-link text-[11px] underline"
-          >
-            ver todos os depoimentos »
-          </Link>
-        </div>
-      )}
-    </div>
+    </BigSoftSection>
   );
 }

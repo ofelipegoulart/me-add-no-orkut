@@ -368,7 +368,7 @@ export function ScrapsList({
           <tbody>
             <tr>
               <td className="flex flex-row pb-2 px-2 pt-2">
-                <h1 className="orkut-edit-title text-black py-1.75 pb-1.25">
+                <h1 className="orkut-title text-black py-1.75 pb-1.25">
                   {pageTitle} ({totalCount})
                   {unreadCount > 0 && (
                     <span className="text-[12px] font-normal text-[#b8860b] ml-1">

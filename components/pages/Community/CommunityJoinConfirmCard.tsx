@@ -1,4 +1,5 @@
 import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
+import { SmallSoftCard } from "@/components/ui/boxes/SmallSoftCard";
 
 export function CommunityJoinConfirmCard({
   pending,
@@ -12,7 +13,7 @@ export function CommunityJoinConfirmCard({
   onCancel: () => void;
 }) {
   return (
-    <div className="border border-orkut-border bg-white rounded-[6px] mb-2 text-left px-3 pt-3 pb-2.5">
+    <SmallSoftCard className="mb-2 text-left px-3 pt-3 pb-2.5">
       <p className="text-[12px] mb-1">Tem certeza de que deseja participar desta comunidade?</p>
       <div className="orkut-divider" />
       {error && <p className="text-[11px] text-red-600 mb-3">{error}</p>}
@@ -24,6 +25,6 @@ export function CommunityJoinConfirmCard({
           cancelar
         </OrkutActionButton>
       </div>
-    </div>
+    </SmallSoftCard>
   );
 }

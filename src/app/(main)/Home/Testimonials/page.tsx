@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
+import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
+import { BigSoftShell } from "@/components/ui/boxes/BigSoftShell";
 import { TestimonialsBoard } from "@/components/pages/ProfilePage/Testimonials/TestimonialsBoard";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
 
@@ -24,7 +26,7 @@ export default async function HomeTestimonialsPage() {
 
   return (
     <div className="min-h-screen w-full bg-orkut-bg">
-      <div className="orkut-col-left border border-orkut-border bg-white shadow-sm">
+      <SidebarLeftBox>
         <OrkutLeftSidebar
           displayName={displayName}
           isOwnProfile
@@ -32,12 +34,12 @@ export default async function HomeTestimonialsPage() {
           avatarUrl={avatarUrl}
           infoLines={infoLines}
         />
-      </div>
+      </SidebarLeftBox>
       {/* Ocupa toda a largura que restou, igual à página de Criar depoimento. */}
-      <div className="orkut-col-full border border-orkut-border bg-white shadow-sm">
+      <BigSoftShell>
         <div className="orkut-edit-page">
-          <h2 className="orkut-edit-title">Meus depoimentos</h2>
-          <p className="orkut-edit-breadcrumb">
+          <h2 className="orkut-title">Meus depoimentos</h2>
+          <p className="orkut-breadcrumb">
             <Link href="/Home">Início</Link>
             <span className="orkut-breadcrumb-sep">&gt;</span>
             Meus depoimentos
@@ -45,7 +47,7 @@ export default async function HomeTestimonialsPage() {
 
           <TestimonialsBoard userId={userId} isOwner gender={gender} />
         </div>
-      </div>
+      </BigSoftShell>
     </div>
   );
 }

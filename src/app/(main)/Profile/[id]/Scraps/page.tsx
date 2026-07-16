@@ -4,6 +4,7 @@ import { FRIENDS, COMMUNITIES } from "@/data/mock-data";
 import type { Scrap } from "@/data/mock-data";
 import OrkutCommunities from "@/components/pages/Social/orkut-communities";
 import OrkutFriends from "@/components/pages/Social/orkut-friends";
+import { SidebarSocialBox } from "@/components/ui/boxes/SidebarSocialBox";
 import { MarkScrapsRead } from "@/components/pages/Scraps/mark-scraps-read";
 import { ScrapsList } from "@/components/pages/Scraps/scraps-list";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
@@ -73,12 +74,12 @@ export default async function RecadosPage({ params }: { params: Promise<{ id: st
         />
       </div>
       <div className="orkut-col-right">
-        <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
+        <SidebarSocialBox>
           <OrkutFriends friends={friendsForUI} userId={id} />
-        </div>
-        <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
+        </SidebarSocialBox>
+        <SidebarSocialBox>
           <OrkutCommunities communities={communitiesForUI} userId={id} />
-        </div>
+        </SidebarSocialBox>
       </div>
     </div>
   );

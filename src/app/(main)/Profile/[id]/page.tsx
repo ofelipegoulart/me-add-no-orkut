@@ -3,6 +3,7 @@ import { authOptions } from "@/lib/auth";
 import { FRIENDS, COMMUNITIES } from "@/data/mock-data";
 import OrkutCommunities from "@/components/pages/Social/orkut-communities";
 import OrkutFriends from "@/components/pages/Social/orkut-friends";
+import { SidebarSocialBox } from "@/components/ui/boxes/SidebarSocialBox";
 import MyProfilePage from "@/components/pages/ProfilePage/MyProfilePage";
 import UserProfilePage from "@/components/pages/ProfilePage/UserProfilePage";
 import { loadProfileRows } from "@/lib/profile-data";
@@ -72,12 +73,12 @@ export default async function ProfilePage({
         )}
       </div>
       <div className="orkut-col-right">
-        <div className="border border-orkut-border bg-white shadow-sm rounded-lg">
+        <SidebarSocialBox>
           <OrkutFriends friends={friendsForUI} userId={id} title="amigos" />
-        </div>
-        <div className="border border-orkut-border bg-white shadow-sm rounded-lg">
+        </SidebarSocialBox>
+        <SidebarSocialBox>
           <OrkutCommunities communities={communitiesForUI} userId={id} title="comunidades" />
-        </div>
+        </SidebarSocialBox>
       </div>
     </div>
   );

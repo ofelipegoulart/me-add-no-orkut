@@ -1,4 +1,5 @@
 import  { OrkutMainColumn } from "@/components/pages/ProfilePage/main-column";
+import { BigAccentShell } from "@/components/ui/boxes/BigAccentShell";
 import { RecentMediaSection } from "@/components/pages/ProfilePage/Shared/RecentMediaSection";
 import { ReceivedTestimonialsPreview } from "@/components/pages/ProfilePage/Shared/ReceivedTestimonialsPreview";
 import { mediaCountsFromOverview } from "@/lib/profile-media";
@@ -22,7 +23,7 @@ export default function UserProfilePage({
 
   return (
     <>
-      <div className="border border-orkut-border bg-white shadow-sm orkut-col-main-inner">
+      <BigAccentShell>
         <OrkutMainColumn
           displayName={displayName}
           userId={userId}

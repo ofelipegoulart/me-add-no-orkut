@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { InfoRow } from "@/components/pages/Community/InfoRow";
+import { CommunityHeaderBlock } from "@/components/pages/Community/CommunityHeaderBlock";
+import { BigAccentShell } from "@/components/ui/boxes/BigAccentShell";
 import {
   formatDateLong,
   formatLocation,
@@ -13,21 +15,21 @@ export function CommunityInfoCard({ community, category }: { community: Communit
   const location = formatLocation(c.location);
 
   return (
-    <div className="border border-orkut-border bg-white overflow-hidden mb-2" style={{ borderRadius: "4px 48px 4px 4px" }}>
-      <div className="pt-[7px] pl-3 pr-2 pb-[5px]">
-        <h1 style={{ fontFamily: "Tahoma, Verdana, Arial, sans-serif", fontSize: 24, lineHeight: "28px", fontWeight: 400, margin: 0, padding: 0, color: "#000" }}>
-          {c.name}
-        </h1>
-        <p className="text-[11px] leading-3.5 text-[#7b7b7b] m-0 pt-0.5">
-          <Link href="/" className="text-orkut-link">Início</Link>
-          {" › "}
-          <Link href="/Communities" className="text-orkut-link">Comunidades</Link>
-          {" › "}
-          <a href="#" className="text-orkut-link">{category}</a>
-          {" › "}
-          <span>{c.name}</span>
-        </p>
-      </div>
+    <BigAccentShell className="overflow-hidden mb-2">
+      <CommunityHeaderBlock
+        title={c.name}
+        breadcrumb={
+          <>
+            <Link href="/" className="text-orkut-link">Início</Link>
+            {" › "}
+            <Link href="/Communities" className="text-orkut-link">Comunidades</Link>
+            {" › "}
+            <a href="#" className="text-orkut-link">{category}</a>
+            {" › "}
+            <span>{c.name}</span>
+          </>
+        }
+      />
       {/* Faixas da ficha, com gutter branco em volta (padding 7px/2px) */}
       <div className="px-[7px] pb-[2px]">
         {c.description && <InfoRow label="descrição:" alt>{c.description}</InfoRow>}
@@ -46,6 +48,6 @@ export function CommunityInfoCard({ community, category }: { community: Communit
         <InfoRow label="criada em:" alt={false}>{formatDateLong(c.createdAt)}</InfoRow>
         <InfoRow label="membros:" alt>{c.membersCount}</InfoRow>
       </div>
-    </div>
+    </BigAccentShell>
   );
 }

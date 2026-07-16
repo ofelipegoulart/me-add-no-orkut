@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
+import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
 import CommunitiesPage from "@/components/pages/Community/CommunitiesPage";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
 
@@ -20,7 +21,7 @@ export default async function Page() {
 
   return (
     <div className="min-h-screen w-full bg-orkut-bg">
-      <div className="orkut-col-left border border-orkut-border bg-white shadow-sm">
+      <SidebarLeftBox>
         <OrkutLeftSidebar
           displayName={displayName}
           isOwnProfile
@@ -28,7 +29,7 @@ export default async function Page() {
           avatarUrl={sidebar.avatarUrl}
           infoLines={sidebar.infoLines}
         />
-      </div>
+      </SidebarLeftBox>
       <CommunitiesPage />
     </div>
   );

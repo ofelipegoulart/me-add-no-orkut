@@ -313,24 +313,11 @@
 }
 
 /* =====================================================
-   Profile name heading — Arial, traço fino, sem negrito
-   Sobrescreve o reset global que força font-size:12px em h1
-   ===================================================== */
-.orkut-col-main h1 {
-
-  font-size: 22px;
-  line-height: 28px;
-  font-weight: normal;
-  color: #000;
-  margin: 0;
-  padding: 7px 0 5px;
-}
-
-/* =====================================================
-   Título de seção — spec fiel do <h2> original do orkut
+   Subtítulo — spec fiel do <h2> original do orkut
    (Tahoma 15px / bold / line-height 21px / 6px de respiro)
+   Um nível abaixo de .orkut-title (24px) na hierarquia de texto.
    ===================================================== */
-.orkut-section-heading {
+.orkut-subtitle {
   font-family: Tahoma, Verdana, Arial, sans-serif;
   font-size: 15px;
   line-height: 21px;
@@ -370,7 +357,7 @@
 }
 
 /* ── Breadcrumbs ── */
-.orkut-edit-breadcrumb {
+.orkut-breadcrumb {
 
   font-size: 11px;
   color: #7b8ca5;
@@ -378,17 +365,17 @@
   padding: 0 0 6px;
 }
 
-.orkut-edit-breadcrumb a {
+.orkut-breadcrumb a {
   color: #7b8ca5;
   text-decoration: none;
 }
 
-.orkut-edit-breadcrumb a:hover {
+.orkut-breadcrumb a:hover {
   text-decoration: underline;
   color: #4b66a1;
 }
 
-.orkut-edit-breadcrumb .orkut-breadcrumb-sep {
+.orkut-breadcrumb .orkut-breadcrumb-sep {
   margin: 0 3px;
   color: #99a8bf;
 }
@@ -404,9 +391,9 @@
   }
 }
 
-/* Título de página — mesmo formato do <h1> da comunidade "Thalore"
+/* Título padrão de página — mesmo formato do <h1> da comunidade "Thalore"
    (Tahoma 24px / line-height 28px / peso normal / preto). */
-.orkut-edit-title {
+.orkut-title {
   font-family: Tahoma, Verdana, Arial, sans-serif;
   font-size: 24px;
   line-height: 28px;
@@ -657,11 +644,6 @@ td.orkut-edit-section {
 
 .orkut-btn:active {
   background: #cdd5e2;
-}
-
-.orkut-btn-cancel {
-  background: #f0f2f5;
-  color: var(--orkut-link-dark);
 }
 
 .orkut-btn-link {
@@ -952,7 +934,7 @@ td.orkut-edit-section {
   margin: 0;
 }
 
-.orkut-search-heading .orkut-edit-breadcrumb {
+.orkut-search-heading .orkut-breadcrumb {
   padding: 2px 0 0;
 }
 

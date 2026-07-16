@@ -5,6 +5,8 @@ import { FRIENDS, COMMUNITIES } from "@/data/mock-data";
 import OrkutCommunities from "@/components/pages/Social/orkut-communities";
 import OrkutFriends from "@/components/pages/Social/orkut-friends";
 import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
+import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
+import { SidebarSocialBox } from "@/components/ui/boxes/SidebarSocialBox";
 import MyProfilePage from "@/components/pages/ProfilePage/MyProfilePage";
 import { loadProfileRows } from "@/lib/profile-data";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
@@ -76,9 +78,9 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen w-full bg-orkut-bg">
-      <div className="orkut-col-left border border-orkut-border bg-white shadow-sm">
+      <SidebarLeftBox>
         <OrkutLeftSidebar displayName={displayName} isOwnProfile userId={userId} avatarUrl={avatarUrl} infoLines={infoLines} />
-      </div>
+      </SidebarLeftBox>
       <div className="orkut-col-main flex flex-col gap-1.25">
         <MyProfilePage
           displayName={displayName}
@@ -90,12 +92,12 @@ export default async function HomePage() {
         />
       </div>
       <div className="orkut-col-right">
-        <div className="border border-orkut-border bg-white shadow-sm rounded-lg">
+        <SidebarSocialBox>
           <OrkutFriends friends={friendsForUI} userId={userId} />
-        </div>
-        <div className="border border-orkut-border bg-white shadow-sm rounded-lg">
+        </SidebarSocialBox>
+        <SidebarSocialBox>
           <OrkutCommunities communities={communitiesForUI} userId={userId} />
-        </div>
+        </SidebarSocialBox>
       </div>
     </div>
   );

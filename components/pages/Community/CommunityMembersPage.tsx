@@ -8,6 +8,8 @@ import { CommunityLeftColumn } from "@/components/pages/Community/CommunityLeftC
 import { CommunityMembersList } from "@/components/pages/Community/CommunityMembersList";
 import { CommunityMembersTabs } from "@/components/pages/Community/CommunityMembersTabs";
 import { CommunityPendingMembersTab } from "@/components/pages/Community/CommunityPendingMembersTab";
+import { CommunityHeaderBlock } from "@/components/pages/Community/CommunityHeaderBlock";
+import { BigAccentShell } from "@/components/ui/boxes/BigAccentShell";
 import { roleFromRelation } from "@/components/pages/Community/types";
 import type { MembersTab } from "@/components/pages/Community/types";
 import type { CommunityDashboard } from "@/lib/profile-types";
@@ -42,21 +44,21 @@ export default function CommunityMembersPage({
       />
 
       <div style={{ marginLeft: 153 }}>
-        <div className="border border-orkut-border bg-white overflow-hidden mb-2" style={{ borderRadius: "4px 48px 4px 4px" }}>
-          <div className="pt-[7px] pl-3 pr-2 pb-[5px]">
-            <h1 style={{ fontFamily: "Tahoma, Verdana, Arial, sans-serif", fontSize: 24, lineHeight: "28px", fontWeight: 400, margin: 0, padding: 0, color: "#000" }}>
-              Membros
-            </h1>
-            <p className="text-[11px] leading-3.5 text-[#7b7b7b] m-0 pt-0.5">
-              <Link href="/" className="text-orkut-link">Início</Link>
-              {" › "}
-              <Link href="/Communities" className="text-orkut-link">Comunidades</Link>
-              {" › "}
-              <Link href={`/Community/${c.id}`} className="text-orkut-link">{c.name}</Link>
-              {" › "}
-              <span>Membros</span>
-            </p>
-          </div>
+        <BigAccentShell className="overflow-hidden mb-2">
+          <CommunityHeaderBlock
+            title="Membros"
+            breadcrumb={
+              <>
+                <Link href="/" className="text-orkut-link">Início</Link>
+                {" › "}
+                <Link href="/Communities" className="text-orkut-link">Comunidades</Link>
+                {" › "}
+                <Link href={`/Community/${c.id}`} className="text-orkut-link">{c.name}</Link>
+                {" › "}
+                <span>Membros</span>
+              </>
+            }
+          />
 
           <CommunityMembersTabs active={tab} showPending={showPending} onChange={setTab} />
 
@@ -75,7 +77,7 @@ export default function CommunityMembersPage({
           {tab === "pending" && showPending && (
             <CommunityPendingMembersTab communityId={c.id} />
           )}
-        </div>
+        </BigAccentShell>
       </div>
 
       <CommunityFooter />

@@ -7,6 +7,7 @@ import {
   respondToTestimonial,
 } from "@/lib/profile-service";
 import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
+import { BigSoftSection } from "@/components/ui/boxes/BigSoftSection";
 import type { TestimonialResponse } from "@/lib/profile-types";
 
 function avatarSrc(testimonial: TestimonialResponse) {
@@ -49,10 +50,7 @@ export function PendingTestimonials({ userId }: { userId: string }) {
   if (pending.length === 0) return null;
 
   return (
-    <div className="orkut-col-section mt-1 bg-white border border-orkut-border px-2 py-1">
-      <h2 className="orkut-tahoma text-sm leading-5.25 font-bold text-black py-1.75 pb-1.25">
-        novos depoimentos ({pending.length})
-      </h2>
+    <BigSoftSection title={`novos depoimentos (${pending.length})`}>
       <ul className="flex flex-col">
         {pending.map((testimonial) => (
           <li
@@ -96,6 +94,6 @@ export function PendingTestimonials({ userId }: { userId: string }) {
           </li>
         ))}
       </ul>
-    </div>
+    </BigSoftSection>
   );
 }

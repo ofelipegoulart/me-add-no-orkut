@@ -2,6 +2,8 @@ import { notFound, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
+import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
+import { BigSoftShell } from "@/components/ui/boxes/BigSoftShell";
 import CommunityEditPage from "@/components/pages/Community/CommunityEditPage";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
 import { getCommunityDashboardServer } from "@/lib/profile-service-server";
@@ -50,7 +52,7 @@ export default async function Page({
 
   return (
     <div className="min-h-screen w-full bg-orkut-bg">
-      <div className="orkut-col-left border border-orkut-border bg-white shadow-sm">
+      <SidebarLeftBox>
         <OrkutLeftSidebar
           displayName={displayName}
           isOwnProfile
@@ -58,10 +60,10 @@ export default async function Page({
           avatarUrl={sidebar.avatarUrl}
           infoLines={sidebar.infoLines}
         />
-      </div>
-      <div className="orkut-col-full border border-orkut-border bg-white">
+      </SidebarLeftBox>
+      <BigSoftShell>
         <CommunityEditPage mode={mode} communityId={id} initial={initial} />
-      </div>
+      </BigSoftShell>
     </div>
   );
 }

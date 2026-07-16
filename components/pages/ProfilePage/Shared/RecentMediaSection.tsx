@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BigSoftSection } from "@/components/ui/boxes/BigSoftSection";
 
 // Item de mídia (foto ou vídeo) exibido no grid de miniaturas. Enquanto não há
 // endpoints de fotos/vídeos no backend, esta seção é puramente apresentacional:
@@ -34,12 +35,12 @@ export function RecentMediaSection({
   const thumbs = items.slice(0, MAX_PER_ROW);
 
   return (
-    <div className="orkut-col-section mt-1 bg-white border border-orkut-border px-2 py-1">
-      <h2 className="orkut-tahoma text-sm leading-5.25 font-bold text-black py-1.75 pb-1.25">
-        <img src="/icons/arr_expanded.gif" alt="" width={11} height={11} className="inline-block mr-1 align-middle" />
-        {title} ({count})
-      </h2>
-
+    <BigSoftSection
+      title={`${title} (${count})`}
+      icon
+      seeAllHref={seeAllHref}
+      seeAllLabel={seeAllLabel}
+    >
       {thumbs.length > 0 ? (
         <div
           className="grid gap-1.5 pb-1"
@@ -67,17 +68,6 @@ export function RecentMediaSection({
       ) : (
         <div className="py-2 text-[12px] text-[#5a5a5a]">{emptyLabel}</div>
       )}
-
-      {seeAllHref && (
-        <div className="pb-1 text-right">
-          <Link
-            href={seeAllHref}
-            className="text-orkut-link text-[11px] underline"
-          >
-            {seeAllLabel}
-          </Link>
-        </div>
-      )}
-    </div>
+    </BigSoftSection>
   );
 }

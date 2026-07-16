@@ -122,7 +122,7 @@ export function SearchScreen({
       <div className="orkut-col-main orkut-search-main">
         <div className="orkut-search-heading">
           <h1 className="orkut-search-title">{heading}</h1>
-          <p className="orkut-edit-breadcrumb">
+          <p className="orkut-breadcrumb">
             <Link href="/">Início</Link>
             <span className="orkut-breadcrumb-sep">&gt;</span>
             <span>Pesquisar</span>

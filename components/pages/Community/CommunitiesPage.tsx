@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { UniversalSearch } from "@/components/ui/Search/UniversalSearch";
+import { BigAccentShell } from "@/components/ui/boxes/BigAccentShell";
 import { getMyCommunities } from "@/lib/profile-service";
 import type { MyCommunityCard } from "@/lib/profile-types";
 
@@ -53,7 +54,7 @@ const CATEGORIES = [
 function WelcomePanel() {
   return (
     <div className="px-1.5 pb-3">
-      <h1 className="orkut-edit-title text-black py-1.75 pb-1.25">Comunidades</h1>
+      <h1 className="orkut-title text-black py-1.75 pb-1.25">Comunidades</h1>
 
       <p className="text-[11px] leading-4 text-[#7b8ca5] m-0 pt-0.5">
         <Link href="/" className="text-[#7b8ca5]">
@@ -168,7 +169,7 @@ export default function CommunitiesPage() {
     <div className="ml-38.25">
       <div className="flex flex-col md:flex-row md:items-start gap-3.5">
         {/* ══════════ Coluna esquerda (~63%) ══════════ */}
-        <section className="md:basis-[63%] md:grow border border-orkut-border bg-white shadow-sm orkut-col-main-inner">
+        <BigAccentShell className="md:basis-[63%] md:grow">
           {communities === null ? (
             <p className="px-1.5 py-3 text-[12px] text-[#7b8ca5]">
               carregando comunidades...
@@ -178,14 +179,14 @@ export default function CommunitiesPage() {
           ) : (
             <WelcomePanel />
           )}
-        </section>
+        </BigAccentShell>
 
         {/* ══════════ Busca + Categorias (~34%) ══════════ */}
         <aside
           id="pesquisa"
           className="md:basis-[34%] md:shrink-0 border border-orkut-border bg-white rounded-md p-4"
         >
-          <h2 className="orkut-section-heading lowercase">todas as comunidades</h2>
+          <h2 className="orkut-subtitle lowercase">todas as comunidades</h2>
 
           {/* Pesquisa por nome — UniversalSearch navega para /pesquisar já com
               type=community, deixando somente a aba "comunidades" ativa. */}

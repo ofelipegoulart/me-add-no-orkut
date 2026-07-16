@@ -731,7 +731,7 @@ export function EditProfilePage() {
   if (loading) {
     return (
       <div className="orkut-edit-page">
-        <h2 className="orkut-edit-title">Editar perfil</h2>
+        <h2 className="orkut-title">Editar perfil</h2>
         <p className="px-2.5 py-4 text-[12px] text-[#666]">Carregando...</p>
       </div>
     );
@@ -739,8 +739,8 @@ export function EditProfilePage() {
 
   return (
     <div className="orkut-edit-page">
-      <h2 className="orkut-edit-title">Editar perfil</h2>
-      <p className="orkut-edit-breadcrumb">
+      <h2 className="orkut-title">Editar perfil</h2>
+      <p className="orkut-breadcrumb">
         <Link href="/">Início</Link>
         <span className="orkut-breadcrumb-sep">&gt;</span>
         <Link href="/Profile">Meu perfil</Link>

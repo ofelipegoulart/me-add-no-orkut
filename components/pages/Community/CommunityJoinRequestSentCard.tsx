@@ -1,6 +1,8 @@
+import { SmallSoftCard } from "@/components/ui/boxes/SmallSoftCard";
+
 export function CommunityJoinRequestSentCard({ onBack }: { onBack: () => void }) {
   return (
-    <div className="border border-orkut-border bg-white rounded-[6px] mb-2 px-3 pt-3 pb-2.5">
+    <SmallSoftCard className="mb-2 px-3 pt-3 pb-2.5">
       <p
         style={{ fontFamily: "Tahoma, Verdana, Arial, sans-serif" }}
         className="text-[12px] font-bold text-black m-0 mb-2"
@@ -19,6 +21,6 @@ export function CommunityJoinRequestSentCard({ onBack }: { onBack: () => void })
           « voltar para a comunidade
         </button>
       </div>
-    </div>
+    </SmallSoftCard>
   );
 }

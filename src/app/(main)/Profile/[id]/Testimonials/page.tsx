@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { FRIENDS, COMMUNITIES } from "@/data/mock-data";
 import OrkutCommunities from "@/components/pages/Social/orkut-communities";
 import OrkutFriends from "@/components/pages/Social/orkut-friends";
+import { SidebarSocialBox } from "@/components/ui/boxes/SidebarSocialBox";
 import { TestimonialsBoard } from "@/components/pages/ProfilePage/Testimonials/TestimonialsBoard";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
 import { receivedTestimonialsLabel } from "@/lib/testimonial-labels";
@@ -29,7 +30,7 @@ export default async function TestimonialsPage({
       <div className="orkut-col-main">
         <div className="border border-orkut-border bg-white shadow-sm">
           <div className="px-2 pt-2">
-            <h1 className="orkut-edit-title text-black py-1.75 pb-1.25">
+            <h1 className="orkut-title text-black py-1.75 pb-1.25">
               {heading}
             </h1>
           </div>
@@ -55,12 +56,12 @@ export default async function TestimonialsPage({
         </div>
       </div>
       <div className="orkut-col-right">
-        <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
+        <SidebarSocialBox>
           <OrkutFriends friends={FRIENDS} userId={id} title="amigos" />
-        </div>
-        <div className="border border-orkut-border bg-white shadow-sm rounded-[4px_14px_4px_4px]">
+        </SidebarSocialBox>
+        <SidebarSocialBox>
           <OrkutCommunities communities={COMMUNITIES} userId={id} title="comunidades" />
-        </div>
+        </SidebarSocialBox>
       </div>
     </div>
   );

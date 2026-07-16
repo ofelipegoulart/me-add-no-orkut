@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
+import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
 
 export default async function ProfileLayout({
@@ -27,7 +28,7 @@ export default async function ProfileLayout({
 
   return (
     <>
-      <div className="orkut-col-left border border-orkut-border bg-white shadow-sm">
+      <SidebarLeftBox>
         <OrkutLeftSidebar
           displayName={displayName}
           isOwnProfile={isOwnProfile}
@@ -36,7 +37,7 @@ export default async function ProfileLayout({
           avatarUrl={avatarUrl}
           infoLines={infoLines}
         />
-      </div>
+      </SidebarLeftBox>
       {children}
     </>
   );

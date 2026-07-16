@@ -1,4 +1,6 @@
 import { OrkutMainColumn } from "@/components/pages/ProfilePage/main-column";
+import { BigAccentShell } from "@/components/ui/boxes/BigAccentShell";
+import { BigSoftSection } from "@/components/ui/boxes/BigSoftSection";
 import { UpdatesSection } from "@/components/pages/ProfilePage/MyProfile/UpdatesSection";
 import { PendingTestimonials } from "@/components/pages/ProfilePage/Shared/PendingTestimonials";
 import { PendingCommunityMembersNotice } from "@/components/pages/ProfilePage/Shared/PendingCommunityMembersNotice";
@@ -33,7 +35,7 @@ export default function MyProfilePage({
 
   return (
     <>
-      <div className="border border-orkut-border bg-white shadow-sm orkut-col-main-inner">
+      <BigAccentShell>
         <OrkutMainColumn
           displayName={displayName}
           userId={userId}
@@ -42,16 +44,16 @@ export default function MyProfilePage({
           overview={overview}
           isHome={isHome}
         />
-      </div>
+      </BigAccentShell>
       {isHome ? (
         <>
           {pendingCommunityId && (
             <PendingCommunityMembersNotice communityId={pendingCommunityId} />
           )}
           <FriendRequestsCard initialRequests={friendRequests} />
-          <div className="orkut-col-section mt-1 bg-white border border-orkut-border px-2 py-1">
+          <BigSoftSection>
             <UpdatesSection />
-          </div>
+          </BigSoftSection>
           <PendingTestimonials userId={userId} />
           <TestimonialsSection userId={userId} canWrite={false} />
         </>

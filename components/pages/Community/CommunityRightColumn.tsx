@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
 import { ThumbCardGrid } from "@/components/ui/thumb-card-grid";
+import { SmallSoftCard } from "@/components/ui/boxes/SmallSoftCard";
 import type { CommunityMemberSummary } from "@/lib/profile-types";
 import type { CommunityRole } from "@/components/pages/Community/types";
 
@@ -36,8 +37,8 @@ export function CommunityRightColumn({
   return (
     <div className="float-right w-[284px]">
       {/* Caixa "membros" — mesmo layout de grade do orkut-friends.tsx */}
-      <div className="border border-orkut-border bg-white rounded-[6px] mb-2">
-        <h2 className="orkut-section-heading" style={{ margin: "5px 0 6px 10px" }}>
+      <SmallSoftCard className="mb-2">
+        <h2 className="orkut-subtitle" style={{ margin: "5px 0 6px 10px" }}>
           membros ({membersCount})
         </h2>
         {members.length === 0 ? (
@@ -57,11 +58,11 @@ export function CommunityRightColumn({
         <div className="px-2 pb-2 pt-1">
           <Link href={membersHref} className="text-[11px] font-bold text-orkut-link underline">ver membros</Link>
         </div>
-      </div>
+      </SmallSoftCard>
 
       {/* Caixa "comunidades relacionadas" */}
-      <div className="border border-orkut-border bg-white rounded-[6px] mb-2">
-        <h2 className="orkut-section-heading" style={{ margin: "5px 0 6px 10px" }}>
+      <SmallSoftCard className="mb-2">
+        <h2 className="orkut-subtitle" style={{ margin: "5px 0 6px 10px" }}>
           comunidades relacionadas
         </h2>
         <div className="px-2 pb-2">
@@ -69,7 +70,7 @@ export function CommunityRightColumn({
             adicionar comunidades
           </OrkutActionButton>
         </div>
-      </div>
+      </SmallSoftCard>
     </div>
   );
 }
