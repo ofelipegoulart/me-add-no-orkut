@@ -7,6 +7,7 @@ export type ThumbCardGridItem = {
   src: string;
   name: ReactNode;
   count?: number;
+  countIcon?: string;
 };
 
 /**
@@ -47,6 +48,7 @@ export function ThumbCardGrid({
                     src={item.src}
                     name={item.name}
                     count={item.count}
+                    countIcon={item.countIcon}
                     {...(size != null ? { size } : {})}
                   />
                 ) : (

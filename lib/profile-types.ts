@@ -271,6 +271,7 @@ export interface CommunityMemberSummary {
   id: UUID;
   name: string;
   photoUrl?: string | null;
+  friendsCount: number;
 }
 
 export interface CommunityDashboard {
@@ -286,6 +287,7 @@ export interface CommunityJoinRequest {
   name: string;
   avatarUrl?: string;
   requestedAt: string;
+  friendsCount: number;
 }
 
 export interface CommunityJoinRequestParams {

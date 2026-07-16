@@ -80,6 +80,8 @@ export function CommunityMembersList({
               href: `/Profile/${m.id}`,
               src: m.photoUrl || NOPHOTO,
               name: m.name,
+              count: m.friendsCount,
+              countIcon: "/icons/i_manage.png",
             }))}
           />
         </div>

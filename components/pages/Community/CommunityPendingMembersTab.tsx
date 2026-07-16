@@ -81,7 +81,11 @@ export function CommunityPendingMembersTab({ communityId }: { communityId: strin
                 height={40}
                 className="border border-orkut-border"
               />
-              <span className="flex-1 text-[11px] font-bold text-orkut-link">{r.name}</span>
+              <span className="flex-1 inline-flex items-center gap-1 text-[11px]">
+                <span className="font-bold text-orkut-link">{r.name}</span>
+                <span className="text-[#8c8c8c]">({r.friendsCount})</span>
+                <img src="/icons/i_plus.png" alt="" width={13} height={13} />
+              </span>
               <OrkutActionButton
                 onClick={() => handleApprove(r.userId)}
                 disabled={busyId === r.userId}

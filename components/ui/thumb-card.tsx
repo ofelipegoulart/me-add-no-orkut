@@ -13,6 +13,8 @@ type ThumbCardProps = {
   src: string;
   name: ReactNode;
   count?: number;
+  /** Ícone opcional exibido ao lado da contagem (ex.: i_plus/i_manage). */
+  countIcon?: string;
   alt?: string;
   /** Elemento externo: célula de tabela ("td") ou bloco ("div", padrão). */
   as?: "div" | "td";
@@ -35,13 +37,14 @@ export function ThumbCard({
   src,
   name,
   count,
+  countIcon,
   alt = "",
   as: Tag = "div",
   className = "",
   size = 48,
   imgClassName = "mx-auto border border-orkut-border",
   imgWrapClassName,
-  nameClassName = "orkut-uname mt-1",
+  nameClassName = "orkut-uname text-center mt-1",
   countClassName = "text-[#8c8c8c]",
 }: ThumbCardProps) {
   const img = (
@@ -65,6 +68,10 @@ export function ThumbCard({
           <>
             {" "}
             <span className={countClassName}>({count})</span>
+            {countIcon && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={countIcon} alt="" width={13} height={13} className="inline-block align-middle ml-1" />
+            )}
           </>
         )}
       </div>
