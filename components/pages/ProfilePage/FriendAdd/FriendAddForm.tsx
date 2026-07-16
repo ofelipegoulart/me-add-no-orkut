@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addFriend } from "@/lib/profile-service";
 import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
+import { BigSoftCard } from "@/components/ui/boxes/BigSoftCard";
+import { OrganizeFriendsGroups } from "@/components/pages/Social/OrganizeFriendsGroups";
 
 type FriendAddFormProps = {
   targetUserId: string;
@@ -19,12 +21,6 @@ export function FriendAddForm({
 }: FriendAddFormProps) {
   const router = useRouter();
   const [message, setMessage] = useState("");
-  const [groupsOpen, setGroupsOpen] = useState(true);
-  const [groups, setGroups] = useState({
-    escola: false,
-    familia: false,
-    melhores: false,
-  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -60,9 +56,8 @@ export function FriendAddForm({
   };
 
   return (
-    <div className="border border-orkut-border bg-white shadow-sm rounded-lg orkut-tahoma text-[#5a5a5a] p-1.5">
-      {/* Título + instrução — colados ao canto superior esquerdo */}
-      <h2 className="text-[16px] font-semibold text-black tracking-normal">Adicionar amigo</h2>
+    <BigSoftCard title="Adicionar amigo">
+      {/* Instrução — colada ao canto superior esquerdo */}
       <p className="mt-1 text-[12px] font-normal text-black font-[Arial,Helvetica,sans-serif] tracking-normal">
         verifique se esta pessoa é sua amiga antes de convidá-la
       </p>
@@ -70,63 +65,7 @@ export function FriendAddForm({
       {/* Painel azul: de "organize seus amigos" até a mensagem */}
       <div className="mt-3 bg-[#eef5fd] p-3">
         {/* Seção expansível: organize seus amigos */}
-        <div>
-          <button
-            type="button"
-            onClick={() => setGroupsOpen((v) => !v)}
-            className="flex items-center gap-1 text-[14px] font-normal text-orkut-link-dark cursor-pointer bg-transparent border-0 p-0 tracking-tight"
-            aria-expanded={groupsOpen}
-          >
-            <img
-              src={groupsOpen ? "/icons/arr_expanded.gif" : "/icons/arr_collapsed.gif"}
-              alt=""
-              width={11}
-              height={11}
-              className="inline-block align-middle"
-            />
-            organize seus amigos
-          </button>
-          {groupsOpen && (
-            <div className="mt-2 ml-4 flex flex-col gap-1">
-              <label className="flex items-center gap-2 text-[12px] font-normal text-black cursor-pointer font-[Arial,Helvetica,sans-serif] tracking-normal">
-                <input
-                  type="checkbox"
-                  checked={groups.escola}
-                  onChange={(e) =>
-                    setGroups((g) => ({ ...g, escola: e.target.checked }))
-                  }
-                />
-                escola
-              </label>
-              <label className="flex items-center gap-2 text-[12px] font-normal text-black cursor-pointer font-[Arial,Helvetica,sans-serif] tracking-normal">
-                <input
-                  type="checkbox"
-                  checked={groups.familia}
-                  onChange={(e) =>
-                    setGroups((g) => ({ ...g, familia: e.target.checked }))
-                  }
-                />
-                família
-              </label>
-              <label className="flex items-center gap-2 text-[12px] font-normal text-black cursor-pointer font-[Arial,Helvetica,sans-serif] tracking-normal">
-                <input
-                  type="checkbox"
-                  checked={groups.melhores}
-                  onChange={(e) =>
-                    setGroups((g) => ({ ...g, melhores: e.target.checked }))
-                  }
-                />
-                melhores amigos(as)
-              </label>
-              <a
-                href="#"
-                className="text-orkut-link-dark underline text-[12px] font-normal mt-1 tracking-tight"
-              >
-                gerenciar grupos
-              </a>
-            </div>
-          )}
-        </div>
+        <OrganizeFriendsGroups defaultOpen />
 
         <hr className="my-4 border-0 border-t border-orkut-border" />
 
@@ -182,6 +121,6 @@ export function FriendAddForm({
           cancelar
         </OrkutActionButton>
       </div>
-    </div>
+    </BigSoftCard>
   );
 }
