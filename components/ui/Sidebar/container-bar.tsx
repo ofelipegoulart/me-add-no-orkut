@@ -68,6 +68,12 @@ export default function OrkutLeftSidebar({
             <div className="mt-0.5">
               <a href="#" className="text-orkut-link text-[12px] pl-5">mais »</a>
             </div>
+            <div className="mt-1.5">
+              <a href="#" className="text-orkut-link text-[12px] pl-5">denunciar abuso</a>
+              <div className="pl-5 mt-0.5">
+                <img src="/icons/p_flagprofile.gif" alt="" width={14} height={14} />
+              </div>
+            </div>
           </div>
           <div className="border-t border-orkut-border" />
         </>
