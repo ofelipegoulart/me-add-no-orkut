@@ -28,15 +28,20 @@ export default function OrkutCommunities({ communities, userId, title = "minhas 
           </div>
         </div>
       ) : (
-        <ThumbCardGrid
-          items={communities.map((c) => ({
-            key: c.name,
-            href: `/Community/${c.seed}`,
-            src: c.icon || NOPHOTO,
-            name: c.name,
-            count: c.count,
-          }))}
-        />
+        <div>
+          <ThumbCardGrid
+            items={communities.map((c) => ({
+              key: c.name,
+              href: `/Community/${c.seed}`,
+              src: c.icon || NOPHOTO,
+              name: c.name,
+              count: c.count,
+            }))}
+          />
+          <div className="border-t border-orkut-border pt-1 mt-0.5">
+            <Link href={`/Profile/${userId}/comunidades`} className="underline">ver todos</Link>
+          </div>
+        </div>
       )}
     </div>
   );
