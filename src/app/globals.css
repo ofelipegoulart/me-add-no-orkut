@@ -731,6 +731,61 @@ td.orkut-edit-section {
   cursor: not-allowed;
 }
 
+/* Botão azul de upload (recriação do sprite big_blue_button_background.png,
+   esticado via background-size já que a imagem tem cantos arredondados). */
+.orkut-blue-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 179px;
+  height: 47px;
+  padding: 0 24px;
+  appearance: none;
+  border: none;
+  background-image: url("/big_blue_button_background.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-family: Tahoma, Verdana, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  outline: none;
+}
+
+.orkut-blue-button:hover {
+  filter: brightness(1.06);
+}
+
+.orkut-blue-button:active {
+  filter: brightness(0.94);
+}
+
+.orkut-blue-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Barra de andamento do upload de fotos (verde, preenche até 100%). */
+.orkut-upload-progress {
+  position: relative;
+  box-sizing: border-box;
+  height: 14px;
+  width: 100%;
+  min-width: 80px;
+  border: 1px solid #a0b0c4;
+  background: #fff;
+}
+
+.orkut-upload-progress-fill {
+  height: 100%;
+  background: #00FF00;
+  transition: width 0.2s linear;
+}
+
 .orkut-edit-required-note {
   padding: 4px 10px;
 

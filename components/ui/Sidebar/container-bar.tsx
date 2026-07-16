@@ -85,7 +85,7 @@ export default function OrkutLeftSidebar({
               const isPerfil = label === "perfil";
               const href = userId
                 ? label === "recados" ? (isOwnProfile ? "/Home/Scraps" : `/Profile/${userId}/Scraps`)
-                : label === "fotos" ? `/Profile/${userId}/fotos`
+                : label === "fotos" ? `/Profile/${userId}/AlbumList`
                 : label === "perfil" ? `/Profile/${userId}`
                 : label === "depoimentos" ? (isOwnProfile ? "/Home/Testimonials" : `/Profile/${userId}/Testimonials`)
                 : "#"

@@ -21,7 +21,7 @@ type ShortcutItem = {
 
 const SHORTCUTS: ShortcutItem[] = [
   { key: "recados", label: "recados", href: (userId) => `/Profile/${userId}/Scraps`, icon: ORKUT_MENU_ICONS.recados },
-  { key: "fotos", label: "fotos", href: (userId) => `/Profile/${userId}/fotos`, icon: ORKUT_MENU_ICONS.fotos },
+  { key: "fotos", label: "fotos", href: (userId) => `/Profile/${userId}/AlbumList`, icon: ORKUT_MENU_ICONS.fotos },
   { key: "videos", label: "vídeos", href: () => "#", icon: ORKUT_MENU_ICONS.videos },
   { key: "fans", label: "fãs", href: () => "#", icon: ORKUT_MENU_ICONS.fans },
 ];

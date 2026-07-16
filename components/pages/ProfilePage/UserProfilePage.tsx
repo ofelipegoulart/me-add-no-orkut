@@ -31,12 +31,12 @@ export default function UserProfilePage({
           profileRowsByTab={profileRowsByTab}
           overview={overview}
         />
-      </div>
+      </BigAccentShell>
       {/* Seções abaixo da tabela de informações (Requisito 1) */}
       <RecentMediaSection
         title="fotos recentes"
         count={photos}
-        seeAllHref={`/Profile/${userId}/fotos`}
+        seeAllHref={`/Profile/${userId}/AlbumList`}
         seeAllLabel="ver todas as fotos »"
         emptyLabel="nenhuma foto adicionada ainda."
       />
