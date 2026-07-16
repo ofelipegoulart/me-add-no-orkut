@@ -34,7 +34,10 @@ export function SearchResultCard({ item }: { item: SearchResultItem }) {
 
   return (
     <li className="orkut-search-card">
-      <div className="orkut-search-card-tag">{typeTag}</div>
+      <div className="orkut-search-card-tag">
+        <img src="/icons/i_reload.png" alt="" width={14} height={16} />
+        {typeTag}
+      </div>
 
       <div className="orkut-search-card-row">
         <a href={item.href} className="orkut-search-card-thumb">

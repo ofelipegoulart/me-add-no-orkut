@@ -1140,6 +1140,10 @@ td.orkut-edit-section {
 }
 
 .orkut-search-card-tag {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
   text-align: right;
   font-size: 11px;
   font-style: italic;
