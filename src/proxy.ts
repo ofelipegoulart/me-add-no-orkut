@@ -6,7 +6,10 @@ export async function proxy(request: NextRequest) {
   const token = await getToken({ req: request });
   const { pathname } = request.nextUrl;
 
-  const isAuthPage = pathname.startsWith("/account");
+  const isAuthPage =
+    pathname.startsWith("/account") &&
+    pathname !== "/account/modifyPassword" &&
+    pathname !== "/account/deleteAccount";
   const isSignUp = pathname === "/SignUp";
   const isApiRoute = pathname.startsWith("/api");
 

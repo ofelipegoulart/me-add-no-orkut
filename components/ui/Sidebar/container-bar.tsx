@@ -118,6 +118,26 @@ export default function OrkutLeftSidebar({
                 </tr>
               );
             })}
+            {isOwnProfile && (
+              <>
+                <tr>
+                  <td className="px-1.5">
+                    <div className="orkut-divider" />
+                  </td>
+                </tr>
+                <tr className="bg-white hover:bg-[#f5f5f5]">
+                  <td className="px-1.5 py-0.75">
+                    <Link
+                      href="/Home/Settings"
+                      className="inline-flex items-center gap-1.25 text-[#5a5a5a]! text-xs no-underline"
+                    >
+                      <OrkutMenuIcon src={ORKUT_MENU_ICONS.configuracoes} />
+                      configurações
+                    </Link>
+                  </td>
+                </tr>
+              </>
+            )}
           </tbody>
         </table>
       </div>

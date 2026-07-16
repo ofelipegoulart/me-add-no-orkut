@@ -61,6 +61,7 @@ export const ORKUT_MENU_ICONS = {
   videos: "/icons/p_video.gif",
   depoimentos: "/icons/p_pen.png",
   fans: "/icons/p_fan.png",
+  configuracoes: "/icons/i_tool.png",
 } as const;
 
 export type Scrap = {

@@ -401,6 +401,13 @@
   margin: 0;
 }
 
+/* modificador — título menor e bold (ex.: "Excluir orkut" na tela de Contas do Google) */
+.orkut-title.orkut-title-sm {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: bold;
+}
+
 /* ── Tab bar ── */
 .orkut-edit-tabs {
   margin-bottom: 0;
@@ -490,6 +497,23 @@ td.orkut-edit-label {
 
   font-size: 12px;
   line-height: 17px;
+}
+
+/* modificador — rótulo à esquerda, bold, preto (ex.: Minhas configurações) */
+td.orkut-edit-label.orkut-edit-label-left {
+  text-align: left;
+  font-weight: bold;
+  color: #000;
+}
+
+/* sublinha auxiliar cinza sob o rótulo */
+.orkut-edit-label-aux {
+  display: block;
+  font-weight: normal;
+  color: #7b8ca5;
+  font-size: 11px;
+  line-height: 14px;
+  margin-top: 2px;
 }
 
 /* field cell — original .listp: font-size:12px, line-height:17px */
@@ -589,6 +613,14 @@ td.orkut-edit-section {
   display: flex;
   flex-direction: row;
   gap: 8px;
+}
+
+/* modificador — radios/checkboxes empilhados na vertical (ex.: Minhas configurações) */
+.orkut-radio-group.orkut-radio-group-column,
+.orkut-checkbox-group.orkut-checkbox-group-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .orkut-checkbox-group {
@@ -923,6 +955,24 @@ td.orkut-edit-section {
 .xp-btn:focus-visible {
   outline: 1px dotted #000;
   outline-offset: -3px;
+}
+
+/* modificador — borda cinza no lugar do azul-marinho (ex.: tela de Contas do Google) */
+.xp-btn.xp-btn-gray {
+  border-color: #999;
+}
+
+.xp-btn.xp-btn-gray:hover {
+  border-color: #767676;
+}
+
+.xp-btn.xp-btn-gray:active {
+  border-color: #767676;
+}
+
+.xp-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .upload-photo-notice {
