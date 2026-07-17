@@ -41,7 +41,7 @@ export default async function ProfilePage({
     ? transformCommunitiesForUI(overview.communities)
     : COMMUNITIES;
 
-  const profileRowsByTab: ProfileRowsByTab = await loadProfileRows(jwt);
+  const profileRowsByTab: ProfileRowsByTab = await loadProfileRows(jwt, id);
 
   // Gênero do perfil visitado, para os textos de depoimentos na 3ª pessoa.
   // A resposta real do overview traz o gênero em `general`; mantemos o fallback

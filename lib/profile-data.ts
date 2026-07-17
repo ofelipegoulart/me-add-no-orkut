@@ -26,9 +26,10 @@ const FALLBACK_PROFILE_ROWS: ProfileRowsByTab = {
   pessoal: [],
 };
 
-async function fetchProfileSection(jwt: string, section: string) {
+async function fetchProfileSection(jwt: string, section: string, userId?: string) {
   try {
-    const res = await fetch(`${process.env.API_URL}/api/profile/${section}`, {
+    const query = userId ? `?userId=${encodeURIComponent(userId)}` : "";
+    const res = await fetch(`${process.env.API_URL}/api/profile/${section}${query}`, {
       headers: { Authorization: `Bearer ${jwt}` },
     });
 
@@ -38,18 +39,18 @@ async function fetchProfileSection(jwt: string, section: string) {
   }
 }
 
-export async function loadProfileRows(jwt?: string): Promise<ProfileRowsByTab> {
+export async function loadProfileRows(jwt?: string, userId?: string): Promise<ProfileRowsByTab> {
   if (!jwt) {
     return FALLBACK_PROFILE_ROWS;
   }
 
   try {
     const [general, social, contact, professional, personal] = await Promise.all([
-      fetchProfileSection(jwt, "general"),
-      fetchProfileSection(jwt, "social"),
-      fetchProfileSection(jwt, "contact"),
-      fetchProfileSection(jwt, "professional"),
-      fetchProfileSection(jwt, "personal"),
+      fetchProfileSection(jwt, "general", userId),
+      fetchProfileSection(jwt, "social", userId),
+      fetchProfileSection(jwt, "contact", userId),
+      fetchProfileSection(jwt, "professional", userId),
+      fetchProfileSection(jwt, "personal", userId),
     ]);
 
     const profileRowsByTab = buildProfileRows(general, social, contact, professional, personal);
