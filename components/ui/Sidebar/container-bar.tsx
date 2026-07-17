@@ -34,12 +34,18 @@ export default function OrkutLeftSidebar({
     <div>
       {/* ── Bloco 1: foto + nome + info ── */}
       <div className="pb-2 text-center">
-        <AvatarUpload avatarUrl={avatarUrl} showAddPhoto={showAddPhoto} profileHref={profileHref} />
+        <AvatarUpload
+          avatarUrl={avatarUrl}
+          showAddPhoto={showAddPhoto}
+          profileHref={profileHref}
+        />
         <div className="mt-1 font-bold text-orkut-link">
           <a href={profileHref}>{displayName}</a>
         </div>
         {infoLines.length > 0 && (
-          <div className="text-[11px] text-gray-400 text-left">{infoLines.join(", ")}</div>
+          <div className="text-[11px] text-gray-400 text-left">
+            {infoLines.join(", ")}
+          </div>
         )}
       </div>
 
@@ -54,23 +60,31 @@ export default function OrkutLeftSidebar({
           <div className="py-1 pl-1.5">
             <div>
               {isFriend ? (
-                <Link href={userId ? `/Profile/${userId}/MainTestimonialWrite` : "#"} className="inline-flex items-center gap-1 text-orkut-link text-[12px]">
+                <Link
+                  href={
+                    userId ? `/Profile/${userId}/MainTestimonialWrite` : "#"
+                  }
+                  className="inline-flex items-center gap-1 text-orkut-link text-[12px]"
+                >
                   <OrkutMenuIcon src={ORKUT_MENU_ICONS.depoimentos} />
                   criar depoimento
                 </Link>
               ) : (
-                <Link href={userId ? `/Profile/${userId}/FriendAdd` : "#"} className="inline-flex items-center gap-1 text-orkut-link text-[12px]">
-                  <OrkutMenuIcon src={ORKUT_MENU_ICONS.perfil} />
-                  + amigo
+                <Link
+                  href={userId ? `/Profile/${userId}/FriendAdd` : "#"}
+                  className="inline-flex items-center gap-1 text-orkut-link text-[12px]"
+                >
+                  <OrkutMenuIcon src={ORKUT_MENU_ICONS.perfil} />+ amigo
                 </Link>
               )}
             </div>
-            <div className="mt-1.5">
-              <a href="#" className="text-orkut-link text-[12px] pl-5">denunciar abuso</a>
-              <div className="pl-5 mt-0.5">
-                <img src="/icons/p_flagprofile.gif" alt="" width={14} height={14} />
-              </div>
-            </div>
+            <Link
+              href={"#"}
+              className="inline-flex items-center gap-1 text-orkut-link text-[12px]"
+            >
+              <OrkutMenuIcon src={ORKUT_MENU_ICONS.denunciar} />
+              denunciar abuso
+            </Link>
           </div>
           <div className="border-t border-orkut-border" />
         </>
@@ -87,18 +101,23 @@ export default function OrkutLeftSidebar({
             {menuItems.map(([iconSrc, label]) => {
               const isPerfil = label === "perfil";
               const href = userId
-                ? label === "recados" ? (isOwnProfile ? "/Home/Scraps" : `/Profile/${userId}/Scraps`)
-                : label === "fotos" ? `/Profile/${userId}/AlbumList`
-                : label === "perfil" ? `/Profile/${userId}`
-                : label === "depoimentos" ? (isOwnProfile ? "/Home/Testimonials" : `/Profile/${userId}/Testimonials`)
-                : "#"
+                ? label === "recados"
+                  ? isOwnProfile
+                    ? "/Home/Scraps"
+                    : `/Profile/${userId}/Scraps`
+                  : label === "fotos"
+                    ? `/Profile/${userId}/AlbumList`
+                    : label === "perfil"
+                      ? `/Profile/${userId}`
+                      : label === "depoimentos"
+                        ? isOwnProfile
+                          ? "/Home/Testimonials"
+                          : `/Profile/${userId}/Testimonials`
+                        : "#"
                 : "#";
 
               return (
-                <tr
-                  key={label}
-                  className="bg-white hover:bg-[#f5f5f5]"
-                >
+                <tr key={label} className="bg-white hover:bg-[#f5f5f5]">
                   <td className="px-1.5 py-0.75">
                     <div className="flex items-center justify-between">
                       <Link

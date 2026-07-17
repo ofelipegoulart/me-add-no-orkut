@@ -62,6 +62,7 @@ export const ORKUT_MENU_ICONS = {
   depoimentos: "/icons/p_pen.png",
   fans: "/icons/p_fan.png",
   configuracoes: "/icons/i_tool.png",
+  denunciar: "/icons/p_flagprofile.gif"
 } as const;
 
 export type Scrap = {
