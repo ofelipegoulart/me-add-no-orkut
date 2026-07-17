@@ -27,13 +27,15 @@ export const authOptions: NextAuthOptions = {
 
         let onboarded = false;
         try {
-          const profileRes = await fetch(`${process.env.API_URL}/users/me`, {
+          // Onboarding grava birthDay/birthMonth/birthYear via PATCH
+          // /api/profile/general (mesmo endpoint do editar perfil) — checa
+          // essa mesma seção aqui, não /users/me, que nunca é atualizado por ela.
+          const profileRes = await fetch(`${process.env.API_URL}/api/profile/general`, {
             headers: { Authorization: `Bearer ${data.token}` },
           });
           if (profileRes.ok) {
-            const profile = await profileRes.json();
-            // User is onboarded only if birthDate is a valid, non-empty string
-            onboarded = !!(profile.birthDate && profile.birthDate.trim());
+            const general = await profileRes.json();
+            onboarded = !!(general.birthDay && general.birthMonth && general.birthYear);
           }
         } catch {
           // If profile check fails, treat as not onboarded

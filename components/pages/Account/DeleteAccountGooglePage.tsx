@@ -41,7 +41,7 @@ export function DeleteAccountGooglePage({ email }: { email: string }) {
         return;
       }
 
-      await signOut({ callbackUrl: "/account" });
+      await signOut({ callbackUrl: "/" });
     } catch {
       setError("Erro ao excluir a conta. Tente novamente.");
     } finally {

@@ -31,6 +31,7 @@ async function fetchProfileSection(jwt: string, section: string, userId?: string
     const query = userId ? `?userId=${encodeURIComponent(userId)}` : "";
     const res = await fetch(`${process.env.API_URL}/api/profile/${section}${query}`, {
       headers: { Authorization: `Bearer ${jwt}` },
+      cache: "no-store",
     });
 
     return res.ok ? await res.json() : null;
