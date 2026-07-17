@@ -35,6 +35,29 @@ export function formatDateShort(iso?: string | null) {
       }).format(d);
 }
 
+// "05/03/09" — data curta em barras, usada nas listas de enquetes.
+export function formatDateSlash(iso?: string | null) {
+  const d = iso ? new Date(iso) : null;
+  if (!d || Number.isNaN(d.getTime())) return "—";
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yy = String(d.getFullYear()).slice(-2);
+  return `${dd}/${mm}/${yy}`;
+}
+
+// "fechado" se já passou; senão "dd/mm/aa" (+ "(em X ano(s))" se faltar 1 ano ou mais).
+export function formatPollCloseDate(iso?: string | null) {
+  if (!iso) return "nunca";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "—";
+  const now = new Date();
+  if (d.getTime() <= now.getTime()) return "fechado";
+  const dateLabel = formatDateSlash(iso);
+  const years = d.getFullYear() - now.getFullYear();
+  if (years >= 1) return `${dateLabel} (em ${years} ${years === 1 ? "ano" : "anos"})`;
+  return dateLabel;
+}
+
 // Junta cidade / estado / CEP / país no que estiver preenchido.
 export function formatLocation(loc?: CommunityLocation | null) {
   if (!loc) return null;

@@ -8,18 +8,24 @@ import { CommunityJoinConfirmCard } from "@/components/pages/Community/Community
 import { CommunityJoinRequestSentCard } from "@/components/pages/Community/CommunityJoinRequestSentCard";
 import { CommunityLeftColumn } from "@/components/pages/Community/CommunityLeftColumn";
 import { CommunityModerationNotice } from "@/components/pages/Community/CommunityModerationNotice";
+import { CommunityPollBox } from "@/components/pages/Community/CommunityPollBox";
+import { CommunityPollListWidget } from "@/components/pages/Community/CommunityPollListWidget";
 import { CommunityRightColumn } from "@/components/pages/Community/CommunityRightColumn";
 import { roleFromRelation } from "@/components/pages/Community/types";
 import type { CommunityRole } from "@/components/pages/Community/types";
 import { joinCommunity } from "@/lib/profile-service";
 import type { CommunityDashboard } from "@/lib/profile-types";
+import { adaptActivePollToPoll } from "@/lib/poll-types";
+import type { PollSummary } from "@/lib/poll-types";
 
 const NOPHOTO = "/avatar/i_nophoto128.gif";
 
 export default function CommunityPage({
   dashboard,
+  polls,
 }: {
   dashboard: CommunityDashboard;
+  polls: PollSummary[];
 }) {
   const c = dashboard.community;
   const topics = dashboard.topics ?? [];
@@ -35,6 +41,11 @@ export default function CommunityPage({
 
   const icon = c.icon || NOPHOTO;
   const category = c.categoryLabel || c.category || "—";
+
+  // dashboard.activePoll vem preenchido de verdade pelo backend (a enquete
+  // mais recente por createdAt) — null só quando a comunidade não tem
+  // nenhuma enquete ainda, e o box simplesmente não renderiza.
+  const featuredPoll = dashboard.activePoll ? adaptActivePollToPoll(dashboard.activePoll, c.id) : null;
 
   async function handleConfirmJoin() {
     setJoining(true);
@@ -74,6 +85,7 @@ export default function CommunityPage({
         membersCount={c.membersCount}
         editHref={`/CommunityEdit?mode=edit&id=${c.id}`}
         membersHref={`/Community/${c.id}/membros`}
+        pollHref={`/Community/${c.id}/Poll`}
         onJoinClick={() => setJoinFlow("confirm")}
       />
 
@@ -92,6 +104,8 @@ export default function CommunityPage({
           <>
             <CommunityInfoCard community={c} category={category} />
             <CommunityForumBox topics={topics} role={role} />
+            <CommunityPollBox poll={featuredPoll} />
+            <CommunityPollListWidget communityId={c.id} polls={polls} />
           </>
         )}
       </div>
