@@ -1,9 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
 import type { Scrap } from "@/data/mock-data";
+import { sanitizeProfileHtml } from "@/lib/sanitize-html";
+
+// Recados aceitam HTML básico (formatação, links, gifs) como no Orkut original;
+// o conteúdo passa pela mesma sanitização usada nos campos de perfil.
+function SanitizedContent({ content }: { content: string }) {
+  const html = useMemo(() => sanitizeProfileHtml(content), [content]);
+  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+}
 
 const UNREAD_STYLES = {
   root: "border-[#e8a500] bg-[#fff3a8]",
@@ -151,7 +159,7 @@ function ScrapCard({
               </div>
             </div>
             <div className="text-[#333] text-[12px] leading-4 mt-1">
-              {scrap.content}
+              <SanitizedContent content={scrap.content} />
             </div>
             <div className="mt-2 flex gap-4 text-orkut-link text-[11px]">
               <button type="button" className="underline" onClick={onReply}>
@@ -352,9 +360,11 @@ export function ScrapsList({
                   <div className="text-[#999] text-[11px]">agora</div>
                 </div>
                 <div className="text-[#333] text-[12px] leading-4 mt-1 whitespace-pre-wrap">
-                  {newScrapContent.trim()
-                    ? newScrapContent
-                    : "(digite um recado para visualizar)"}
+                  {newScrapContent.trim() ? (
+                    <SanitizedContent content={newScrapContent} />
+                  ) : (
+                    "(digite um recado para visualizar)"
+                  )}
                 </div>
               </div>
             </div>
