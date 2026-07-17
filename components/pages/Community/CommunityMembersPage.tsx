@@ -41,6 +41,7 @@ export default function CommunityMembersPage({
         membersCount={c.membersCount}
         editHref={`/CommunityEdit?mode=edit&id=${c.id}`}
         membersHref={membersHref}
+        pollHref={`/Community/${c.id}/Poll`}
       />
 
       <div style={{ marginLeft: 153 }}>

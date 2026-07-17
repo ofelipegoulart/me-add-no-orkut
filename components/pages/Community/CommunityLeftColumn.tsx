@@ -9,6 +9,7 @@ export function CommunityLeftColumn({
   membersCount,
   editHref,
   membersHref,
+  pollHref,
   onJoinClick,
 }: {
   role: CommunityRole;
@@ -17,6 +18,7 @@ export function CommunityLeftColumn({
   membersCount: number;
   editHref: string;
   membersHref: string;
+  pollHref?: string;
   onJoinClick?: () => void;
 }) {
   return (
@@ -38,7 +40,7 @@ export function CommunityLeftColumn({
           <NavItem icon="/icons/i_editcomm.gif" label="editar perfil" href={editHref} />
           {/* Grupo 2: recursos da comunidade */}
           <NavItem icon="/icons/c_forum.gif" label="fórum" divider={false} />
-          <NavItem icon="/icons/i_poll.gif" label="enquetes" divider={false} />
+          <NavItem icon="/icons/i_poll.gif" label="enquetes" href={pollHref} divider={false} />
           <NavItem icon="/icons/c_events.gif" label="eventos" divider={false} />
           <NavItem icon="/icons/i_friendgroup.png" label="membros" href={membersHref} divider={false} />
         </>
@@ -50,6 +52,7 @@ export function CommunityLeftColumn({
             <NavItem icon="/icons/c_join.png" label="entrar" bold onClick={onJoinClick} />
           )}
           <NavItem icon="/icons/c_forum.gif" label="fórum" divider={false} />
+          <NavItem icon="/icons/i_poll.gif" label="enquetes" href={pollHref} divider={false} />
           <NavItem icon="/icons/c_events.gif" label="eventos" divider={false} />
           <NavItem icon="/icons/i_friendgroup.png" label="membros" href={membersHref} divider={false} />
         </>
