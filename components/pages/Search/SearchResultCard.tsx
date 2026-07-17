@@ -41,8 +41,8 @@ export function SearchResultCard({ item }: { item: SearchResultItem }) {
           <img
             src={avatarSrc(item)}
             alt=""
-            width={64}
-            height={64}
+            width={48}
+            height={48}
           />
         </a>
 
