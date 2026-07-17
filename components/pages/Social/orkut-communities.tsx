@@ -22,9 +22,11 @@ export default function OrkutCommunities({ communities, userId, title = "minhas 
             </a>
           </div>
           <div className="pb-2">
-            <OrkutActionButton className="orkut-tahoma text-[11px] px-3">
-              adicionar comunidades
-            </OrkutActionButton>
+            <Link href="/Communities">
+              <OrkutActionButton className="orkut-tahoma text-[11px] px-3">
+                adicionar comunidades
+              </OrkutActionButton>
+            </Link>
           </div>
         </div>
       ) : (
