@@ -19,7 +19,7 @@ export function MyProfile({ displayName, userId, profileRowsByTab, overview, isH
   return (
     <ProfileCard title={isHome ? `Bem-vindo, ${displayName}` : displayName}>
       {/* Defina seu status */}
-      <MyProfileStatus />
+      <MyProfileStatus statusMessage={overview?.user.statusMessage} />
       {/* Recados, fotos, vídeos, ... */}
       <ProfileShortcuts
         userId={userId}

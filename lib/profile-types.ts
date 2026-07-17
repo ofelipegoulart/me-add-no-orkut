@@ -18,6 +18,11 @@ export interface ProfileUser {
   state: string;
   country: string;
   avatar?: string | null;
+  statusMessage?: string | null;
+}
+
+export interface UpdateStatusMessageRequest {
+  statusMessage: string | null;
 }
 
 // Espelha ProfileOverviewDTO.FriendCardDTO do backend (Spring): o campo da

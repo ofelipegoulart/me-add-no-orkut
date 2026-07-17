@@ -28,6 +28,8 @@ import type {
   FriendRequestListResponse,
   AcceptFriendRequestParams,
   DeleteFriendRequestParams,
+  ProfileUser,
+  UpdateStatusMessageRequest,
 } from "./profile-types";
 
 // As chamadas do cliente vão para as rotas /api/... do próprio Next (padrão proxy),
@@ -61,6 +63,23 @@ export async function getProfileOverview(
 
   if (!response.ok) {
     throw new Error(`Failed to fetch profile overview: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// Atualiza a frase de status do próprio perfil (PUT /users/me/status). Enviar
+// `null` limpa a frase.
+export async function updateStatusMessage(
+  request: UpdateStatusMessageRequest,
+): Promise<ProfileUser> {
+  const response = await apiFetch(`/api/account/status`, {
+    method: "PUT",
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to update status message: ${response.status}`);
   }
 
   return response.json();
@@ -502,6 +521,7 @@ export async function getReceivedTestimonials(
 
 export const profileService = {
   getOverview: getProfileOverview,
+  updateStatusMessage,
 
   addFriend,
   removeFriend,
