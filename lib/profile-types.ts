@@ -263,7 +263,11 @@ export interface CommunityPollOption {
 export interface CommunityActivePoll {
   id: UUID;
   question: string;
+  imageUrl?: string | null;
   creator?: string | null;
+  closesAt?: string | null;
+  closed: boolean;
+  multipleChoice: boolean;
   voteOptions: CommunityPollOption[];
 }
 
