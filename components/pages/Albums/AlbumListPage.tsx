@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BigSharpShell } from "@/components/ui/boxes/BigSharpShell";
 import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
-import { createAlbum, deleteAlbum, getAlbums } from "@/lib/album-service";
+import { createAlbum, deleteAlbum, getAlbums, SCRAP_PHOTOS_ALBUM_TITLE } from "@/lib/album-service";
 import type { AlbumCard, AlbumPrivacy } from "@/lib/album-types";
 
 type Sharing = "todos" | "amigos";
@@ -165,7 +165,9 @@ export function AlbumListPage({
     let active = true;
     getAlbums({ userId, page: 0, size: 50 })
       .then((list) => {
-        if (active) setAlbums(list);
+        if (active) {
+          setAlbums(list.filter((a) => a.title !== SCRAP_PHOTOS_ALBUM_TITLE));
+        }
       })
       .catch((e) => {
         console.error("Falha ao carregar álbuns:", e);

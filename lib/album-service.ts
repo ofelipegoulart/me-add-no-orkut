@@ -186,6 +186,27 @@ export async function saveAlbumPhotoChanges(
   }
 }
 
+// Fotos anexadas a recados não têm álbum próprio no backend — reaproveitamos
+// o upload de álbuns guardando tudo num álbum dedicado, criado sob demanda.
+// Título exportado para a listagem de álbuns poder escondê-lo do usuário.
+export const SCRAP_PHOTOS_ALBUM_TITLE = "Fotos de recados";
+
+async function getOrCreateScrapPhotosAlbum(userId: string): Promise<AlbumCard> {
+  const albums = await getAlbums({ userId });
+  const existing = albums.find((a) => a.title === SCRAP_PHOTOS_ALBUM_TITLE);
+  if (existing) return existing;
+
+  return createAlbum({ title: SCRAP_PHOTOS_ALBUM_TITLE, privacy: "PUBLIC" });
+}
+
+export async function uploadScrapPhoto(
+  userId: string,
+  file: File,
+): Promise<AlbumPhoto> {
+  const album = await getOrCreateScrapPhotosAlbum(userId);
+  return uploadAlbumPhoto(album.id, file);
+}
+
 export const albumService = {
   createAlbum,
   getAlbums,
@@ -197,4 +218,5 @@ export const albumService = {
   deleteAlbumPhoto,
   setAlbumCover,
   saveAlbumPhotoChanges,
+  uploadScrapPhoto,
 };

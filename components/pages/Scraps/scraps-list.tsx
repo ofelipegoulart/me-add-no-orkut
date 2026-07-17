@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
 import type { Scrap } from "@/data/mock-data";
 import { sanitizeProfileHtml } from "@/lib/sanitize-html";
+import { uploadScrapPhoto } from "@/lib/album-service";
 
 // Recados aceitam HTML básico (formatação, links, gifs) como no Orkut original;
 // o conteúdo passa pela mesma sanitização usada nos campos de perfil.
@@ -197,8 +198,11 @@ export function ScrapsList({
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  // Só há o que visualizar quando existe algum conteúdo digitado.
-  const canPreview = newScrapContent.trim().length > 0;
+  const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
+  const [selectedPhotoPreviewUrl, setSelectedPhotoPreviewUrl] = useState<string | null>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  // Só há o que visualizar quando existe algum conteúdo digitado ou foto anexada.
+  const canPreview = newScrapContent.trim().length > 0 || selectedPhoto !== null;
 
   const threads = buildThreads(scraps);
   // Só o dono do perfil enxerga a contagem de não lidos.
@@ -221,17 +225,39 @@ export function ScrapsList({
     });
   }
 
+  function handlePhotoSelected(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+
+    if (selectedPhotoPreviewUrl) URL.revokeObjectURL(selectedPhotoPreviewUrl);
+    setSelectedPhoto(file);
+    setSelectedPhotoPreviewUrl(URL.createObjectURL(file));
+  }
+
+  function handleRemoveSelectedPhoto() {
+    if (selectedPhotoPreviewUrl) URL.revokeObjectURL(selectedPhotoPreviewUrl);
+    setSelectedPhoto(null);
+    setSelectedPhotoPreviewUrl(null);
+  }
+
   async function handleSendScrap() {
     const content = newScrapContent.trim();
-    if (!content || sending) return;
+    if ((!content && !selectedPhoto) || sending || !currentUserId) return;
 
     setSending(true);
     try {
+      let finalContent = content;
+      if (selectedPhoto) {
+        const photo = await uploadScrapPhoto(currentUserId, selectedPhoto);
+        finalContent = `${finalContent}<br/><img src="${photo.url}" alt="" />`;
+      }
+
       const res = await fetch("/api/scraps", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          content,
+          content: finalContent,
           ownerId,
           parentId: replyingTo,
         }),
@@ -243,6 +269,7 @@ export function ScrapsList({
         setTotalCount((c) => c + 1);
         setNewScrapContent("");
         setReplyingTo(null);
+        handleRemoveSelectedPhoto();
       }
     } catch {
       // silent fail
@@ -312,9 +339,30 @@ export function ScrapsList({
           value={newScrapContent}
           onChange={(e) => setNewScrapContent(e.target.value)}
         />
+        {selectedPhoto && (
+          <div className="flex items-center gap-2 mb-2 text-[11px] text-[#5a5a5a]">
+            <img
+              src={selectedPhotoPreviewUrl ?? undefined}
+              alt=""
+              className="w-10 h-10 object-cover border border-orkut-border"
+            />
+            <span>{selectedPhoto.name}</span>
+            <button
+              type="button"
+              className="text-orkut-link underline"
+              onClick={handleRemoveSelectedPhoto}
+            >
+              remover
+            </button>
+          </div>
+        )}
         <hr className="mb-2 border-0 border-t border-orkut-border" />
         <div className="flex flex-wrap gap-2 mb-0.5 items-center">
-          <OrkutActionButton className="orkut-tahoma text-[12px] px-3" onClick={handleSendScrap} disabled={sending}>
+          <OrkutActionButton
+            className="orkut-tahoma text-[12px] px-3"
+            onClick={handleSendScrap}
+            disabled={sending || (!newScrapContent.trim() && !selectedPhoto)}
+          >
             {sending ? "enviando..." : "enviar recado"}
           </OrkutActionButton>
           <OrkutActionButton
@@ -324,7 +372,17 @@ export function ScrapsList({
           >
             visualizar
           </OrkutActionButton>
-          <OrkutActionButton className="orkut-tahoma text-[12px] px-3">
+          <input
+            ref={photoInputRef}
+            type="file"
+            accept=".jpg,.jpeg,.gif,.png"
+            className="hidden"
+            onChange={handlePhotoSelected}
+          />
+          <OrkutActionButton
+            className="orkut-tahoma text-[12px] px-3"
+            onClick={() => photoInputRef.current?.click()}
+          >
             adicionar foto
           </OrkutActionButton>
           <a href="#" className="text-orkut-link underline text-[12px]">dicas de recados</a>
@@ -362,8 +420,15 @@ export function ScrapsList({
                 <div className="text-[#333] text-[12px] leading-4 mt-1 whitespace-pre-wrap">
                   {newScrapContent.trim() ? (
                     <SanitizedContent content={newScrapContent} />
-                  ) : (
+                  ) : !selectedPhoto ? (
                     "(digite um recado para visualizar)"
+                  ) : null}
+                  {selectedPhotoPreviewUrl && (
+                    <img
+                      src={selectedPhotoPreviewUrl}
+                      alt=""
+                      className="max-w-full h-auto mt-1"
+                    />
                   )}
                 </div>
               </div>
@@ -377,7 +442,7 @@ export function ScrapsList({
         <table className="w-full border-collapse" cellPadding={0} cellSpacing={0}>
           <tbody>
             <tr>
-              <td className="flex flex-row pb-2 px-2 pt-2">
+              <td className="flex flex-row items-start justify-between flex-nowrap gap-2 pb-2 px-2 pt-2">
                 <h1 className="orkut-title text-black py-1.75 pb-1.25">
                   {pageTitle} ({totalCount})
                   {unreadCount > 0 && (
@@ -387,7 +452,7 @@ export function ScrapsList({
                   )}
                 </h1>
                 {isOwner && (
-                  <div className="text-[12px] ml-auto">
+                  <div className="text-[12px] whitespace-nowrap shrink-0">
                     <span className="text-[#5a5a5a]">todos podem enviar recados  • </span><a href="#" className="text-orkut-link underline">alterar configurações</a>
                   </div>
                 )}

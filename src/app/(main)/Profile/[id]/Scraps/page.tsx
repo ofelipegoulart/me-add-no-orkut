@@ -75,10 +75,10 @@ export default async function RecadosPage({ params }: { params: Promise<{ id: st
       </div>
       <div className="orkut-col-right">
         <SidebarSocialBox>
-          <OrkutFriends friends={friendsForUI} userId={id} />
+          <OrkutFriends friends={friendsForUI} userId={id} title="amigos" />
         </SidebarSocialBox>
         <SidebarSocialBox>
-          <OrkutCommunities communities={communitiesForUI} userId={id} />
+          <OrkutCommunities communities={communitiesForUI} userId={id} title="comunidades" />
         </SidebarSocialBox>
       </div>
     </div>
