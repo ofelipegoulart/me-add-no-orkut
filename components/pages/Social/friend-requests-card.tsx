@@ -89,8 +89,8 @@ function FriendRequestItem({
         <img
           src={request.avatar || "/avatar/i_nophoto128.gif"}
           alt=""
-          width={40}
-          height={40}
+          width={48}
+          height={48}
           className="border border-orkut-border"
         />
       </a>
