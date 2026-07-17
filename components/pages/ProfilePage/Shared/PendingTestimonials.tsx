@@ -11,10 +11,7 @@ import { BigSoftSection } from "@/components/ui/boxes/BigSoftSection";
 import type { TestimonialResponse } from "@/lib/profile-types";
 
 function avatarSrc(testimonial: TestimonialResponse) {
-  return (
-    testimonial.authorAvatar ||
-    `https://picsum.photos/seed/${testimonial.authorId}/48/48`
-  );
+  return testimonial.authorAvatar || "/avatar/i_nophoto128.gif";
 }
 
 // Card de aprovação: aparece no próprio perfil/home quando há depoimentos

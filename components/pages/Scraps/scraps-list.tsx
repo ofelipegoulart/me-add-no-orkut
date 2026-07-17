@@ -115,7 +115,7 @@ function ScrapCard({
           <div className="shrink-0">
             <Link href={`/Profile/${scrap.authorId}`}>
               <img
-                src={scrap.authorAvatar ? scrap.authorAvatar : `https://picsum.photos/seed/${scrap.authorId}/48/48`}
+                src={scrap.authorAvatar ? scrap.authorAvatar : "/avatar/i_nophoto128.gif"}
                 alt=""
                 width={48}
                 height={48}
@@ -334,7 +334,7 @@ export function ScrapsList({
             <div className="flex gap-3">
               <div className="shrink-0">
                 <img
-                  src={`https://picsum.photos/seed/${currentUserId ?? "me"}/48/48`}
+                  src="/avatar/i_nophoto128.gif"
                   alt=""
                   width={48}
                   height={48}

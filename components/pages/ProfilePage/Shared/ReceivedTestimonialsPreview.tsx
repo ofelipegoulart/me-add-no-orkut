@@ -12,10 +12,7 @@ import type { TestimonialResponse } from "@/lib/profile-types";
 const PREVIEW_LIMIT = 5;
 
 function avatarSrc(testimonial: TestimonialResponse) {
-  return (
-    testimonial.authorAvatar ||
-    `https://picsum.photos/seed/${testimonial.authorId}/48/48`
-  );
+  return testimonial.authorAvatar || "/avatar/i_nophoto128.gif";
 }
 
 // Seção "meus depoimentos" (ou "depoimentos dele/dela/dessa pessoa") na coluna

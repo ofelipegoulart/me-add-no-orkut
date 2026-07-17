@@ -19,10 +19,7 @@ const TABS = [
 type Tab = (typeof TABS)[number]["key"];
 
 function avatarSrc(testimonial: TestimonialResponse) {
-  return (
-    testimonial.authorAvatar ||
-    `https://picsum.photos/seed/${testimonial.authorId}/48/48`
-  );
+  return testimonial.authorAvatar || "/avatar/i_nophoto128.gif";
 }
 
 function TestimonialList({ items }: { items: TestimonialResponse[] }) {

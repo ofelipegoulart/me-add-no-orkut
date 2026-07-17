@@ -21,10 +21,7 @@ const PAGE_SIZE = 10;
 type TabKey = "received" | "written";
 
 function avatarSrc(testimonial: TestimonialResponse) {
-  return (
-    testimonial.authorAvatar ||
-    `https://picsum.photos/seed/${testimonial.authorId}/48/48`
-  );
+  return testimonial.authorAvatar || "/avatar/i_nophoto128.gif";
 }
 
 // Controles de paginação idênticos aos de recados: primeira / anterior /

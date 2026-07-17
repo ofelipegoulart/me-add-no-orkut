@@ -2,12 +2,9 @@ import type { SearchResultItem, SearchResultType } from "@/lib/search-types";
 
 const DEFAULT_AVATAR = "/avatar/i_nophoto128.gif";
 
-// Foto real quando existe; usuários sem foto usam o mesmo placeholder da lateral.
-// Comunidades/tópicos continuam com a miniatura gerada por seed.
+// Foto real quando existe; sem foto, todos os tipos usam o mesmo placeholder.
 function avatarSrc(item: SearchResultItem): string {
-  if (item.avatarUrl) return item.avatarUrl;
-  if (item.type === "user") return DEFAULT_AVATAR;
-  return `https://picsum.photos/seed/${item.avatarSeed}/56/56`;
+  return item.avatarUrl || DEFAULT_AVATAR;
 }
 
 const TYPE_LABEL: Record<SearchResultType, string> = {

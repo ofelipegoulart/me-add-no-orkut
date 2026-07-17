@@ -87,10 +87,7 @@ function FriendRequestItem({
     <div className="flex gap-3">
       <a href={profileHref} className="shrink-0">
         <img
-          src={
-            request.avatar ||
-            `https://picsum.photos/seed/${request.userId}/40/40`
-          }
+          src={request.avatar || "/avatar/i_nophoto128.gif"}
           alt=""
           width={40}
           height={40}
