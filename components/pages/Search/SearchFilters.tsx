@@ -14,7 +14,7 @@ type SearchFiltersProps = {
 };
 
 const TYPE_OPTIONS: { value: SearchTypeFilter; label: string; icon: React.ReactNode }[] = [
-  { value: "all", label: "todos os resultados", icon: <AllIcon /> },
+  { value: "all", label: "todos os resultados", icon: <img src="/icons/i_reload.png" width={12} height={14} alt="" /> },
   { value: "user", label: "usuários", icon: <img src="/icons/i_friendgroup.png" width={12} height={12} alt="" /> },
   { value: "community", label: "comunidades", icon: <img src="/icons/p_globe.gif" width={12} height={12} alt="" /> },
   { value: "topic", label: "tópicos", icon: <img src="/icons/i_forum.gif" width={12} height={12} alt="" /> },
@@ -85,16 +85,5 @@ export function SearchFilters({
         </ul>
       </section>
     </div>
-  );
-}
-
-function AllIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="1" y="1" width="6" height="6" rx="1" fill="#4b7bd4" />
-      <rect x="9" y="1" width="6" height="6" rx="1" fill="#4b7bd4" />
-      <rect x="1" y="9" width="6" height="6" rx="1" fill="#4b7bd4" />
-      <rect x="9" y="9" width="6" height="6" rx="1" fill="#4b7bd4" />
-    </svg>
   );
 }

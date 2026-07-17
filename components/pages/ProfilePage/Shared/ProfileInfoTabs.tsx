@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+import { sanitizeProfileHtml } from "@/lib/sanitize-html";
 
 export type ProfileTab = "geral" | "social" | "contato" | "profissional" | "pessoal";
 
 export type ProfileRow = {
   label: string;
   value: string;
+  /** Renders `value` as sanitized HTML instead of plain text. Only set this for fields meant as rich-text bios. */
+  allowHtml?: boolean;
 };
 
 export type ProfileRowsByTab = Record<ProfileTab, ProfileRow[]>;
@@ -95,8 +99,8 @@ export function ProfileInfoTabs({ rowsByTab = EMPTY_ROWS_BY_TAB }: { rowsByTab?:
               <td className="box-border whitespace-nowrap px-2 py-0.5 text-right text-[12px] leading-[17px] text-[#676767]">
                 {row.label}
               </td>
-              <td className="px-1.5 py-0.5 text-left text-[12px] leading-[17px] text-black">
-                {row.value}
+              <td className="px-1.5 py-0.5 text-left text-[12px] leading-[17px] text-black wrap-break-word">
+                {row.allowHtml ? <SanitizedHtml value={row.value} /> : row.value}
               </td>
             </tr>
           ))}
@@ -104,4 +108,9 @@ export function ProfileInfoTabs({ rowsByTab = EMPTY_ROWS_BY_TAB }: { rowsByTab?:
       </table>
     </>
   );
+}
+
+function SanitizedHtml({ value }: { value: string }) {
+  const html = useMemo(() => sanitizeProfileHtml(value), [value]);
+  return <span dangerouslySetInnerHTML={{ __html: html }} />;
 }

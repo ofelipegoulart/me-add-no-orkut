@@ -66,7 +66,9 @@ export function buildProfileRows(
   addRow(rowsByTab.geral, general, "interestedIn", "interessado(a) em:");
   addRow(rowsByTab.geral, general, "datingPreference", "gostaria de namorar:");
 
-  if (social?.aboutMe) rowsByTab.social.push({ label: "quem sou eu:", value: String(social.aboutMe) });
+  if (social?.aboutMe) {
+    rowsByTab.social.push({ label: "quem sou eu:", value: String(social.aboutMe), allowHtml: true });
+  }
   addRow(rowsByTab.social, social, "children", "filhos:");
   addRow(rowsByTab.social, social, "ethnicity", "etnia:");
   addRow(rowsByTab.social, social, "religion", "religião:");

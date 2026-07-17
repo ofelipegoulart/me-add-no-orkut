@@ -65,12 +65,6 @@ export function SearchResultCard({ item }: { item: SearchResultItem }) {
           <div className="orkut-search-loc">{locationLine(item)}</div>
 
           <dl className="orkut-search-fields">
-            {item.email && (
-              <div className="orkut-search-field">
-                <dt>e-mail:</dt>
-                <dd>{item.email}</dd>
-              </div>
-            )}
             {item.homepage && (
               <div className="orkut-search-field">
                 <dt>página da Web:</dt>
