@@ -85,8 +85,8 @@ function TestimonialRow({
         <img
           src={avatarSrc(testimonial)}
           alt=""
-          width={50}
-          height={50}
+          width={48}
+          height={48}
           className="border border-orkut-border"
         />
       </Link>
