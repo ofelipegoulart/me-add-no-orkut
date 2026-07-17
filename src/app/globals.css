@@ -640,7 +640,7 @@ td.orkut-edit-section {
 .orkut-checkbox-label {
   display: block;
   padding: 1px 0;
-  font-size: 11px;
+  font-size: 12px;
   color: #000;
   cursor: pointer;
   white-space: nowrap;
@@ -816,6 +816,41 @@ td.orkut-edit-section {
   height: 100%;
   background: #00FF00;
   transition: width 0.2s linear;
+}
+
+/* Barra de resultado de enquete (verde, preenche até a % de votos da opção).
+   Mesmo precedente visual de .orkut-upload-progress, com nome próprio porque
+   o contexto (resultado de voto, não upload) é semanticamente diferente. */
+.orkut-poll-bar {
+  position: relative;
+  box-sizing: border-box;
+  height: 14px;
+  width: 100%;
+  min-width: 80px;
+  border: 1px solid #a0b0c4;
+  background: #fff;
+}
+
+.orkut-poll-bar-fill {
+  height: 100%;
+  background: #00FF00;
+}
+
+/* Placeholder decorativo "adicionar imagem (opcional)" nos campos do
+   formulário de nova enquete — sem upload real, só visual. */
+.orkut-dashed-upload {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 90px !important;
+  height: 100px !important;
+  border: 1px dashed #a0b0c4 !important;
+  color: #7b8ca5 !important;
+  font-size: 10px !important;
+  line-height: 13px !important;
+  background: #fff !important;
 }
 
 .orkut-edit-required-note {
