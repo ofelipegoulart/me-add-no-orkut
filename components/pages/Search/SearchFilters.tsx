@@ -36,7 +36,7 @@ export function SearchFilters({
   return (
     <div className="orkut-search-filters">
       <section className="orkut-search-filter-block">
-        <h3 className="orkut-tahoma font-bold text-black">filtrar por tipo:</h3>
+        <h3 className="orkut-tahoma text-[12px] font-bold text-black">filtrar por tipo:</h3>
         <ul>
           {TYPE_OPTIONS.map((opt) => (
             <li key={opt.value}>
@@ -54,7 +54,7 @@ export function SearchFilters({
       </section>
 
       <section className="orkut-search-filter-block">
-        <h3 className="orkut-tahoma font-bold text-black">filtrar por local:</h3>
+        <h3 className="orkut-tahoma text-[12px] font-bold text-black">filtrar por local:</h3>
         <ul>
           {LOCAL_OPTIONS.map((opt) => (
             <li key={opt.value}>
@@ -71,7 +71,7 @@ export function SearchFilters({
       </section>
 
       <section className="orkut-search-filter-block">
-        <h3 className="orkut-tahoma font-bold text-black">filtrar por idioma:</h3>
+        <h3 className="orkut-tahoma text-[12px] font-bold text-black">filtrar por idioma:</h3>
         <ul>
           <li>
             <button
