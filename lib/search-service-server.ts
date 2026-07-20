@@ -3,11 +3,8 @@
 // Usado no carregamento inicial da tela de resultados.
 // ============================================
 
-import { SEARCH_MOCK_RESULTS } from "@/data/search-mock";
 import {
-  matchesTerm,
   normalizeBackendResults,
-  normalizeTerm,
   type BackendSearchResponse,
   type SearchResultItem,
 } from "./search-types";
@@ -19,7 +16,7 @@ const API_BASE_URL = process.env.API_URL || "";
 const BACKEND_PAGE_SIZE = 50;
 
 // Busca no backend e devolve os itens já normalizados para a UI.
-// Em qualquer falha retorna lista vazia — o fallback mock assume.
+// Em qualquer falha (rede, status não-ok) retorna lista vazia.
 async function fetchBackendResults(
   jwt: string,
   term: string,
@@ -48,23 +45,13 @@ async function fetchBackendResults(
 }
 
 /**
- * Retorna o conjunto de resultados para um termo.
- *
- * Regra de dados: se o backend devolver ao menos 1 resultado, mostra o que veio
- * do backend. Só quando o backend não retorna nada é que usamos o dataset mock
- * (filtrado pelo termo; se nem o mock casar, mostramos o catálogo inteiro para a
- * tela de demonstração não ficar vazia).
+ * Retorna o conjunto de resultados para um termo, sempre a partir do backend.
+ * Sem JWT ou sem resultados, devolve lista vazia — a UI já trata esse caso
+ * mostrando "Nenhum resultado encontrado".
  */
 export async function getUniversalSearchResultsServer(
   term: string,
   jwt?: string,
 ): Promise<SearchResultItem[]> {
-  const backend = jwt ? await fetchBackendResults(jwt, term) : [];
-  if (backend.length > 0) return backend;
-
-  const normalized = normalizeTerm(term);
-  const mockMatches = SEARCH_MOCK_RESULTS.filter((item) =>
-    matchesTerm(item, normalized),
-  );
-  return mockMatches.length > 0 ? mockMatches : SEARCH_MOCK_RESULTS;
+  return jwt ? fetchBackendResults(jwt, term) : [];
 }
