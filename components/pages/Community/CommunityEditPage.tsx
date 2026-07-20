@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
@@ -120,6 +120,7 @@ export default function CommunityEditPage({
   const [cep, setCep] = useState(initial?.location?.zipCode ?? "");
   const [pais, setPais] = useState(initial?.location?.country || "Brasil");
   const [iconFile, setIconFile] = useState<File | null>(null);
+  const iconFileInputRef = useRef<HTMLInputElement>(null);
   const [descricao, setDescricao] = useState(initial?.description ?? "");
 
   // ── Configurações de recursos (sanfona) ──
@@ -367,11 +368,19 @@ export default function CommunityEditPage({
               <td className="orkut-edit-label">Imagem da comunidade:</td>
               <td className="orkut-edit-field">
                 <input
+                  ref={iconFileInputRef}
                   type="file"
                   accept="image/*"
-                  className="text-[11px]"
+                  className="hidden"
                   onChange={(e) => setIconFile(e.target.files?.[0] ?? null)}
                 />
+                <button
+                  type="button"
+                  className="xp-btn"
+                  onClick={() => iconFileInputRef.current?.click()}
+                >
+                  Escolher arquivo
+                </button>
                 {iconFile && <span className="ml-1 text-[11px] text-[#7b7b7b]">{iconFile.name}</span>}
               </td>
             </tr>

@@ -10,7 +10,7 @@ import { getProfileOverviewServer } from "@/lib/profile-service-server";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
 import type { FriendSummary, ProfileOverviewResponse } from "@/lib/profile-types";
 
-export default async function MeusAmigosPage() {
+export default async function HomeFriendsPage() {
   const session = await getServerSession(authOptions);
 
   if (!session) {

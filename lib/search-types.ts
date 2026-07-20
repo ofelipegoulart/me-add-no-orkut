@@ -26,9 +26,16 @@ export interface SearchResultItem {
   language: ItemLanguage;
   email?: string;
   homepage?: string;
-  bio?: string; // "quem sou eu"
+  bio?: string; // "quem sou eu" (usuário) ou descrição (comunidade)
+  category?: string; // categoria da comunidade
   scrapsCount: number;
   href: string; // destino do link do nome
+  // Campos exclusivos de tópicos de fórum.
+  excerpt?: string; // trecho da mensagem onde o termo foi citado
+  communityName?: string; // comunidade onde o tópico está
+  communityHref?: string;
+  messageCount?: number; // total de mensagens do tópico
+  lastMessageAt?: string; // ISO da última mensagem postada
 }
 
 // Idioma concreto de um item (o filtro "all" nunca é atribuído a um item).
@@ -44,7 +51,7 @@ export interface UniversalSearchParams {
 
 // Formato bruto devolvido pelo backend (/search): lista unificada e paginada.
 export interface BackendSearchResult {
-  resultType: "USER" | "COMMUNITY";
+  resultType: "USER" | "COMMUNITY" | "TOPIC";
   id: string;
   name: string;
   avatarUrl?: string | null;
@@ -52,6 +59,13 @@ export interface BackendSearchResult {
   aboutMe?: string | null;
   scrapCount: number;
   memberCount: number;
+  category?: string | null; // presente quando resultType === "COMMUNITY"
+  // Presentes apenas quando resultType === "TOPIC".
+  excerpt?: string | null;
+  communityId?: string | null;
+  communityName?: string | null;
+  totalMessages?: number;
+  lastMessageAt?: string | null;
 }
 
 export interface BackendSearchResponse {
@@ -81,6 +95,23 @@ export function normalizeBackendResults(
   resp: BackendSearchResponse,
 ): SearchResultItem[] {
   return (resp.results ?? []).map((r) => {
+    if (r.resultType === "TOPIC") {
+      return {
+        id: r.id,
+        type: "topic",
+        name: r.name,
+        online: false,
+        country: "Brasil",
+        language: "pt-BR",
+        scrapsCount: r.totalMessages ?? 0,
+        href: "#",
+        excerpt: r.excerpt || undefined,
+        communityName: r.communityName || undefined,
+        communityHref: r.communityId ? `/Community/${r.communityId}` : undefined,
+        messageCount: r.totalMessages ?? 0,
+        lastMessageAt: r.lastMessageAt || undefined,
+      };
+    }
     const isUser = r.resultType === "USER";
     return {
       id: r.id,
@@ -92,6 +123,7 @@ export function normalizeBackendResults(
       language: "pt-BR",
       email: isUser ? r.email || undefined : undefined,
       bio: r.aboutMe || undefined,
+      category: isUser ? undefined : r.category || undefined,
       scrapsCount: isUser ? r.scrapCount ?? 0 : r.memberCount ?? 0,
       href: isUser ? `/Profile/${r.id}` : `/communities/${r.id}`,
     };

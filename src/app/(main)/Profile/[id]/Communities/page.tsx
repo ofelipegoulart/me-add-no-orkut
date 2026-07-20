@@ -11,7 +11,7 @@ import type { CommunitySummary, ProfileOverviewResponse } from "@/lib/profile-ty
 
 const NOPHOTO = "/avatar/i_nophoto128.gif";
 
-export default async function ComunidadesPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function CommunitiesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const session = await getServerSession(authOptions);
 

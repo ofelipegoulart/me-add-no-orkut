@@ -10,7 +10,7 @@ export default function OrkutCommunities({ communities, userId, title = "minhas 
     <div>
       <div className="orkut-tahoma text-sm leading-5.25 mt-1.25 mb-1.5 font-bold">
         <span className="text-black">{title} </span>
-        <Link href={`/Profile/${userId}/comunidades`} className="text-orkut-link font-bold">({communities.length})</Link>
+        <Link href={`/Profile/${userId}/Communities`} className="text-orkut-link font-bold">({communities.length})</Link>
       </div>
 
       {communities.length === 0 ? (
@@ -41,7 +41,7 @@ export default function OrkutCommunities({ communities, userId, title = "minhas 
             }))}
           />
           <div className="border-t border-orkut-border pt-1 mt-0.5">
-            <Link href={`/Profile/${userId}/comunidades`} className="underline">ver todos</Link>
+            <Link href={`/Profile/${userId}/Communities`} className="underline">ver todos</Link>
           </div>
         </div>
       )}

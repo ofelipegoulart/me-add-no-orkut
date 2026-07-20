@@ -3,17 +3,18 @@
 import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
 import { OrkutActionButton } from "@/components/ui/buttons/orkut-action-button";
-import type { FriendSummary } from "@/lib/profile-types";
+import type { CommunitySummary } from "@/lib/profile-types";
 
 const NOPHOTO = "/avatar/i_nophoto128.gif";
 const COLUMNS = 3;
 const ROWS_PER_PAGE = 5;
-const PAGE_SIZE = COLUMNS * ROWS_PER_PAGE; // 15 amigos/página (3 colunas × 5 linhas)
+const PAGE_SIZE = COLUMNS * ROWS_PER_PAGE; // 15 comunidades/página (3 colunas × 5 linhas)
 const MAX_PAGE_NUMBERS = 5;
 
-// Paginação numerada e real: fatia a lista de amigos já carregada no
+// Paginação numerada e real: fatia a lista de comunidades já carregada no
 // servidor. Mesma lógica de {page, totalPages, onChange} de
-// TestimonialsBoard.tsx, só com botões numerados em vez de "anterior/próxima".
+// TestimonialsBoard.tsx (e de FriendsBoard.tsx), só com botões numerados em
+// vez de "anterior/próxima".
 function NumberedPagination({
   page,
   totalPages,
@@ -27,8 +28,7 @@ function NumberedPagination({
 
   const isLast = page >= totalPages - 1;
   // Janela deslizante de números centrada na página atual, para que "1 2 3
-  // 4 5 › »" continue mostrando a página ativa mesmo com muitos amigos
-  // (ex.: na página 12 de 20, mostra 10 11 12 13 14, não sempre 1-5).
+  // 4 5 › »" continue mostrando a página ativa mesmo com muitas comunidades.
   const windowSize = Math.min(MAX_PAGE_NUMBERS, totalPages);
   const windowStart = Math.min(
     Math.max(0, page - Math.floor(windowSize / 2)),
@@ -69,19 +69,17 @@ function NumberedPagination({
   );
 }
 
-// Card de amigo: fundo azul (bg-orkut-tab-inactive, igual ao card original de
-// Profile/[id]/Friends) com foto à esquerda + nome(contagem) e informações do
-// perfil à direita (disposição de components/pages/Social/friend-requests-card.tsx),
-// em vez do card centralizado do ThumbCardGrid.
-function FriendCard({ friend }: { friend: FriendSummary }) {
-  const profileHref = `/Profile/${friend.id}`;
-  const name = friend.firstName || friend.name;
+// Card de comunidade: fundo azul (bg-orkut-tab-inactive) com ícone à esquerda
+// + nome(nº de membros) à direita — mesma disposição do FriendCard em
+// FriendsBoard.tsx.
+function CommunityCard({ community }: { community: CommunitySummary }) {
+  const communityHref = `/Community/${community.id}`;
 
   return (
     <div className="flex gap-2 bg-orkut-tab-inactive px-2 py-2">
-      <Link href={profileHref} className="shrink-0">
+      <Link href={communityHref} className="shrink-0">
         <img
-          src={friend.avatar || NOPHOTO}
+          src={community.icon || NOPHOTO}
           alt=""
           width={48}
           height={48}
@@ -89,28 +87,25 @@ function FriendCard({ friend }: { friend: FriendSummary }) {
         />
       </Link>
       <div className="flex-1 min-w-0">
-        <Link href={profileHref} className="text-orkut-link font-bold text-[13px]">
-          {name}
+        <Link href={communityHref} className="text-orkut-link font-bold text-[13px]">
+          {community.name}
         </Link>{" "}
-        <span className="text-[#8c8c8c] text-[13px]">({friend.friendsCount})</span>
-        {/* TODO: a API ainda não expõe informações de perfil por amigo
-            (gênero, cidade, relacionamento etc.) — quando FriendSummary
-            passar a incluir isso, renderizar aqui como segunda linha. */}
+        <span className="text-[#8c8c8c] text-[13px]">({community.memberCount})</span>
       </div>
     </div>
   );
 }
 
-export function FriendsBoard({ friends }: { friends: FriendSummary[] }) {
+export function CommunitiesBoard({ communities }: { communities: CommunitySummary[] }) {
   const [query, setQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
   const [page, setPage] = useState(0);
 
   const filtered = useMemo(() => {
     const term = submittedQuery.trim().toLowerCase();
-    if (!term) return friends;
-    return friends.filter((f) => (f.firstName || f.name).toLowerCase().includes(term));
-  }, [friends, submittedQuery]);
+    if (!term) return communities;
+    return communities.filter((c) => c.name.toLowerCase().includes(term));
+  }, [communities, submittedQuery]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages - 1);
@@ -127,22 +122,22 @@ export function FriendsBoard({ friends }: { friends: FriendSummary[] }) {
 
   return (
     <div>
-      {/* Barra de abas: "lista de amigos" como aba ativa única, no mesmo
+      {/* Barra de abas: "lista de comunidades" como aba ativa única, no mesmo
           estilo das abas "geral/social/pessoal..." de ProfileInfoTabs.tsx
           (components/pages/ProfilePage/Shared/ProfileInfoTabs.tsx). */}
       <div className="mb-2 flex items-end justify-between border-b border-[#ccc] p-0">
         <span className="relative -mb-px mr-0.5 inline-block rounded-t-[5px] border border-[#627AAD] border-b-[#627AAD] bg-[#627AAD] px-1.25 py-0.5 text-[14px] font-bold tracking-tight text-white outline-none z-1">
-          lista de amigos
+          lista de comunidades
         </span>
-        <Link href="/pesquisar?type=user" className="text-orkut-link orkut-tahoma text-[12px] underline">
-          achar mais amigos »
+        <Link href="/Communities" className="text-orkut-link orkut-tahoma text-[12px] underline">
+          adicionar comunidades »
         </Link>
       </div>
 
       {/* Busca + paginação numerada na mesma linha */}
       <form onSubmit={handleSearch} className="flex items-center justify-between gap-2 pb-2 text-[12px]">
         <div className="flex items-center gap-1">
-          <span>Procurar amigos:</span>
+          <span>Procurar comunidades:</span>
           <input
             type="text"
             value={query}
@@ -150,7 +145,7 @@ export function FriendsBoard({ friends }: { friends: FriendSummary[] }) {
             className="h-5 w-40 border border-orkut-border bg-white px-1 text-[11px] outline-none"
           />
           <OrkutActionButton type="submit" className="orkut-tahoma">
-            procurar amigos
+            procurar comunidades
           </OrkutActionButton>
         </div>
         <NumberedPagination page={safePage} totalPages={totalPages} onChange={setPage} />
@@ -158,19 +153,18 @@ export function FriendsBoard({ friends }: { friends: FriendSummary[] }) {
 
       {pageItems.length === 0 ? (
         <div className="mt-4 px-2 pb-6 text-[11px] text-[#7b7b7b]">
-          Nenhum amigo encontrado.
+          Nenhuma comunidade encontrada.
         </div>
       ) : (
         <div className="mt-4 grid grid-cols-3 gap-2">
-          {pageItems.map((f) => (
-            <FriendCard key={f.id} friend={f} />
+          {pageItems.map((c) => (
+            <CommunityCard key={c.id} community={c} />
           ))}
         </div>
       )}
 
       {/* Rodapé com a paginação repetida no canto direito, igual à última
-          linha de uma tabela — só aparece quando há mais de uma página
-          (mesmo padrão de rodapé duplo de TestimonialsBoard.tsx). */}
+          linha de uma tabela — só aparece quando há mais de uma página. */}
       {totalPages > 1 && (
         <div className="flex justify-end border-t border-orkut-border pt-2 mt-1">
           <NumberedPagination page={safePage} totalPages={totalPages} onChange={setPage} />

@@ -11,7 +11,7 @@ import type { FriendSummary, ProfileOverviewResponse } from "@/lib/profile-types
 
 const NOPHOTO = "/avatar/i_nophoto128.gif";
 
-export default async function AmigosPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function FriendsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const session = await getServerSession(authOptions);
 

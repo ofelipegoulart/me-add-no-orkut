@@ -130,13 +130,17 @@ export function SearchScreen({
         </div>
 
         {/* Abas de navegação */}
-        <div className="orkut-search-tabs">
+        <div className="orkut-edit-tabs">
           {TABS.map((tab) => (
             <button
               key={tab.value}
               type="button"
               onClick={() => changeType(tab.value)}
-              className={`orkut-search-tab${type === tab.value ? " is-active" : ""}`}
+              className={
+                type === tab.value
+                  ? "orkut-edit-tab orkut-edit-tab-active"
+                  : "orkut-edit-tab"
+              }
             >
               {tab.label}
             </button>
@@ -159,18 +163,14 @@ export function SearchScreen({
         </div>
 
         {/* Faixa de status */}
+        <div className="orkut-divider" />
         <div className="orkut-search-subhead">
           <span className="orkut-search-subhead-text">
-            <SearchStatusIcon />
+            <SearchTypeIcon type={type} />
             {heading}
           </span>
-          <a href="#" className="orkut-search-refine">
-            refinar os resultados
-            <span className="orkut-search-refine-arrow" aria-hidden="true">
-              ▶
-            </span>
-          </a>
         </div>
+        <div className="orkut-divider" />
 
         {/* Contador + paginação */}
         <div className="orkut-search-meta">
@@ -202,11 +202,21 @@ export function SearchScreen({
           )}
         </div>
 
+        {/* Faixa "resultados em meu país" — some quando a aba é "todos os resultados" */}
+        {type !== "all" && (
+          <div className="orkut-search-subhead">
+            <span className="orkut-search-subhead-text">
+              <SearchTypeIcon type={type} />
+              Resultados em <b>meu país</b> (<b>Brasil</b>):
+            </span>
+          </div>
+        )}
+
         {/* Lista de resultados */}
         {pageItems.length > 0 ? (
           <ul className="orkut-search-list">
             {pageItems.map((item) => (
-              <SearchResultCard key={item.id} item={item} />
+              <SearchResultCard key={item.id} item={item} term={term} />
             ))}
           </ul>
         ) : (
@@ -231,11 +241,13 @@ export function SearchScreen({
   );
 }
 
-function SearchStatusIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="7" cy="7" r="5" fill="none" stroke="#4b7bd4" strokeWidth="2" />
-      <line x1="11" y1="11" x2="15" y2="15" stroke="#4b7bd4" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
+const SUBHEAD_ICON: Record<SearchTypeFilter, string> = {
+  all: "/icons/i_reload.png",
+  user: "/icons/i_friendgroup.png",
+  community: "/icons/p_globe.gif",
+  topic: "/icons/i_forum.gif",
+};
+
+function SearchTypeIcon({ type }: { type: SearchTypeFilter }) {
+  return <img src={SUBHEAD_ICON[type]} alt="" width={14} height={14} />;
 }

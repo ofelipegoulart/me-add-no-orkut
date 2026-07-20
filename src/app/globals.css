@@ -1085,44 +1085,12 @@ td.orkut-edit-section {
   padding: 8px 12px 14px;
 }
 
-/* ── Abas horizontais ── */
-.orkut-search-tabs {
-  display: flex;
-  gap: 2px;
-  border-bottom: 1px solid #b9c9dc;
-  margin: 2px 0 8px;
-}
-
-.orkut-search-tab {
-  font-family: Tahoma, Arial, sans-serif;
-  font-size: 12px;
-  font-weight: bold;
-  color: var(--orkut-link-dark);
-  background: var(--orkut-tab-inactive);
-  border: 1px solid #9eb6d8;
-  border-bottom: none;
-  border-radius: 5px 5px 0 0;
-  padding: 3px 10px;
-  margin-bottom: -1px;
-  cursor: pointer;
-}
-
-.orkut-search-tab:hover {
-  background: #dbe6f7;
-}
-
-.orkut-search-tab.is-active,
-.orkut-search-tab.is-active:hover {
-  background: #627aad;
-  color: #fff;
-  border-color: #627aad;
-}
-
 /* ── Subformulário "pesquisar novamente" ── */
 .orkut-search-again {
   display: flex;
   align-items: flex-start;
   gap: 6px;
+  margin-top: 6px;
   margin-bottom: 10px;
 }
 
@@ -1167,16 +1135,15 @@ td.orkut-edit-section {
 
 .orkut-search-safety {
   font-size: 11px;
-  color: #3366cc;
+  color: var(--orkut-link);
 }
 
 /* ── Faixa de status ── */
 .orkut-search-subhead {
   display: flex;
-  align-items: stretch;
-  justify-content: space-between;
+  align-items: center;
   gap: 8px;
-  background: #d4e5f7;
+  background: var(--orkut-panel);
   padding: 4px 0 4px 8px;
 }
 
@@ -1189,22 +1156,6 @@ td.orkut-edit-section {
   color: #333;
 }
 
-.orkut-search-refine {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font-size: 11px;
-  color: var(--orkut-link);
-  background: #dfeafa; /* aprox. referência */
-  padding: 4px 8px;
-  white-space: nowrap;
-}
-
-.orkut-search-refine-arrow {
-  color: #3366cc;
-  font-size: 8px;
-}
-
 /* ── Contador + paginação ── */
 .orkut-search-meta {
   display: flex;
@@ -1215,8 +1166,8 @@ td.orkut-edit-section {
 }
 
 .orkut-search-counter {
-  font-size: 11px;
-  color: #555;
+  font-size: 12px;
+  color: #000;
 }
 
 .orkut-search-pagination {
@@ -1396,14 +1347,53 @@ td.orkut-edit-section {
   font-size: 11px;
 }
 
-.orkut-search-scraps-ico {
-  display: inline-block;
-  width: 12px;
-  height: 10px;
-  border: 1px solid #4b66a1;
-  border-radius: 2px;
-  position: relative;
-  background: #dbe6f7;
+/* ── Card de comunidade ── */
+.orkut-search-community-count {
+  font-size: 11px;
+  color: #8a8a8a;
+}
+
+.orkut-search-community-desc {
+  margin: 3px 0 0;
+  font-size: 11px;
+  color: #333;
+}
+
+/* ── Card de tópico ── */
+.orkut-search-topic-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.orkut-search-topic-view {
+  font-size: 11px;
+  color: var(--orkut-link);
+}
+
+.orkut-search-topic-excerpt {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: #333;
+  line-height: 15px;
+}
+
+.orkut-search-topic-meta {
+  font-size: 11px;
+  color: #8a8a8a;
+  margin-top: 2px;
+}
+
+.orkut-search-topic-community {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+.orkut-search-topic-community a {
+  color: var(--orkut-link);
 }
 
 .orkut-search-scraps-ico::after {

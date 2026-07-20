@@ -12,7 +12,7 @@ export default function OrkutFriends({ friends, userId, title = "meus amigos" }:
             <div>
                 <div className="orkut-tahoma text-sm leading-5.25 mt-1.25 mb-1.5 font-bold">
                     <span className="text-black">{title} </span>
-                    <Link href={`/Profile/${userId}/amigos`} className="text-orkut-link font-bold">({friends.length})</Link>
+                    <Link href={`/Profile/${userId}/Friends`} className="text-orkut-link font-bold">({friends.length})</Link>
                 </div>
 
                 {friends.length === 0 ? (
@@ -47,7 +47,7 @@ export default function OrkutFriends({ friends, userId, title = "meus amigos" }:
                             }))}
                         />
                         <div className="border-t border-orkut-border pt-1 mt-0.5">
-                            <Link href={`/Profile/${userId}/amigos`} className="underline">ver todos</Link>
+                            <Link href={`/Profile/${userId}/Friends`} className="underline">ver todos</Link>
                         </div>
                     </div>
                 )}

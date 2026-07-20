@@ -229,7 +229,7 @@ export default function DesignSystemPage() {
         <Block
           name="BigSharpShell"
           path="components/ui/boxes/BigSharpShell.tsx"
-          usedIn={["Profile/[id]/fotos", "Profile/[id]/amigos", "Profile/[id]/comunidades"]}
+          usedIn={["Profile/[id]/fotos", "Profile/[id]/Friends", "Profile/[id]/Communities"]}
           contextNote="grande · já inclui .orkut-col-main, não precisa de wrapper"
         >
           <BigSharpShell title="Título da página" breadcrumbLabel="Sub-página">
