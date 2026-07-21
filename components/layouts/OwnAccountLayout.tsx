@@ -3,15 +3,17 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
 import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
-import { AlbumEditPage } from "@/components/pages/Albums/AlbumEditPage";
 import { loadSidebarProfile } from "@/lib/sidebar-profile";
 
-export default async function HomeAlbumEditPage({
-  params,
+// Layout compartilhado por todas as rotas "de conta própria" (Home e suas
+// sub-rotas, Comunidades, CriarComunidade, Pesquisa): busca o nome/avatar
+// uma única vez por navegação e renderiza a barra lateral fixa, em vez de
+// cada página duplicar essa lógica.
+export default async function OwnAccountLayout({
+  children,
 }: {
-  params: Promise<{ albumId: string }>;
+  children: React.ReactNode;
 }) {
-  const { albumId } = await params;
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -19,13 +21,13 @@ export default async function HomeAlbumEditPage({
   }
 
   const userId = session.user.userId;
-  const displayName = session.user.name ?? "Usuário";
 
-  const { avatarUrl, infoLines } = await loadSidebarProfile(
+  const { name, avatarUrl, infoLines } = await loadSidebarProfile(
     session.user.jwt,
     userId,
     true,
   );
+  const displayName = name ?? session.user.name ?? "Usuário";
 
   return (
     <div className="min-h-screen w-full bg-orkut-bg">
@@ -38,11 +40,7 @@ export default async function HomeAlbumEditPage({
           infoLines={infoLines}
         />
       </SidebarLeftBox>
-      <AlbumEditPage
-        albumId={albumId}
-        homeHref="/Home/AlbumList"
-        albumHref={`/Home/AlbumList/${albumId}`}
-      />
+      {children}
     </div>
   );
 }

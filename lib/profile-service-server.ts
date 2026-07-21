@@ -39,6 +39,7 @@ export async function getProfileOverviewServer(
       "Content-Type": "application/json",
       Authorization: `Bearer ${jwt}`,
     },
+    cache: "no-store",
   });
 
   if (!response.ok) {

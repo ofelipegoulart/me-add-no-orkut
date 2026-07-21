@@ -20,7 +20,6 @@ export default async function ProfilePage({
   const { id } = await params;
   const session = await getServerSession(authOptions);
   const isOwnProfile = session?.user?.userId === id;
-  const displayName = session?.user?.name ?? "Usuário";
   const jwt = session?.user?.jwt;
 
   // Fetch profile overview data using server-side function
@@ -32,6 +31,8 @@ export default async function ProfilePage({
       // Fallback to mock data if API fails
     }
   }
+
+  const displayName = overview?.user?.name || session?.user?.name || "Usuário";
 
   // Transform friends and communities for UI components
   const friendsForUI = overview

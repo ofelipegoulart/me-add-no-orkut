@@ -1,17 +1,13 @@
 import { notFound, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
-import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
 import { BigSoftShell } from "@/components/ui/boxes/BigSoftShell";
 import CommunityEditPage from "@/components/pages/Community/CommunityEditPage";
-import { loadSidebarProfile } from "@/lib/sidebar-profile";
 import { getCommunityDashboardServer } from "@/lib/profile-service-server";
 import type { CommunityInfo } from "@/lib/profile-types";
 
-// Rota /CommunityEdit — criar/editar comunidade. Segue o mesmo formato
-// logado da Home / Pesquisa / Comunidades: barra lateral do perfil à
-// esquerda + conteúdo à direita (header azul e shell vêm do layout main).
+// Rota /CommunityEdit — criar/editar comunidade. A barra lateral do perfil
+// e o shell vêm do layout do grupo de rotas (loggedSidebar).
 // O query param `mode` (ex.: ?mode=create) escolhe o fluxo; no orkut
 // clássico a mesma tela servia criação e edição. No modo edição, `id`
 // identifica a comunidade e o form é pré-preenchido com os dados atuais —
@@ -28,9 +24,7 @@ export default async function Page({
 
   const { mode: rawMode, id } = await searchParams;
   const mode = rawMode === "edit" ? "edit" : "create";
-  const displayName = session.user?.name ?? "Usuário";
   const userId = session.user?.userId;
-  const sidebar = await loadSidebarProfile(session.user?.jwt, userId, true);
 
   let initial: CommunityInfo | undefined;
   if (mode === "edit") {
@@ -51,19 +45,8 @@ export default async function Page({
   }
 
   return (
-    <div className="min-h-screen w-full bg-orkut-bg">
-      <SidebarLeftBox>
-        <OrkutLeftSidebar
-          displayName={displayName}
-          isOwnProfile
-          userId={userId}
-          avatarUrl={sidebar.avatarUrl}
-          infoLines={sidebar.infoLines}
-        />
-      </SidebarLeftBox>
-      <BigSoftShell>
-        <CommunityEditPage mode={mode} communityId={id} initial={initial} />
-      </BigSoftShell>
-    </div>
+    <BigSoftShell>
+      <CommunityEditPage mode={mode} communityId={id} initial={initial} />
+    </BigSoftShell>
   );
 }

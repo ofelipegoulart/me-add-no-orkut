@@ -1,11 +1,8 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
-import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
 import { SearchScreen } from "@/components/pages/Search/SearchScreen";
 import { getUniversalSearchResultsServer } from "@/lib/search-service-server";
-import { loadSidebarProfile } from "@/lib/sidebar-profile";
 import type {
   SearchLanguageFilter,
   SearchLocationFilter,
@@ -49,27 +46,16 @@ export default async function SearchPage({
   const idioma = parseIdioma(firstValue(sp.idioma));
   const pageNum = Math.max(1, parseInt(firstValue(sp.page), 10) || 1);
 
-  const displayName = session.user?.name ?? "Usuário";
-  const userId = session.user?.userId;
-
-  const [results, sidebar] = await Promise.all([
-    getUniversalSearchResultsServer(term, session.user?.jwt),
-    loadSidebarProfile(session.user?.jwt, userId, true),
-  ]);
+  const results = await getUniversalSearchResultsServer(term, session.user?.jwt);
 
   return (
-    <div className="min-h-screen w-full bg-orkut-bg orkut-search-page">
-      <SidebarLeftBox>
-        <OrkutLeftSidebar displayName={displayName} isOwnProfile userId={userId} avatarUrl={sidebar.avatarUrl} infoLines={sidebar.infoLines} />
-      </SidebarLeftBox>
-      <SearchScreen
-        term={term}
-        results={results}
-        initialType={type}
-        initialLocal={local}
-        initialIdioma={idioma}
-        initialPage={pageNum}
-      />
-    </div>
+    <SearchScreen
+      term={term}
+      results={results}
+      initialType={type}
+      initialLocal={local}
+      initialIdioma={idioma}
+      initialPage={pageNum}
+    />
   );
 }

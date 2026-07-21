@@ -4,12 +4,9 @@ import { authOptions } from "@/lib/auth";
 import { FRIENDS, COMMUNITIES } from "@/data/mock-data";
 import OrkutCommunities from "@/components/pages/Social/orkut-communities";
 import OrkutFriends from "@/components/pages/Social/orkut-friends";
-import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
-import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
 import { SidebarSocialBox } from "@/components/ui/boxes/SidebarSocialBox";
 import MyProfilePage from "@/components/pages/ProfilePage/MyProfilePage";
 import { loadProfileRows } from "@/lib/profile-data";
-import { loadSidebarProfile } from "@/lib/sidebar-profile";
 import {
   getProfileOverviewServer,
   getReceivedFriendRequestsServer,
@@ -28,14 +25,7 @@ export default async function HomePage() {
   }
 
   const profileRowsByTab: ProfileRowsByTab = await loadProfileRows(session?.user?.jwt);
-  const displayName = session?.user?.name ?? "Usuário";
   const userId = session!.user.userId;
-
-  const { avatarUrl, infoLines } = await loadSidebarProfile(
-    session?.user?.jwt,
-    userId,
-    true,
-  );
 
   let friendRequests: FriendRequest[] = [];
   let overview: ProfileOverviewResponse | null = null;
@@ -69,6 +59,7 @@ export default async function HomePage() {
     }
   }
 
+  const displayName = overview?.user?.name || session?.user?.name || "Usuário";
   const friendsForUI = overview
     ? transformFriendsForUI(overview.friends)
     : FRIENDS;
@@ -77,10 +68,7 @@ export default async function HomePage() {
     : COMMUNITIES;
 
   return (
-    <div className="min-h-screen w-full bg-orkut-bg">
-      <SidebarLeftBox>
-        <OrkutLeftSidebar displayName={displayName} isOwnProfile userId={userId} avatarUrl={avatarUrl} infoLines={infoLines} />
-      </SidebarLeftBox>
+    <>
       <div className="orkut-col-main flex flex-col gap-1.25">
         <MyProfilePage
           displayName={displayName}
@@ -99,6 +87,6 @@ export default async function HomePage() {
           <OrkutCommunities communities={communitiesForUI} userId={userId} />
         </SidebarSocialBox>
       </div>
-    </div>
+    </>
   );
 }

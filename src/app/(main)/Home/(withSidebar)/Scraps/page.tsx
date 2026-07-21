@@ -5,12 +5,9 @@ import { FRIENDS, COMMUNITIES } from "@/data/mock-data";
 import type { Scrap } from "@/data/mock-data";
 import OrkutCommunities from "@/components/pages/Social/orkut-communities";
 import OrkutFriends from "@/components/pages/Social/orkut-friends";
-import OrkutLeftSidebar from "@/components/ui/Sidebar/container-bar";
-import { SidebarLeftBox } from "@/components/ui/boxes/SidebarLeftBox";
 import { SidebarSocialBox } from "@/components/ui/boxes/SidebarSocialBox";
 import { MarkScrapsRead } from "@/components/pages/Scraps/mark-scraps-read";
 import { ScrapsList } from "@/components/pages/Scraps/scraps-list";
-import { loadSidebarProfile } from "@/lib/sidebar-profile";
 import { getProfileOverviewServer } from "@/lib/profile-service-server";
 import { transformFriendsForUI, transformCommunitiesForUI } from "@/lib/profile-types";
 import type { ProfileOverviewResponse } from "@/lib/profile-types";
@@ -23,13 +20,6 @@ export default async function HomeScrapsPage() {
   }
 
   const userId = session.user.userId;
-  const displayName = session.user.name ?? "Usuário";
-
-  const { avatarUrl, infoLines } = await loadSidebarProfile(
-    session.user.jwt,
-    userId,
-    true,
-  );
 
   let scraps: Scrap[] = [];
   let totalCount = 0;
@@ -57,6 +47,7 @@ export default async function HomeScrapsPage() {
       // Fallback para os dados mockados se a API falhar.
     }
   }
+  const displayName = overview?.user?.name || session.user.name || "Usuário";
   const friendsForUI = overview ? transformFriendsForUI(overview.friends) : FRIENDS;
   const communitiesForUI = overview
     ? transformCommunitiesForUI(overview.communities)
@@ -65,17 +56,8 @@ export default async function HomeScrapsPage() {
   const unreadIds = scraps.filter((s) => s.readAt === null).map((s) => s.id);
 
   return (
-    <div className="min-h-screen w-full bg-orkut-bg">
+    <>
       <MarkScrapsRead scrapIds={unreadIds} />
-      <SidebarLeftBox>
-        <OrkutLeftSidebar
-          displayName={displayName}
-          isOwnProfile
-          userId={userId}
-          avatarUrl={avatarUrl}
-          infoLines={infoLines}
-        />
-      </SidebarLeftBox>
       <div className="orkut-col-main flex flex-col gap-1.25">
         <ScrapsList
           initialScraps={scraps}
@@ -83,7 +65,7 @@ export default async function HomeScrapsPage() {
           totalCount={totalCount}
           isOwner
           currentUserId={userId}
-          currentUserName={session.user.name ?? undefined}
+          currentUserName={displayName}
         />
       </div>
       <div className="orkut-col-right">
@@ -94,6 +76,6 @@ export default async function HomeScrapsPage() {
           <OrkutCommunities communities={communitiesForUI} userId={userId} />
         </SidebarSocialBox>
       </div>
-    </div>
+    </>
   );
 }
