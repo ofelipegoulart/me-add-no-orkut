@@ -37,7 +37,7 @@ export function OrkutHeader({ email, userId }: OrkutHeaderProps) {
             <Link href={`/Profile/${userId}/Scraps`}>Página de recados</Link>
           </li>
           <li>
-            <a href="#">Amigos</a>
+            <Link href={`/Profile/${userId}/Friends`}>Amigos</Link>
           </li>
           <li>
             <Link href="/Communities">Comunidades</Link>
